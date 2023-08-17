@@ -1,0 +1,6 @@
+R1.0.0  Evren Keskin      08/11/2023
+        First release of the NC MPS PyDM Display. 
+        Features the LCLS main application of 6 screens, and CUD summary and recent faults alternatives
+        Also has the FACET main application of 6 screens
+        The GUI does not update recent faults by itself.
+        There are 2 scripts that run perpetually to update recent faults

@@ -1,0 +1,147 @@
+# NC MPS Display  
+
+## Directory Structure  
+.  
+|-- README  
+|-- RELEASE_NOTES  
+|-- mps_constants.py
+|-- mps_gui_main.py
+|-- test_models.py
+|-- nc_mps_bypass.py
+|-- recent_faults_daemon.py
+|-- cud_recent_faults_tester.bash
+|-- cud_recent_faults_facet_tester.bash
+|-- cud_summary_tester.bash
+|-- cud_summary_facet_tester.bash
+|-- facet_tester.bash
+|-- my_mps_tester.bash
+|-- model_teser.bash
+|-- recent_faults_daemon_facet.bash
+|-- recent_faults_daemon.bash
+|-- recent_states_facet.json
+|-- recent_states_lcls.json
+|-- mpsdb.sqlite3
+|-- mpslogic.sqlite
+|-- dbinteraction/  
+|    |-- __init__.py  
+|    |-- mps_config.py  
+|    |-- mpsdb.sqlite3
+|    |-- mpslogic.sqlite   
+|    |-- configDB/  
+|    |   |-- __init__.py  
+|    |   |-- epics_fault.py  
+|    |   |-- fault_device_type.py  
+|    |   |-- link_node_channel_fault.py  
+|    |   |-- link_node_fault.py  
+|    |   |-- link_processor_fault.py  
+|    |   |-- models_init.py  
+|    |   `-- zlinknode.py
+|    |-- historyDB/  
+|    |   |-- __init__.py  
+|    |   `-- oracle_utilities.py
+|    `-- logicDB/  
+|        |-- __init__.py  
+|        |-- macro_device.py  
+|        |-- macro_ignore.py  
+|        |-- macro_state.py  
+|        |-- macro.py  
+|        |-- models_init.py  
+|        `-- zignoremacro.py  
+|-- models/
+|    |-- __init__.py
+|    |-- all_faults_model.py 
+|    |-- all_logic_model.py  
+|    |-- all_messages_model.py  
+|    |-- enums.py
+|    |-- fault_table_model.py  
+|    |-- logic_table_model.py
+|    |-- message_table_model.py  
+|    |-- prepped_fault.py
+|    |-- prepped_macro_state.py  
+|    |-- prepped_macro.py
+|    |-- prepped_message.py  
+|    `-- recent_table_model.py
+`-- ui/
+     |-- __init__.py
+     |-- fault.py 
+     |-- history.py  
+     |-- ignore.py  
+     |-- logic.py  
+     |-- logic_table_model.py
+     |-- mps_cud_rf_facet.ui  
+     |-- mps_cud_rf.ui
+     |-- mps_cud_summary_facet.ui
+     |-- mps_cud_summary.ui
+     |-- mps_gui_facet.ui
+     |-- mps_gui_lcls.ui
+     |-- nc_mps_bypass.ui 
+     |-- recent_faults.py 
+     |-- selection_detail.py 
+     `-- summary.py
+
+
+### my_mps_tester.bash  
+  - Run the LCLS MPS Display with the specified DB files (if both are specified)  
+  - Usage:  
+    `` my_mps_tester.bash ``  
+
+### facet_tester.bash  
+  - Run the FACET MPS Display with the specified DB files (if both are specified)  
+  - Usage:  
+    `` facet_tester.bash ``  
+
+
+### mps_gui_main.py & mps_gui_main.ui & mps_cud_main.ui 
+  - This is the main display for the SC MPS Display  
+  - Contains a tab widget with 4 tabs:  
+    - The Summary tab contains 6 embedded displays, 2 'check engine lights', and 2 tables, one containing faulted PVs and one containing bypassed faults  
+    - The Logic tab contains a table of all faults in the database  
+      - The searchbar shows only faults containing that substring  
+      - The checkbox shows the user all inactive faults  
+      - Selecting a fault opens a panel with more details on that fault  
+    - The Ignore Logic tab displays which faults are ignored and the conditions in which they are ignored  
+    - The Configure tab allows the user to set thresholds for multiple devices at once  
+  - mps_cud_main.ui is the UI for the CUD mode, consisting of the
+    summary tab contents (without interactivity) in a CUD-ified UI
+
+
+### enums.py  
+  - Contains enums for use in the application  
+  - Used by the Selection Details and the Configure tab  
+
+
+### summary.py  
+  - This file contains a python mixin to manage the Summary tab  
+  - Manage a filtered logic table and the bypass table  
+  - Right-clicking a fault allows the user to open more details in the Logic tab  
+  - Middle-clicking a fault copies the fault's name or fault's pv based on which column is clicked  
+  - Minor interactions with Logic tab:  
+    - When a fault is right-clicking
+    - On fault status change and/or bypass status change, alter the associated cell in Logic tab table  
+    - When a fault is right-clicked, present an option to open the fault in the Logic tab  
+
+
+### logic.py  
+  - This file contains a python mixin to manage the Logic tab  
+  - Manage the logic table and open a details pane when a fault is selected  
+  - Allow for searching and sorting in the main table  
+  - Faults can be bypassed from the selection details pane  
+  - Middle-clicking a fault copies the fault's name or fault's pv based on which column is clicked  
+
+
+### selection_detail.py  
+  - Manage the Selection Details section used in the Logic tab and Ignore Tab 
+  - The section is shown and populated when a selection is made in the logic table  
+  - Details shown:  
+    - Name  
+    - Current State  
+    - Ignore Conditions  
+    - Truth Table  
+    - PV Table  
+
+
+### ignore.py  
+  - This file contains a python mixin to manage the Ignore Logic tab  
+  - Clicking on the first table shows the related items in the second
+  - Clicking the second table items opens the selection details panel 
+  - Middle-clicking a fault copies the fault's name or fault's pv based on which column is clicked  
