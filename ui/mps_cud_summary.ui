@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1431</width>
+    <width>1671</width>
     <height>867</height>
    </rect>
   </property>
@@ -45,7 +45,7 @@
        <property name="font">
         <font>
          <family>Sans Serif</family>
-         <pointsize>12</pointsize>
+         <pointsize>15</pointsize>
          <weight>75</weight>
          <italic>false</italic>
          <bold>true</bold>
@@ -77,8 +77,8 @@
          </property>
          <property name="maximumSize">
           <size>
-           <width>250</width>
-           <height>162</height>
+           <width>270</width>
+           <height>300</height>
           </size>
          </property>
          <property name="toolTip">
@@ -108,7 +108,7 @@ border-top-right-radius: 15px;
             <property name="font">
              <font>
               <family>Sans Serif</family>
-              <pointsize>14</pointsize>
+              <pointsize>17</pointsize>
               <weight>75</weight>
               <italic>false</italic>
               <bold>true</bold>
@@ -141,7 +141,7 @@ color: rgb(255, 255, 255);</string>
            <widget class="QLabel" name="Device_MS_RL_Title">
             <property name="font">
              <font>
-              <pointsize>12</pointsize>
+              <pointsize>15</pointsize>
               <weight>75</weight>
               <bold>true</bold>
              </font>
@@ -163,7 +163,7 @@ color: rgb(255, 255, 255);</string>
             <property name="font">
              <font>
               <family>Sans Serif</family>
-              <pointsize>12</pointsize>
+              <pointsize>15</pointsize>
               <weight>75</weight>
               <italic>false</italic>
               <bold>true</bold>
@@ -173,7 +173,8 @@ color: rgb(255, 255, 255);</string>
              <string/>
             </property>
             <property name="styleSheet">
-             <string notr="true">border: 0px;</string>
+             <string notr="true">border: 0px;
+color: rgb(255, 255, 255);</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -216,7 +217,7 @@ color: rgb(255, 255, 255);</string>
            <widget class="PyDMLabel" name="Device_MS_AR_Title">
             <property name="font">
              <font>
-              <pointsize>12</pointsize>
+              <pointsize>15</pointsize>
               <weight>75</weight>
               <bold>true</bold>
              </font>
@@ -241,7 +242,7 @@ color: rgb(255, 255, 255);</string>
             <property name="font">
              <font>
               <family>Sans Serif</family>
-              <pointsize>15</pointsize>
+              <pointsize>24</pointsize>
               <weight>75</weight>
               <italic>false</italic>
               <bold>true</bold>
@@ -283,8 +284,8 @@ color: rgb(255, 255, 255);</string>
          </property>
          <property name="maximumSize">
           <size>
-           <width>250</width>
-           <height>162</height>
+           <width>270</width>
+           <height>300</height>
           </size>
          </property>
          <property name="toolTip">
@@ -317,7 +318,7 @@ border-top-right-radius: 15px;
             <property name="font">
              <font>
               <family>Sans Serif</family>
-              <pointsize>14</pointsize>
+              <pointsize>17</pointsize>
               <weight>75</weight>
               <italic>false</italic>
               <bold>true</bold>
@@ -350,7 +351,7 @@ color: rgb(255, 255, 255);</string>
            <widget class="QLabel" name="Device_LHS_RL_Title">
             <property name="font">
              <font>
-              <pointsize>12</pointsize>
+              <pointsize>15</pointsize>
               <weight>75</weight>
               <bold>true</bold>
              </font>
@@ -372,7 +373,7 @@ color: rgb(255, 255, 255);</string>
             <property name="font">
              <font>
               <family>Sans Serif</family>
-              <pointsize>12</pointsize>
+              <pointsize>15</pointsize>
               <weight>75</weight>
               <italic>false</italic>
               <bold>true</bold>
@@ -382,7 +383,8 @@ color: rgb(255, 255, 255);</string>
              <string/>
             </property>
             <property name="styleSheet">
-             <string notr="true">border: 0px;</string>
+             <string notr="true">border: 0px;
+color: rgb(255, 255, 255);</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -422,7 +424,7 @@ color: rgb(255, 255, 255);</string>
            <widget class="PyDMLabel" name="Device_LHS_AR_Title">
             <property name="font">
              <font>
-              <pointsize>12</pointsize>
+              <pointsize>15</pointsize>
               <weight>75</weight>
               <bold>true</bold>
              </font>
@@ -447,7 +449,7 @@ color: rgb(255, 255, 255);</string>
             <property name="font">
              <font>
               <family>Sans Serif</family>
-              <pointsize>15</pointsize>
+              <pointsize>24</pointsize>
               <weight>75</weight>
               <italic>false</italic>
               <bold>true</bold>
@@ -489,8 +491,8 @@ color: rgb(255, 255, 255);</string>
          </property>
          <property name="maximumSize">
           <size>
-           <width>250</width>
-           <height>162</height>
+           <width>270</width>
+           <height>300</height>
           </size>
          </property>
          <property name="toolTip">
@@ -520,7 +522,7 @@ border-top-right-radius: 15px;
             <property name="font">
              <font>
               <family>Sans Serif</family>
-              <pointsize>14</pointsize>
+              <pointsize>17</pointsize>
               <weight>75</weight>
               <italic>false</italic>
               <bold>true</bold>
@@ -553,7 +555,7 @@ color: rgb(255, 255, 255);</string>
            <widget class="QLabel" name="Device_GunL_RL_Title">
             <property name="font">
              <font>
-              <pointsize>12</pointsize>
+              <pointsize>15</pointsize>
               <weight>75</weight>
               <bold>true</bold>
              </font>
@@ -575,7 +577,7 @@ color: rgb(255, 255, 255);</string>
             <property name="font">
              <font>
               <family>Sans Serif</family>
-              <pointsize>12</pointsize>
+              <pointsize>15</pointsize>
               <weight>75</weight>
               <italic>false</italic>
               <bold>true</bold>
@@ -585,7 +587,8 @@ color: rgb(255, 255, 255);</string>
              <string/>
             </property>
             <property name="styleSheet">
-             <string notr="true">border: 0px;</string>
+             <string notr="true">border: 0px;
+color: rgb(255, 255, 255);</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -625,7 +628,7 @@ color: rgb(255, 255, 255);</string>
            <widget class="PyDMLabel" name="Device_GunL_AR_Title">
             <property name="font">
              <font>
-              <pointsize>12</pointsize>
+              <pointsize>15</pointsize>
               <weight>75</weight>
               <bold>true</bold>
              </font>
@@ -650,7 +653,7 @@ color: rgb(255, 255, 255);</string>
             <property name="font">
              <font>
               <family>Sans Serif</family>
-              <pointsize>15</pointsize>
+              <pointsize>24</pointsize>
               <weight>75</weight>
               <italic>false</italic>
               <bold>true</bold>
@@ -692,8 +695,8 @@ color: rgb(255, 255, 255);</string>
          </property>
          <property name="maximumSize">
           <size>
-           <width>250</width>
-           <height>162</height>
+           <width>270</width>
+           <height>300</height>
           </size>
          </property>
          <property name="toolTip">
@@ -723,7 +726,7 @@ border-top-right-radius: 15px;
             <property name="font">
              <font>
               <family>Sans Serif</family>
-              <pointsize>14</pointsize>
+              <pointsize>17</pointsize>
               <weight>75</weight>
               <italic>false</italic>
               <bold>true</bold>
@@ -756,7 +759,7 @@ color: rgb(255, 255, 255);</string>
            <widget class="QLabel" name="Device_GunS_RL_Title">
             <property name="font">
              <font>
-              <pointsize>12</pointsize>
+              <pointsize>15</pointsize>
               <weight>75</weight>
               <bold>true</bold>
              </font>
@@ -778,7 +781,7 @@ color: rgb(255, 255, 255);</string>
             <property name="font">
              <font>
               <family>Sans Serif</family>
-              <pointsize>12</pointsize>
+              <pointsize>15</pointsize>
               <weight>75</weight>
               <italic>false</italic>
               <bold>true</bold>
@@ -788,7 +791,8 @@ color: rgb(255, 255, 255);</string>
              <string/>
             </property>
             <property name="styleSheet">
-             <string notr="true">border: 0px;</string>
+             <string notr="true">border: 0px;
+color: rgb(255, 255, 255);</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -828,7 +832,7 @@ color: rgb(255, 255, 255);</string>
            <widget class="PyDMLabel" name="Device_GunS_AR_Title">
             <property name="font">
              <font>
-              <pointsize>12</pointsize>
+              <pointsize>15</pointsize>
               <weight>75</weight>
               <bold>true</bold>
              </font>
@@ -853,7 +857,7 @@ color: rgb(255, 255, 255);</string>
             <property name="font">
              <font>
               <family>Sans Serif</family>
-              <pointsize>15</pointsize>
+              <pointsize>24</pointsize>
               <weight>75</weight>
               <italic>false</italic>
               <bold>true</bold>
@@ -895,8 +899,8 @@ color: rgb(255, 255, 255);</string>
          </property>
          <property name="maximumSize">
           <size>
-           <width>250</width>
-           <height>162</height>
+           <width>270</width>
+           <height>300</height>
           </size>
          </property>
          <property name="toolTip">
@@ -926,7 +930,7 @@ border-top-right-radius: 15px;
             <property name="font">
              <font>
               <family>Sans Serif</family>
-              <pointsize>14</pointsize>
+              <pointsize>17</pointsize>
               <weight>75</weight>
               <italic>false</italic>
               <bold>true</bold>
@@ -959,7 +963,7 @@ color: rgb(255, 255, 255);</string>
            <widget class="QLabel" name="Device_GunH_RL_Title">
             <property name="font">
              <font>
-              <pointsize>12</pointsize>
+              <pointsize>15</pointsize>
               <weight>75</weight>
               <bold>true</bold>
              </font>
@@ -981,7 +985,7 @@ color: rgb(255, 255, 255);</string>
             <property name="font">
              <font>
               <family>Sans Serif</family>
-              <pointsize>12</pointsize>
+              <pointsize>15</pointsize>
               <weight>75</weight>
               <italic>false</italic>
               <bold>true</bold>
@@ -991,7 +995,8 @@ color: rgb(255, 255, 255);</string>
              <string/>
             </property>
             <property name="styleSheet">
-             <string notr="true">border: 0px;</string>
+             <string notr="true">border: 0px;
+color: rgb(255, 255, 255);</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1031,7 +1036,7 @@ color: rgb(255, 255, 255);</string>
            <widget class="PyDMLabel" name="Device_GunH_AR_Title">
             <property name="font">
              <font>
-              <pointsize>12</pointsize>
+              <pointsize>15</pointsize>
               <weight>75</weight>
               <bold>true</bold>
              </font>
@@ -1056,7 +1061,7 @@ color: rgb(255, 255, 255);</string>
             <property name="font">
              <font>
               <family>Sans Serif</family>
-              <pointsize>15</pointsize>
+              <pointsize>24</pointsize>
               <weight>75</weight>
               <bold>true</bold>
              </font>
@@ -1097,8 +1102,8 @@ color: rgb(255, 255, 255);</string>
          </property>
          <property name="maximumSize">
           <size>
-           <width>250</width>
-           <height>162</height>
+           <width>270</width>
+           <height>300</height>
           </size>
          </property>
          <property name="toolTip">
@@ -1128,7 +1133,7 @@ border-top-right-radius: 15px;
             <property name="font">
              <font>
               <family>Sans Serif</family>
-              <pointsize>14</pointsize>
+              <pointsize>17</pointsize>
               <weight>75</weight>
               <italic>false</italic>
               <bold>true</bold>
@@ -1161,7 +1166,7 @@ color: rgb(255, 255, 255);</string>
            <widget class="QLabel" name="Device_BYKIKS_RL_Title">
             <property name="font">
              <font>
-              <pointsize>12</pointsize>
+              <pointsize>15</pointsize>
               <weight>75</weight>
               <bold>true</bold>
              </font>
@@ -1183,7 +1188,7 @@ color: rgb(255, 255, 255);</string>
             <property name="font">
              <font>
               <family>Sans Serif</family>
-              <pointsize>12</pointsize>
+              <pointsize>15</pointsize>
               <weight>75</weight>
               <italic>false</italic>
               <bold>true</bold>
@@ -1193,7 +1198,8 @@ color: rgb(255, 255, 255);</string>
              <string/>
             </property>
             <property name="styleSheet">
-             <string notr="true">border: 0px;</string>
+             <string notr="true">border: 0px;
+color: rgb(255, 255, 255);</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1233,7 +1239,7 @@ color: rgb(255, 255, 255);</string>
            <widget class="PyDMLabel" name="Device_BYKIKS_AR_Title">
             <property name="font">
              <font>
-              <pointsize>12</pointsize>
+              <pointsize>15</pointsize>
               <weight>75</weight>
               <bold>true</bold>
              </font>
@@ -1258,7 +1264,7 @@ color: rgb(255, 255, 255);</string>
             <property name="font">
              <font>
               <family>Sans Serif</family>
-              <pointsize>15</pointsize>
+              <pointsize>24</pointsize>
               <weight>75</weight>
               <italic>false</italic>
               <bold>true</bold>
@@ -1300,8 +1306,8 @@ color: rgb(255, 255, 255);</string>
          </property>
          <property name="maximumSize">
           <size>
-           <width>250</width>
-           <height>162</height>
+           <width>270</width>
+           <height>300</height>
           </size>
          </property>
          <property name="toolTip">
@@ -1331,7 +1337,7 @@ border-top-right-radius: 15px;
             <property name="font">
              <font>
               <family>Sans Serif</family>
-              <pointsize>14</pointsize>
+              <pointsize>17</pointsize>
               <weight>75</weight>
               <italic>false</italic>
               <bold>true</bold>
@@ -1353,7 +1359,7 @@ color: rgb(255, 255, 255);</string>
            <widget class="QLabel" name="Device_BYKIKH_RL_Title">
             <property name="font">
              <font>
-              <pointsize>12</pointsize>
+              <pointsize>15</pointsize>
               <weight>75</weight>
               <bold>true</bold>
              </font>
@@ -1375,7 +1381,7 @@ color: rgb(255, 255, 255);</string>
             <property name="font">
              <font>
               <family>Sans Serif</family>
-              <pointsize>12</pointsize>
+              <pointsize>15</pointsize>
               <weight>75</weight>
               <italic>false</italic>
               <bold>true</bold>
@@ -1385,7 +1391,8 @@ color: rgb(255, 255, 255);</string>
              <string/>
             </property>
             <property name="styleSheet">
-             <string notr="true">border:0px;</string>
+             <string notr="true">border: 0px;
+color: rgb(255, 255, 255);</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1425,7 +1432,7 @@ color: rgb(255, 255, 255);</string>
            <widget class="PyDMLabel" name="Device_BYKIKH_AR_Title">
             <property name="font">
              <font>
-              <pointsize>12</pointsize>
+              <pointsize>15</pointsize>
               <weight>75</weight>
               <bold>true</bold>
              </font>
@@ -1450,7 +1457,7 @@ color: rgb(255, 255, 255);</string>
             <property name="font">
              <font>
               <family>Sans Serif</family>
-              <pointsize>15</pointsize>
+              <pointsize>24</pointsize>
               <weight>75</weight>
               <italic>false</italic>
               <bold>true</bold>
@@ -1489,7 +1496,7 @@ color: rgb(255, 255, 255);</string>
        <property name="font">
         <font>
          <family>Sans Serif</family>
-         <pointsize>12</pointsize>
+         <pointsize>15</pointsize>
          <weight>75</weight>
          <italic>false</italic>
          <bold>true</bold>
@@ -1507,6 +1514,7 @@ color: rgb(255, 255, 255);</string>
       <widget class="QTableView" name="Logic_Summary_Table">
        <property name="font">
         <font>
+         <pointsize>17</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -1530,7 +1538,7 @@ color: rgb(255, 255, 255);</string>
         <bool>true</bool>
        </property>
        <attribute name="horizontalHeaderDefaultSectionSize">
-        <number>125</number>
+        <number>175</number>
        </attribute>
        <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
         <bool>true</bool>
@@ -1548,7 +1556,7 @@ color: rgb(255, 255, 255);</string>
        <property name="font">
         <font>
          <family>Sans Serif</family>
-         <pointsize>12</pointsize>
+         <pointsize>15</pointsize>
          <weight>75</weight>
          <italic>false</italic>
          <bold>true</bold>
@@ -1566,6 +1574,7 @@ color: rgb(255, 255, 255);</string>
       <widget class="QTableView" name="Bypassed_Summary_Table">
        <property name="font">
         <font>
+         <pointsize>17</pointsize>
          <weight>75</weight>
          <bold>true</bold>
         </font>
@@ -1589,7 +1598,7 @@ color: rgb(255, 255, 255);</string>
         <bool>true</bool>
        </property>
        <attribute name="horizontalHeaderDefaultSectionSize">
-        <number>125</number>
+        <number>400</number>
        </attribute>
        <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
         <bool>true</bool>

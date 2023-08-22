@@ -1,27 +1,26 @@
 # NC MPS Display  
 
+# A Note for working on adding and testing on dev vs production servers
+Some features are intended to functionality on production in a way that makes testing harder
+Known list:
+1) On faults model and logic model, the backup files are likely never used on production since that is always up to date
+But are often utilized during testing
+2) On recent faults daemon, the version PV check on dev testing is often called
+but on production deployment this check is accurate, and only actually necessary during a version change.
+
 ## Directory Structure  
 .  
 |-- README  
 |-- RELEASE_NOTES  
 |-- mps_constants.py
 |-- mps_gui_main.py
-|-- test_models.py
 |-- nc_mps_bypass.py
+|-- nc_mps_gui.bash
 |-- recent_faults_daemon.py
-|-- cud_recent_faults_tester.bash
-|-- cud_recent_faults_facet_tester.bash
-|-- cud_summary_tester.bash
-|-- cud_summary_facet_tester.bash
-|-- facet_tester.bash
-|-- my_mps_tester.bash
-|-- model_teser.bash
 |-- recent_faults_daemon_facet.bash
 |-- recent_faults_daemon.bash
 |-- recent_states_facet.json
 |-- recent_states_lcls.json
-|-- mpsdb.sqlite3
-|-- mpslogic.sqlite
 |-- dbinteraction/  
 |    |-- __init__.py  
 |    |-- mps_config.py  

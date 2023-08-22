@@ -4,12 +4,12 @@ from models.all_logic_model import AllLogicModel
 from models.all_faults_model import ALLFaultsModel
 from models.all_messages_model import AllMessagesModel
 from models.logic_table_model import LogicTableModel, MPSItemDelegate
-from ui.summary_ui import SummaryUI
-from ui.fault_ui import FaultsUI
-from ui.logic_ui import LogicUI
-from ui.ignore_ui import IgnoreUI
-from ui.history_ui import HistoryUI
-from ui.recent_faults_ui import RecentFaultsUI
+from ui.summary import SummaryUI
+from ui.fault import FaultsUI
+from ui.logic import LogicUI
+from ui.ignore import IgnoreUI
+from ui.history import HistoryUI
+from ui.recent_faults import RecentFaultsUI
 from epics import PV
 # from functools import partial
 import time
@@ -26,7 +26,7 @@ class MpsGuiDisplay(Display, SummaryUI, FaultsUI, LogicUI, IgnoreUI, HistoryUI, 
     2) LogicDB path
     3) HistoryDB path
     4) Recent states JSON path
-    4) Whether or not to run in CUD mode ( INCOMPLETE!!!!!!!!!!!!!!!!!)
+    4) Whether or not to run in CUD mode
     5) Choosing LCLS or FACET
     6) IOC_PREFIX (different between LCLS and FACET)
 
@@ -36,22 +36,23 @@ class MpsGuiDisplay(Display, SummaryUI, FaultsUI, LogicUI, IgnoreUI, HistoryUI, 
     """
     def __init__(self, parent=None, args=[], macros=None, ui_filename=None):
 
-        cud_mode = 'All'
+        cud_mode = 'all'
         if 'CUD' in macros:
             cud_mode = macros['CUD']
+            cud_mode = cud_mode.lower()
 
         if 'accel_type' in macros:
             if macros['accel_type'] == 'LCLS':
-                if cud_mode == 'Summary':
+                if cud_mode == 'summary':
                     ui_filename = 'ui/mps_cud_summary.ui'
-                elif cud_mode == 'Recent Faults':
+                elif cud_mode == 'recent':
                     ui_filename = 'ui/mps_cud_rf.ui'
                 else:
                     ui_filename = 'ui/mps_gui_lcls.ui'
             else:  # FACET
-                if cud_mode == 'Summary':
+                if cud_mode == 'summary':
                     ui_filename = 'ui/mps_cud_summary_facet.ui'
-                elif cud_mode == 'Recent Faults':
+                elif cud_mode == 'recent':
                     ui_filename = 'ui/mps_cud_rf_facet.ui'
                 else:
                     ui_filename = 'ui/mps_gui_facet.ui'
@@ -96,23 +97,23 @@ class MpsGuiDisplay(Display, SummaryUI, FaultsUI, LogicUI, IgnoreUI, HistoryUI, 
                                                    self.rateList, IOC_PREFIX=macros['IOC_PREFIX'])
             self.delegate = MPSItemDelegate(self)
 
-            if cud_mode == 'Summary':
+            if cud_mode == 'summary':
                 self.summary_init(is_cud=True)
-            elif cud_mode == 'All':
+            elif cud_mode == 'recent':
+                self.recent_faults_init(rates_list=self.rateList, is_cud=True)
+            else:
                 self.summary_init(is_cud=False)
                 self.logic_init(self.rateList, macros['IOC_PREFIX'])
                 self.fault_init()
                 self.ignore_init(self.rateList, macros['IOC_PREFIX'])
                 self.history_init()
-                self.recent_faults_init(self.rateList)
-            elif cud_mode == 'Recent Faults':
-                self.recent_faults_init(self.rateList)
+                self.recent_faults_init(rates_list=self.rateList, is_cud=False)
 
-            if cud_mode == 'Summary' or cud_mode == 'All':
+            if cud_mode != 'recent':
                 PV(macros['IOC_PREFIX'] + CURRENT_STATES_POSTFIX, callback=self.update_current_states)
 
             # Then connect them to PV's or other connections
-            if cud_mode == 'All':
+            if cud_mode != 'summary' and cud_mode != 'recent':
                 # logic connections requires a PV connection, which can take some time
                 # but a 1 second wait should be a good clear for that time
                 time.sleep(1.0)
@@ -124,7 +125,7 @@ class MpsGuiDisplay(Display, SummaryUI, FaultsUI, LogicUI, IgnoreUI, HistoryUI, 
                 self.ignore_connections()
                 self.history_connections()
                 self.recent_faults_connections(IOC_PREFIX=macros['IOC_PREFIX'], is_cud=False)
-            if cud_mode == 'Recent Faults':
+            if cud_mode == 'recent':
                 self.recent_faults_connections(IOC_PREFIX=macros['IOC_PREFIX'], is_cud=True)
 
             # Allow for a version change based reset of the program

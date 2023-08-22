@@ -31,18 +31,13 @@ class SummaryUI:
         self.ui.Logic_Summary_Table.setItemDelegate(self.delegate)
 
         hdr = self.ui.Logic_Summary_Table.horizontalHeader()
-        if not is_cud:
-            hdr.setSectionResizeMode(QHeaderView.Interactive)
-            hdr.setSectionResizeMode(0, QHeaderView.Stretch)
-            hdr.resizeSection(1, 200)
-        else:
-            font = hdr.font()
-            font.setPointSize(16)
-            hdr.setFont(font)
-            hdr.setFixedHeight(40)
-            hdr.resizeSection(0, 550)
-            hdr.resizeSection(1, 300)
-            hdr.setSectionResizeMode(8, QHeaderView.Stretch)
+        # hdr.setSectionResizeMode(QHeaderView.ResizeToContents)
+        hdr.setSectionResizeMode(QHeaderView.Interactive)
+        hdr.setSectionResizeMode(0, QHeaderView.Stretch)
+        hdr.resizeSection(1, 200)
+
+        if is_cud:
+            hdr.resizeSection(2, 120)
 
         # Initialize the Bypass Table and Headers
         self.byp_model = MPSSortFilterModel(self)
@@ -55,15 +50,16 @@ class SummaryUI:
         self.ui.Bypassed_Summary_Table.sortByColumn(self.logic_tbl_model.beind, Qt.AscendingOrder)
         self.ui.Bypassed_Summary_Table.setItemDelegate(self.delegate)
 
-        hdr = self.ui.Bypassed_Summary_Table.horizontalHeader()
-        hdr.setSectionResizeMode(QHeaderView.Stretch)
+        hdr2 = self.ui.Bypassed_Summary_Table.horizontalHeader()
+        hdr2.setSectionResizeMode(QHeaderView.Interactive)
+        hdr2.setSectionResizeMode(0, QHeaderView.Stretch)
 
         if is_cud:
             print('make some enlargement here?')
             # font = hdr.font()
             # font.setPointSize(14)
-            # hdr.setFont(font)
-            # hdr.setFixedHeight(40)
+            # hdr2.setFont(font)
+            # hdr2.setFixedHeight(40)
 
         # Initialize the QAction used by the context menus
         if not is_cud:

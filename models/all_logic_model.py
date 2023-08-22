@@ -51,8 +51,8 @@ class AllLogicModel:
         phys_top = path.expandvars("$EPICS_IOC_TOP")
 
         # the last version in this directory as I wrote this code...
-        # sufficient for functionality, but potentially damaging in the future
-        # not a good way to make a dynamic fall back
+        # sufficient for testing, and will never be used on lcls-srv01
+        # not a good way to make a dynamic fall back for testing well though
         fallBackVersion = '2021-09-23-a'
 
         filename = glob(phys_top + f'/MpsConfiguration/current/algorithm/{fallBackVersion}/build/mpslogic.sqlite')[0]
@@ -63,11 +63,11 @@ class AllLogicModel:
         phys_top = path.expandvars("$EPICS_IOC_TOP")
 
         # the last version in this directory as I wrote this code...
-        # sufficient for functionality, but potentially damaging in the future
-        # not a good way to make a dynamic fall back
+        # sufficient for testing, and will never be used on facet-srv01
+        # not a good way to make a dynamic fall back for testing well though
         fallBackVersion = '2023-06-26-a'
 
-        filename = glob(phys_top + f'/MpsConfiguration-FACET/MpsConfiguration-FACET-R1-17/\
+        filename = glob(phys_top + f'/MpsConfiguration-FACET/current/\
                         algorithm/{fallBackVersion}/build/mpslogic.sqlite')[0]
         return filename
 

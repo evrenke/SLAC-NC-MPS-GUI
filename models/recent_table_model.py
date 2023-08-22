@@ -33,7 +33,7 @@ class RecentTableModel(QAbstractTableModel):
         super(RecentTableModel, self).__init__(parent)
         self.model = model
 
-        self.hdr_lst = (["Date", "Name", "State", "Min Rate"])
+        self.hdr_lst = (["Date", "Name", "State", "Min"])
 
         self.hdr_lst += rates_list
 
