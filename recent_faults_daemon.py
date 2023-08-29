@@ -10,19 +10,21 @@ from models.prepped_macro_state import PreppedMacroState
 # from functools import partial
 from mps_constants import RECENT_FAULTS_MAX, CURRENT_STATES_POSTFIX, CONFIG_VERSION_POSTFIX, LOGIC_VERSION_POSTFIX
 import threading
+import queue
 
 
 class RecentFaultsDaemon():
     """
     author: Evren Keskin
     =====================================================================
-    This is a sibling program separate from MPS GUI, which watches the current states PV
+    This is a sibling program separate from NC MPS GUI, which watches the current states PV
     This PV has a list of all macro's current states, indexed by their macro numbers from the model
     Each change on it tells us about a change of states
     This program writes to a JSON a log of the recent X number of changes
     Allowing a quick to access list of the recent changes to states
 
     =====================================================================
+
     It relies on the model matching what the PV gives,
     meaning it has to deal with version changes on the run
     """
@@ -34,27 +36,28 @@ class RecentFaultsDaemon():
             self.jsonFilename = sys.argv[4]
             self.linactype = sys.argv[5]
 
-            self.config_version = self.getConfigModel()
-            self.logic_version = self.getLogicVersion()
+            self.configPV = PV(self.IOC_PREFIX + CONFIG_VERSION_POSTFIX)
+            self.logicPV = PV(self.IOC_PREFIX + LOGIC_VERSION_POSTFIX)
+            self.configPV.wait_for_connection()
+            self.logicPV.wait_for_connection()
+
+            self.config_version = self.configPV.get()
+            self.logic_version = self.logicPV.get()
 
             self.resetModel()
 
+            self.newValuesQueue = queue.Queue()
+
             # creating a thread to update JSON
             Recent_States_Thread = Thread(target=self.recent_states_daemon_thread)
-
-            print('starting endless thread')
-
-            # print(self.config_version)
-            # print(self.logic_version)
 
             # starting of thread T
             Recent_States_Thread.start()
 
     # creating a function
     def recent_states_daemon_thread(self):
-        # self.update_count = 0
 
-        self.lastStateSituationList = None
+        self.lastValuesList = None
         self.isUpdatingJSON = False
         self.wantsToUpdateAfterUpdate = False
         PV(self.IOC_PREFIX + CURRENT_STATES_POSTFIX, callback=self.recent_states_check)
@@ -62,7 +65,10 @@ class RecentFaultsDaemon():
         # I know, some call me a programming genius, a prodigy and visionary
         while True:
             # this is daemon thread with update checking
-            time.sleep(20)
+            while not self.newValuesQueue.empty():
+                print(len(self.newValuesQueue))
+                self.add_latest_states(self.newValuesQueue.get())
+            time.sleep(5)  # 5 seconds wait completely arbitraty, I just want to avoid melting slac servers
         return
 
     def append_to_json(self, all_new_data):
@@ -91,14 +97,16 @@ class RecentFaultsDaemon():
                 # Sets file's current position at offset.
                 # file.seek(0)
                 # convert back to json.
-                json.dump(file_data, file, indent=3)
+                json.dump(file_data, file, indent=4)
 
     def recent_states_check(self, value, **kw):
-        if (self.config_version != self.getConfigModel() or
-           self.logic_version != self.getLogicVersion()):
+        if (self.config_version != self.configPV.get() or
+           self.logic_version != self.logicPV.get()):
             self.resetModel()
 
-        self.add_latest_states(value)
+        self.newValuesQueue.put(value)
+
+        # self.add_latest_states(value)
 
     def add_latest_states(self, value):
         """
@@ -107,87 +115,68 @@ class RecentFaultsDaemon():
         compared differences are new states for macros, and should be added
         """
 
-        # print('adding latest states check')
-        changeTime = datetime.now()
-        changeTime = changeTime.strftime('%Y-%m-%d %H:%M:%S')
         value = value.astype('int8')
-        if self.lastStateSituationList is None:
-            self.lastStateSituationList = value
-        elif not self.isUpdatingJSON:
-            self.isUpdatingJSON = True
+        if self.lastValuesList is None:  # on the first iteration, there is no previous list
+            self.lastValuesList = value
+        else:
+            print('getting real')
+            changeTime = datetime.now()
+            changeTime = changeTime.strftime('%Y-%m-%d %H:%M:%S')
+            lastValues = self.lastValuesList
+
             # First, find each state in the list that is different from the previous list
             # Then, for each difference of states, create an item of that new state, the related macro,
             # and the date of the change of the state pv
             all_new_data = []
-            for index, state_num in enumerate(self.lastStateSituationList):
-                if int(state_num) != int(value[index]):
-                    macro = self.myLogicDB.numbersToPreppedDevices[index]
+            for index, old_state_num in enumerate(lastValues):
+                new_state_num = value[index]
+                if int(old_state_num) != int(new_state_num):
+                    try:
+                        macro = self.myLogicDB.numbersToPreppedDevices[index]
+                        state = macro.get_state_by_state_number(new_state_num)
 
-                    state = macro.get_state_by_state_number(state_num)
+                        if state is not None:  # if the models used dont match what the current state PV expects, ignore
+                            if self.linactype == 'LCLS':
+                                new_data = {'statename': state.state_name,
+                                            'staterates': [PreppedMacroState.get_enum_to_val(state.get_min_rate()),
+                                                           PreppedMacroState.get_enum_to_val(state.rate_enums[0]),
+                                                           PreppedMacroState.get_enum_to_val(state.rate_enums[1]),
+                                                           PreppedMacroState.get_enum_to_val(state.rate_enums[2]),
+                                                           PreppedMacroState.get_enum_to_val(state.rate_enums[3]),
+                                                           PreppedMacroState.get_enum_to_val(state.rate_enums[4]),
+                                                           PreppedMacroState.get_enum_to_val(state.rate_enums[5]),
+                                                           PreppedMacroState.get_enum_to_val(state.rate_enums[6])],
+                                            'macro': macro.macro_name,
+                                            'date': changeTime
+                                            }
+                            else:  # FACET
+                                new_data = {'statename': state.state_name,
+                                            'staterates': [PreppedMacroState.get_enum_to_val(state.get_min_rate()),
+                                                           PreppedMacroState.get_enum_to_val(state.rate_enums[0]),
+                                                           PreppedMacroState.get_enum_to_val(state.rate_enums[1]),
+                                                           PreppedMacroState.get_enum_to_val(state.rate_enums[2])],
+                                            'macro': macro.macro_name,
+                                            'date': changeTime
+                                            }
 
-                    if self.linactype == 'LCLS':
-                        new_data = {'statename': state.state_name,
-                                    'staterates': [PreppedMacroState.get_enum_to_val(state.get_min_rate()),
-                                                   PreppedMacroState.get_enum_to_val(state.rate_enums[0]),
-                                                   PreppedMacroState.get_enum_to_val(state.rate_enums[1]),
-                                                   PreppedMacroState.get_enum_to_val(state.rate_enums[2]),
-                                                   PreppedMacroState.get_enum_to_val(state.rate_enums[3]),
-                                                   PreppedMacroState.get_enum_to_val(state.rate_enums[4]),
-                                                   PreppedMacroState.get_enum_to_val(state.rate_enums[5]),
-                                                   PreppedMacroState.get_enum_to_val(state.rate_enums[6])],
-                                    'macro': macro.macro_name,
-                                    'date': changeTime
-                                    }
-                    else:  # FACET
-                        new_data = {'statename': state.state_name,
-                                    'staterates': [PreppedMacroState.get_enum_to_val(state.get_min_rate()),
-                                                   PreppedMacroState.get_enum_to_val(state.rate_enums[0]),
-                                                   PreppedMacroState.get_enum_to_val(state.rate_enums[1]),
-                                                   PreppedMacroState.get_enum_to_val(state.rate_enums[2])],
-                                    'macro': macro.macro_name,
-                                    'date': changeTime
-                                    }
+                            all_new_data.append(new_data)
+                    except KeyError:
+                        continue
 
-                    all_new_data.append(new_data)
-
-            # print('appending to json ', all_new_data)
             self.append_to_json(all_new_data=all_new_data)
-            self.lastStateSituationList = value
-            self.isUpdatingJSON = False
-            # print('done with an update')
-            if self.wantsToUpdateAfterUpdate:
-                self.wantsToUpdateAfterUpdate = False
-                self.add_latest_states(value)
-            # this is not the first call, check what is changed about the list of states
-        elif not self.wantsToUpdateAfterUpdate:
-            # print('waiting do another update')
-            self.wantsToUpdateAfterUpdate = True
-
-        # self.update_count += 1
+            self.lastValuesList = value
 
     def resetModel(self):
         configFilename = f'{self.configPrefix}/{self.config_version}/mpsdb.sqlite3'
         logicFilename = f'{self.logicPrefix}/{self.logic_version}/build/mpslogic.sqlite'
 
+        print('resetting recent faults daemon')
         print(configFilename)
         print(logicFilename)
-
-        # TEMPORARY TEMPORARY TEMPORARY TEMPORARY TEMPORARY TEMPORARY TEMPORARY TEMPORARY
-        # TEMPORARY TEMPORARY TEMPORARY TEMPORARY TEMPORARY TEMPORARY TEMPORARY TEMPORARY
-        # if self.linactype == 'LCLS':
-        #     configFilename = 'mpsdb.sqlite3'
-        #     logicFilename = 'mpslogic.sqlite'
 
         self.myConfigDB = ALLFaultsModel(accel_type=self.linactype, filename=configFilename)
         self.myLogicDB = AllLogicModel(self.myConfigDB, accel_type=self.linactype, filename=logicFilename)
 
-    def getConfigModel(self):
-        self.configPV = PV(self.IOC_PREFIX + CONFIG_VERSION_POSTFIX)
-        return self.configPV.get()
 
-    def getLogicVersion(self):
-        self.logicPV = PV(self.IOC_PREFIX + LOGIC_VERSION_POSTFIX)
-        return self.logicPV.get()
-
-
-RecentFaultsDaemon()
+if __name__ == '__main__':
+    RecentFaultsDaemon()

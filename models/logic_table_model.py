@@ -25,7 +25,7 @@ class LogicTableModel(QAbstractTableModel):
 
     The most important functions are
     __init__: used to create the table header, the hidden columns, and initialize what the user first sees
-    set_data: used to set the table row data based on AllLogicModel info. This is what the user sees
+    set_initial_data: used to set the table row data based on AllLogicModel info. This is what the user sees
     update_current_states: gets the retrieved list of current states for each macro,
         which is used to update the data to the accurate states for the user
     """
@@ -158,7 +158,10 @@ class LogicTableModel(QAbstractTableModel):
             lst = [cur_state.state_name] * len(self.hdr_lst)
             lst[0] = self.model.numbersToPreppedDevices[macro_num].macro_name
             lst[1] = cur_state.state_name
-            lst[2] = PreppedMacroState.get_enum_to_val(cur_state.get_min_rate())
+            if self.model.numbersToPreppedDevices[macro_num].has_special_error_state:
+                lst[2] = PreppedMacroState.get_enum_to_val(11)  # Ignore Logic
+            else:
+                lst[2] = PreppedMacroState.get_enum_to_val(cur_state.get_min_rate())
             lst[3] = PreppedMacroState.get_enum_to_val(cur_state.rate_enums[0])
             lst[4] = PreppedMacroState.get_enum_to_val(cur_state.rate_enums[1])
             lst[5] = PreppedMacroState.get_enum_to_val(cur_state.rate_enums[2])

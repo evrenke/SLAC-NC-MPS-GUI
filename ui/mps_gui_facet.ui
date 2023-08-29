@@ -948,6 +948,12 @@ color: rgb(255, 255, 255);</string>
            </item>
            <item>
             <widget class="QLineEdit" name="Fault_Filter_LineEdit">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
              <property name="placeholderText">
               <string>Case-insensitive Filter</string>
              </property>
@@ -1922,21 +1928,12 @@ color: rgb(255, 255, 255);</string>
             </spacer>
            </item>
            <item>
-            <widget class="PyDMLineEdit" name="Logic_Search_Line_Edit">
+            <widget class="QLineEdit" name="Logic_Search_Line_Edit">
              <property name="font">
               <font>
                <weight>75</weight>
                <bold>true</bold>
               </font>
-             </property>
-             <property name="toolTip">
-              <string/>
-             </property>
-             <property name="inputMask">
-              <string/>
-             </property>
-             <property name="text">
-              <string/>
              </property>
              <property name="placeholderText">
               <string>Case-Insensitive Filter</string>
@@ -2003,8 +2000,8 @@ color: rgb(255, 255, 255);</string>
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>1346</width>
-               <height>269</height>
+               <width>1425</width>
+               <height>385</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -2782,8 +2779,8 @@ border: 1px solid rgb(0, 0, 0);
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>1346</width>
-               <height>269</height>
+               <width>1425</width>
+               <height>441</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout">
@@ -3504,15 +3501,12 @@ border: 1px solid rgb(0, 0, 0);
                 </spacer>
                </item>
                <item>
-                <widget class="PyDMLineEdit" name="Interactive_Search_Line_Edit">
+                <widget class="QLineEdit" name="Interactive_Search_Line_Edit">
                  <property name="font">
                   <font>
                    <weight>75</weight>
                    <bold>true</bold>
                   </font>
-                 </property>
-                 <property name="toolTip">
-                  <string/>
                  </property>
                  <property name="placeholderText">
                   <string>Case-Insensitive Filter</string>
@@ -3612,15 +3606,12 @@ border: 1px solid rgb(0, 0, 0);
             </spacer>
            </item>
            <item>
-            <widget class="PyDMLineEdit" name="Recent_Fault_Search_Line_Edit">
+            <widget class="QLineEdit" name="Recent_Fault_Search_Line_Edit">
              <property name="font">
               <font>
                <weight>75</weight>
                <bold>true</bold>
               </font>
-             </property>
-             <property name="toolTip">
-              <string/>
              </property>
              <property name="placeholderText">
               <string>Case-Insensitive Filter</string>
@@ -3758,11 +3749,6 @@ border: 1px solid rgb(0, 0, 0);
    <extends>QFrame</extends>
    <header>pydm.widgets.frame</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>PyDMLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>pydm.widgets.line_edit</header>
   </customwidget>
   <customwidget>
    <class>PyDMRelatedDisplayButton</class>

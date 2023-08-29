@@ -1,8 +1,13 @@
+R1.0.2 Evren Keskin 08/29/2023
+        Added jumping from recent fault screen to logic screen with selected device, with right click
+        Added highlights to the current state of a device on selection details
+        Replaced unnecessary pdymqlineedits with regular qlineedits for search bars
+        Fixed recent faults daemon to be more adaptable to fast changes
+
 R1.0.1 Evren Keskin 08/22/2023
         Combined all launch scripts into one script
         Reformatted various UI of screens to look better
         Made the recent faults daemon able to adapt to version changes of databases, will reset models on change
-
 
 R1.0.0  Evren Keskin      08/11/2023
         First release of the NC MPS PyDM Display. 

@@ -1676,6 +1676,12 @@ color: rgb(255, 255, 255);</string>
            </item>
            <item>
             <widget class="QLineEdit" name="Fault_Filter_LineEdit">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
              <property name="placeholderText">
               <string>Case-insensitive Filter</string>
              </property>
@@ -2650,24 +2656,15 @@ color: rgb(255, 255, 255);</string>
             </spacer>
            </item>
            <item>
-            <widget class="PyDMLineEdit" name="Logic_Search_Line_Edit">
+            <widget class="QLineEdit" name="Logic_Search_Line_Edit">
              <property name="font">
               <font>
                <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
-             <property name="toolTip">
-              <string/>
-             </property>
-             <property name="inputMask">
-              <string/>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
              <property name="placeholderText">
-              <string>Case-Insensitive Filter</string>
+              <string>Case-insensitive Filter</string>
              </property>
             </widget>
            </item>
@@ -3250,7 +3247,7 @@ border: 1px solid rgb(0, 0, 0);
                     <enum>QAbstractScrollArea::AdjustToContents</enum>
                    </property>
                    <property name="editTriggers">
-                    <set>QAbstractItemView::NoEditTriggers</set>
+                    <set>QAbstractItemView::DoubleClicked</set>
                    </property>
                    <property name="dragDropOverwriteMode">
                     <bool>false</bool>
@@ -4034,7 +4031,7 @@ border: 1px solid rgb(0, 0, 0);
                     <enum>QAbstractScrollArea::AdjustToContents</enum>
                    </property>
                    <property name="editTriggers">
-                    <set>QAbstractItemView::NoEditTriggers</set>
+                    <set>QAbstractItemView::DoubleClicked</set>
                    </property>
                    <property name="dragDropOverwriteMode">
                     <bool>false</bool>
@@ -4230,15 +4227,12 @@ border: 1px solid rgb(0, 0, 0);
                 </spacer>
                </item>
                <item>
-                <widget class="PyDMLineEdit" name="Interactive_Search_Line_Edit">
+                <widget class="QLineEdit" name="Interactive_Search_Line_Edit">
                  <property name="font">
                   <font>
                    <weight>75</weight>
                    <bold>true</bold>
                   </font>
-                 </property>
-                 <property name="toolTip">
-                  <string/>
                  </property>
                  <property name="placeholderText">
                   <string>Case-Insensitive Filter</string>
@@ -4338,15 +4332,12 @@ border: 1px solid rgb(0, 0, 0);
             </spacer>
            </item>
            <item>
-            <widget class="PyDMLineEdit" name="Recent_Fault_Search_Line_Edit">
+            <widget class="QLineEdit" name="Recent_Fault_Search_Line_Edit">
              <property name="font">
               <font>
                <weight>75</weight>
                <bold>true</bold>
               </font>
-             </property>
-             <property name="toolTip">
-              <string/>
              </property>
              <property name="placeholderText">
               <string>Case-Insensitive Filter</string>
@@ -4357,11 +4348,17 @@ border: 1px solid rgb(0, 0, 0);
          </item>
          <item>
           <widget class="QTableView" name="Recent_Faults_View">
+           <property name="contextMenuPolicy">
+            <enum>Qt::CustomContextMenu</enum>
+           </property>
            <property name="editTriggers">
             <set>QAbstractItemView::NoEditTriggers</set>
            </property>
            <property name="alternatingRowColors">
             <bool>true</bool>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
            </property>
            <attribute name="horizontalHeaderDefaultSectionSize">
             <number>150</number>
@@ -4494,11 +4491,6 @@ border: 1px solid rgb(0, 0, 0);
    <extends>QFrame</extends>
    <header>pydm.widgets.frame</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>PyDMLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>pydm.widgets.line_edit</header>
   </customwidget>
   <customwidget>
    <class>PyDMRelatedDisplayButton</class>

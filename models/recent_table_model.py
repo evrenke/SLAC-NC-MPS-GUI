@@ -37,9 +37,13 @@ class RecentTableModel(QAbstractTableModel):
 
         self.hdr_lst += rates_list
 
+        self.hdr_lst += ['Macro Number']
+
+        self.numind = self.hdr_lst.index('Macro Number')
+
         # table data, which will hold inputs from database data
         self._data = [['not an item', 'DATABASE ERROR', 'no state', '--',
-                       '--', '--', '--', '--', '--', '--', '--', '--']] * RECENT_FAULTS_MAX
+                       '--', '--', '--', '--', '--', '--', '--', '--', -1]] * RECENT_FAULTS_MAX
         self.channels = []  # channels used to copy the name of the logic item easily with middle click
 
     def rowCount(self, index: QModelIndex = QModelIndex()):
@@ -116,12 +120,19 @@ class RecentTableModel(QAbstractTableModel):
             for index, rate in enumerate(state_rates):
                 lst[index + 3] = rate
 
+            macro_num = -1
+            for num in self.model.numbersToPreppedDevices:
+                if macro_name == self.model.numbersToPreppedDevices[num].macro_name:
+                    macro_num = num
+                    break
+            lst[self.numind] = macro_num
+
             self._data.insert(0, lst)
 
             self.dataChanged.emit(self.index(index, 0),
                                   self.index(index, 10))
 
-            self.channels.append(macro_name)
+            self.channels.insert(0, macro_name)
 
     def get_recent_states(self, jsonFilepath):
 

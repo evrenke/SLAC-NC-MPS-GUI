@@ -54,17 +54,17 @@ class SummaryUI:
         hdr2.setSectionResizeMode(QHeaderView.Interactive)
         hdr2.setSectionResizeMode(0, QHeaderView.Stretch)
 
-        if is_cud:
-            print('make some enlargement here?')
-            # font = hdr.font()
-            # font.setPointSize(14)
-            # hdr2.setFont(font)
-            # hdr2.setFixedHeight(40)
+        # if is_cud:
+        #     print('make some enlargement here?')
+        #     # font = hdr.font()
+        #     # font.setPointSize(14)
+        #     # hdr2.setFont(font)
+        #     # hdr2.setFixedHeight(40)
 
         # Initialize the QAction used by the context menus
         if not is_cud:
             self.selected_macro = None
-            self.action = QAction("Open fault in Logic tab", self)
+            self.action = QAction("Open it in Logic tab", self)
             self.menu = QMenu(self)
             self.menu.addAction(self.action)
 

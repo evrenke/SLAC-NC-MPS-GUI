@@ -1,11 +1,11 @@
 # NC MPS Display  
 
-# A Note for working on adding and testing on dev vs production servers
-Some features are intended to functionality on production in a way that makes testing harder
+# A Note for working on testing on dev vs production servers
+Some features are intended for functionality on production in a way that makes testing harder
 Known list:
-1) On faults model and logic model, the backup files are likely never used on production since that is always up to date
+1) On all_faults_model and all_logic_model, the backup files are likely never used on production since that is always up to date
 But are often utilized during testing
-2) On recent faults daemon, the version PV check on dev testing is often called
+2) On recent_faults_daemon.py, the version PV check on dev testing is often called
 but on production deployment this check is accurate, and only actually necessary during a version change.
 
 ## Directory Structure  
@@ -23,9 +23,7 @@ but on production deployment this check is accurate, and only actually necessary
 |-- recent_states_lcls.json
 |-- dbinteraction/  
 |    |-- __init__.py  
-|    |-- mps_config.py  
-|    |-- mpsdb.sqlite3
-|    |-- mpslogic.sqlite   
+|    |-- mps_config.py    
 |    |-- configDB/  
 |    |   |-- __init__.py  
 |    |   |-- epics_fault.py  
@@ -66,7 +64,7 @@ but on production deployment this check is accurate, and only actually necessary
      |-- history.py  
      |-- ignore.py  
      |-- logic.py  
-     |-- logic_table_model.py
+     |-- snake.py 
      |-- mps_cud_rf_facet.ui  
      |-- mps_cud_rf.ui
      |-- mps_cud_summary_facet.ui
@@ -78,30 +76,146 @@ but on production deployment this check is accurate, and only actually necessary
      |-- selection_detail.py 
      `-- summary.py
 
+## File Descriptions
 
-### my_mps_tester.bash  
-  - Run the LCLS MPS Display with the specified DB files (if both are specified)  
+### nc_mps_gui.bash  
+  - Run the LCLS MPS Display with the specified DB files (if they are specified)  
   - Usage:  
-    `` my_mps_tester.bash ``  
-
-### facet_tester.bash  
-  - Run the FACET MPS Display with the specified DB files (if both are specified)  
-  - Usage:  
-    `` facet_tester.bash ``  
+    `` nc_mps_gui.bash ``  for LCLS
+    `` nc_mps_gui.bash -f `` for FACET
 
 
-### mps_gui_main.py & mps_gui_main.ui & mps_cud_main.ui 
-  - This is the main display for the SC MPS Display  
-  - Contains a tab widget with 4 tabs:  
-    - The Summary tab contains 6 embedded displays, 2 'check engine lights', and 2 tables, one containing faulted PVs and one containing bypassed faults  
-    - The Logic tab contains a table of all faults in the database  
-      - The searchbar shows only faults containing that substring  
-      - The checkbox shows the user all inactive faults  
-      - Selecting a fault opens a panel with more details on that fault  
-    - The Ignore Logic tab displays which faults are ignored and the conditions in which they are ignored  
-    - The Configure tab allows the user to set thresholds for multiple devices at once  
-  - mps_cud_main.ui is the UI for the CUD mode, consisting of the
-    summary tab contents (without interactivity) in a CUD-ified UI
+### mps_gui_main.py & mps_gui_lcls.ui & mps_gui_facet.ui & mps_cud_rf_facet.ui & mps_cud_rf.ui & mps_cud_summary_facet.ui & mps_cud_summary.ui
+  - This is the main display for the NC MPS Display  
+  - Contains a tab widget with 6 tabs:  
+    - The Summary tab contains 7 shutter status displays for lcls, or 3 device status displays for facet,
+    and 2 tables, one containing non-ignored faulted devices and one containing bypassed devices  
+    - The Fault tab containts a table of all faults in the database
+      - Each selected fault will be displayed with its relevant information, and the device its from 
+    - The Logic tab contains a table of all macros/devices in the database  
+      - The searchbar shows only devices/macros containing that substring  
+      - Selecting a device/macro opens a panel with more details on that fault  
+      - This also allows the bypassing of device/macro states
+    - The Ignore Logic tab displays which devices/macros are ignored and the conditions in which they are ignored 
+      - The conditions are also devices/macros
+    - The History tab displays the history of messages about beam, faults, etc
+      - A live tab shows all recent messages
+      - An interactive tab shows a selected time range of messages 
+    - The Recent Faults tab shows all recent changes to device/macro states
+      - A sister daemon program puts the info for the GUI into a JSON
+  - It can also launch alternative CUD UI:
+    - The summary CUD mode, consisting of the summary tab contents (without interactivity) in a CUD-ified UI
+    - The recent faults CUD mode, consisting of the recent fault tab contents (without interactivity) in a CUD-ified UI
+    - Can also choose either LCLS or FACET
+
+
+### recent_faults_daemon.py
+  - A separate program from the main nc mps gui
+  - It's goal is to monitor the current states pv, and update a json file of recent states
+  - Allows users to see accurate information on the recent faults tab
+  - Accuracy depends on whether or not this daemon is running
+  - The daemon can reset its models to stay accurate as versions of databases change
+
+
+### recent_faults_daemon_facet.bash
+  - Runs recent_faults_daemon.py with parameters set for FACET recent faults
+
+
+### recent_faults_daemon.bash
+  - Runs recent_faults_daemon.py with parameters set for LCLS recent faults
+
+
+### recent_faults_facet.json & recent_faults_lcls.json
+  -  The json files that store the recent faults states information
+
+
+### nc_gui_bypass.py & nc_gui_bypass.ui
+  - This is the bypass menu for options to bypass a device/macro
+  - A separate pydm display that is given information on a specific device/macro
+  - Has fields for taking in time for bypass duration
+
+
+###  mps_constants.py
+  - Containts a list of constant variables that are used by all other 
+
+
+### mps_config.py
+  - A sqlalchemy session creator for database access, used to access config and logic databases
+
+
+### epics_fault.py  
+  - A sqlalchemy table describer for the epics_fault table
+
+
+### fault_device_type.py
+  - A sqlalchemy table describer for the fault_device_type table
+
+
+### link_node_channel_fault.py
+  - A sqlalchemy table describer for the link_node_channel_fault table
+
+
+### link_node_fault.py
+  - A sqlalchemy table describer for the link_node_fault table
+
+
+### link_processor_fault.py
+  - A sqlalchemy table describer for the link_processor_fault table
+
+
+### models_init.py ( in configDB )
+  - Initializer for the sqlalchemy base that the table describer classes use
+
+
+### zlinknode.py
+  - A sqlalchemy table describer for the zlinknode table
+
+
+### oracle_utilities.py
+  - An oracle connection creator
+  - Contains helper methods for creating sql queries to the history database
+
+### macro_device.py
+  - A sqlalchemy table describer for the macro_device table
+
+
+### macro_ignore.py
+  - A sqlalchemy table describer for the macro_ignore table
+
+
+### macro_state.py
+  - A sqlalchemy table describer for the macro_state table
+
+
+### macro.py
+  - A sqlalchemy table describer for the macro table
+
+
+### models_init.py ( in logicDB )
+  - Initializer for the sqlalchemy base that the table describer classes use
+
+
+### zignoremacro.py
+  - A sqlalchemy table describer for the zignoremacro table
+
+
+### all_faults_model.py
+  - A model that receives sqlalchemy database information, and models all faults
+  - PreppedFaults are stored in a list
+  - Faults have various attributes, some that are specific to different fault types
+
+
+### all_logic_model.py
+  - A model that receives sqlalchemy database information, and models all devices/macros
+  - PreppedMacros are stored in a list
+  - All attributes of a PreppedMacro are set
+  - Includes an instance of all_faults_model
+
+
+### all_messages_model.py
+  - A model that receives oracle database information, and models all history messages
+  - PreppedMessages are stored in a list
+  - Messages have 1 of 4 types, and are formatted differently with info from the database
 
 
 ### enums.py  
@@ -109,38 +223,102 @@ but on production deployment this check is accurate, and only actually necessary
   - Used by the Selection Details and the Configure tab  
 
 
-### summary.py  
-  - This file contains a python mixin to manage the Summary tab  
-  - Manage a filtered logic table and the bypass table  
-  - Right-clicking a fault allows the user to open more details in the Logic tab  
-  - Middle-clicking a fault copies the fault's name or fault's pv based on which column is clicked  
-  - Minor interactions with Logic tab:  
-    - When a fault is right-clicking
-    - On fault status change and/or bypass status change, alter the associated cell in Logic tab table  
-    - When a fault is right-clicked, present an option to open the fault in the Logic tab  
+### fault_table_model.py
+  - A customized QAbstractTableModel
+  - Uses an all_faults_model to create a table for a QTableView
 
 
-### logic.py  
-  - This file contains a python mixin to manage the Logic tab  
-  - Manage the logic table and open a details pane when a fault is selected  
-  - Allow for searching and sorting in the main table  
-  - Faults can be bypassed from the selection details pane  
-  - Middle-clicking a fault copies the fault's name or fault's pv based on which column is clicked  
+### logic_table_model.py
+  - A customized QAbstractTableModel
+  - Uses an all_logic_model to create a table for a QTableView
 
 
-### selection_detail.py  
-  - Manage the Selection Details section used in the Logic tab and Ignore Tab 
-  - The section is shown and populated when a selection is made in the logic table  
-  - Details shown:  
-    - Name  
-    - Current State  
-    - Ignore Conditions  
-    - Truth Table  
-    - PV Table  
+### message_table_model.py
+  - A customized QAbstractTableModel
+  - Uses an all_messages_model to create a table for a QTableView
 
+
+### prepped_fault.py
+  - A class that holds the attributes of a fault
+  - Defines all common attributes of a fault
+  - Other attributes of specific types of faults are not defined by default
+
+
+### prepped_macro_state.py
+  - A class that holds all attributes of a device/macro state
+  - Allows for defining special error states as well
+
+
+### prepped_macro.py
+  - A class that holds all attributes of a device/macro
+  - Has functions for changing the current state, listing ignore logic etc.
+
+
+### prepped_message.py
+  - A class that holds all atributes of a history message
+  - Defines messages into strings based on type of message
+
+
+### recent_table_model.py
+  - A model that receives specialized information, and models all recent state changes
+  - The JSON file that this uses  to get info comes from a separate daemon program
+
+
+### fault.py
+  - This file contains a python mixin to manage the Fault tab
+  - Containts interactions to filter fault types from the table
+  - Has a selection screen interaction for choosing a fault for details
+
+
+### history.py
+  - This file contains a python mixin to manage the History tab
+  - This manages the two tables, live and interactive
+  - It allows the user to pause/unpause the live tab
+  - As well as search a time period in interactive
 
 ### ignore.py  
   - This file contains a python mixin to manage the Ignore Logic tab  
   - Clicking on the first table shows the related items in the second
   - Clicking the second table items opens the selection details panel 
-  - Middle-clicking a fault copies the fault's name or fault's pv based on which column is clicked  
+  - Middle-clicking a fault copies the fault's name or fault's pv based on which column is clicked
+
+### logic.py  
+  - This file contains a python mixin to manage the Logic tab  
+  - Manage the logic table and open a details pane when a macro is selected  
+  - Allow for searching and sorting in the main table  
+  - Macros can be bypassed from the selection details pane  
+  - Middle-clicking a macro copies the macro's name  
+
+
+### snake.py
+  - This is forbidden knowledge, do not tell anyone
+  - If you search 'snake' in the Logic tab, you can play snake
+
+
+### recent_faults.py 
+  - This file contains a python mixin to manage the Recent Faults tab
+  - It also connects each recent fault right click to the logic tab
+
+
+### summary.py  
+  - This file contains a python mixin to manage the Summary tab  
+  - Manage a filtered logic table and the bypass table  
+  - Right-clicking a macro allows the user to open more details in the Logic tab  
+  - Middle-clicking a macro copies the macro's name 
+  - Minor interactions with Logic tab:  
+    - When a macro is right-clicking
+    - On macro status change and/or bypass status change, alter the associated cell in Logic tab table  
+    - When a macro is right-clicked, present an option to open the macro in the Logic tab  
+
+
+### selection_detail.py  
+  - Manage the Selection Details section used in the Logic tab and Ignore Tab 
+  - The section is shown and populated when a selection is made in the logic table model
+  - Details shown:  
+    - Name  
+    - Current State  
+    - Ignore Conditions
+    - Code ( if macro is actually code)
+    - Truth Table  
+    - PV Table
+
