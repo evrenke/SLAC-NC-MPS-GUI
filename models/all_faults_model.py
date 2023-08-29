@@ -59,12 +59,12 @@ class ALLFaultsModel:
     def set_FACET_filename(self):
         print('redefining path to default FACET faults file')
         phys_top = path.expandvars("$EPICS_IOC_TOP")
-        versionFile = phys_top + "/MpsConfiguration-FACET/MpsConfiguration-FACET-R1-17/database/current"
+        versionFile = phys_top + "/MpsConfiguration-FACET/current/database/current"
         with open(versionFile) as f:
             first_line = f.readline()
 
         first_line = first_line.strip()
-        filename = glob(phys_top + f'/MpsConfiguration/current/database/{first_line}/mpsdb.sqlite3')[0]
+        filename = glob(phys_top + f'/MpsConfiguration-FACET/current/database/{first_line}/mpsdb.sqlite3')[0]
         return filename
 
     def set_all_node_fault_attributes(self):

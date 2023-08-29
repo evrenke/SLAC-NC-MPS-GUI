@@ -55,8 +55,6 @@ class PreppedMacro():
         Sets the macro's new current state. It can also set special error states
         special number -53, -54, -55, -56 represents N/A, Ignored, Active, and Inactive states for a device
         """
-        isIgnored = new_state_number < 0
-
         if not self.has_special_error_state and (
                 new_state_number == -53 or
                 new_state_number == -54 or
@@ -74,7 +72,7 @@ class PreppedMacro():
                                      self.UNDEFINED_RATE_VAL,
                                      self.UNDEFINED_RATE_VAL]
 
-            macroState.is_ignored = isIgnored
+            macroState.is_ignored = False
 
             if new_state_number == -53:
                 macroState.state_name = "N/A"
@@ -93,6 +91,8 @@ class PreppedMacro():
             # signifies that there is a special error macro state for this device
             self.has_special_error_state = True
             return
+
+        isIgnored = new_state_number < 0
 
         # By this point of the code, we have determined that the current macro state is not a designated error state
         # So we can pick an actual macro state based on the defined macro states of this device
@@ -143,41 +143,41 @@ class PreppedMacro():
         self.min_rate_from_ignored = min
         return PreppedMacroState.get_enum_to_val(self.min_rate_from_ignored)
 
-    # POTENTIALLY READY TO DUMP AND THROW IN THE TRASH
     def get_state_by_state_number(self, state_num):
         """
         This is used to get states of unknown indexes by that states number
         rather than an index internal to this macro's list
         Mainly used for recent faults getting states
         """
+        if state_num == -53 or state_num == -54 or state_num == -55 or state_num == -56:
+            macroState = PreppedMacroState()
+            macroState.relatedPreppedMacro = self
+            macroState.state_number = state_num
+            macroState.rate_enums = [self.UNDEFINED_RATE_VAL,
+                                     self.UNDEFINED_RATE_VAL,
+                                     self.UNDEFINED_RATE_VAL,
+                                     self.UNDEFINED_RATE_VAL,
+                                     self.UNDEFINED_RATE_VAL,
+                                     self.UNDEFINED_RATE_VAL,
+                                     self.UNDEFINED_RATE_VAL]
+
+            macroState.is_ignored = True
+
+            if state_num == -53:
+                macroState.state_name = "N/A"
+            elif state_num == -54:
+                macroState.state_name = "Ignored"
+            elif state_num == -55:
+                macroState.state_name = "Active"
+            elif state_num == -56:
+                macroState.state_name = "Inactive"
+            else:
+                macroState.state_name = "N/A"
+
+            return macroState
+
         for state in self.macro_states:
             if state.state_number == state_num or state.state_number == (state_num & 0x7f):
                 return state
-            if state_num == -53 or state_num == -54 or state_num == -55 or state_num == -56:
-                macroState = PreppedMacroState()
-                macroState.relatedPreppedMacro = self
-                macroState.state_number = state_num
-                macroState.rate_enums = [self.UNDEFINED_RATE_VAL,
-                                         self.UNDEFINED_RATE_VAL,
-                                         self.UNDEFINED_RATE_VAL,
-                                         self.UNDEFINED_RATE_VAL,
-                                         self.UNDEFINED_RATE_VAL,
-                                         self.UNDEFINED_RATE_VAL,
-                                         self.UNDEFINED_RATE_VAL]
-
-                macroState.is_ignored = True
-
-                if state_num == -53:
-                    macroState.state_name = "N/A"
-                elif state_num == -54:
-                    macroState.state_name = "Ignored"
-                elif state_num == -55:
-                    macroState.state_name = "Active"
-                elif state_num == -56:
-                    macroState.state_name = "Inactive"
-                else:
-                    macroState.state_name = "N/A"
-
-                return macroState
 
         return None

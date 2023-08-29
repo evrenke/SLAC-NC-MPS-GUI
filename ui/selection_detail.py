@@ -1,6 +1,7 @@
 from json import dumps
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import (QHeaderView, QTableWidgetItem)
+from qtpy.QtGui import QColor
 from pydm.widgets import PyDMShellCommand
 from models.prepped_macro_state import PreppedMacroState
 import math
@@ -92,8 +93,9 @@ class SelectionDetailsHelper:
         self.ignore_label.setText(ign_str if ign_str else "--")
 
         # Set text for the name of the current state of this macro
-        if macro.macro_states[macro.current_index].state_name:
-            self.current_state_label.setText(macro.macro_states[macro.current_index].state_name)
+        current_state_name = macro.get_current_state().state_name
+        if current_state_name:
+            self.current_state_label.setText(current_state_name)
         else:
             self.current_state_label.setText('--')
 
@@ -184,6 +186,11 @@ class SelectionDetailsHelper:
             for col_index in range(2, len(self.dtl_hdr) - truth_table_columns):
                 rate_item = CellItem(PreppedMacroState.get_enum_to_val(state.rate_enums[col_index - 2]))
                 self.truth_table.setItem(i, col_index + truth_table_columns, rate_item)
+
+            # Give a highlight color to the current state of the macro
+            if i == macro.current_index and not macro.has_special_error_state:
+                for col in range(0, len(self.dtl_hdr)):
+                    self.truth_table.item(i, col).setBackground(QColor(27, 120, 178))
 
     def get_truth_table_logic(self, rowIndex: int, columnIndex: int):
         """

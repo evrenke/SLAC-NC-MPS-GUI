@@ -62,6 +62,7 @@ class LogicUI():
         hdr = logicUITableView.horizontalHeader()
         hdr.setSectionResizeMode(QHeaderView.Interactive)
         hdr.setSectionResizeMode(0, QHeaderView.Stretch)
+        hdr.resizeSection(2, 100)
 
         self.show_row_count()
 

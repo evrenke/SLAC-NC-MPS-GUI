@@ -12,6 +12,7 @@
   </property>
   <property name="font">
    <font>
+    <pointsize>9</pointsize>
     <weight>75</weight>
     <bold>true</bold>
    </font>
@@ -42,12 +43,6 @@
      </property>
      <item>
       <widget class="QTabWidget" name="Main_Tab_Widget">
-       <property name="font">
-        <font>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
        <property name="tabPosition">
         <enum>QTabWidget::South</enum>
        </property>
@@ -854,7 +849,7 @@ color: rgb(255, 255, 255);</string>
               <bool>true</bool>
              </property>
              <attribute name="horizontalHeaderDefaultSectionSize">
-              <number>125</number>
+              <number>175</number>
              </attribute>
              <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
               <bool>true</bool>
@@ -914,7 +909,7 @@ color: rgb(255, 255, 255);</string>
               <bool>true</bool>
              </property>
              <attribute name="horizontalHeaderDefaultSectionSize">
-              <number>125</number>
+              <number>400</number>
              </attribute>
              <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
               <bool>true</bool>
@@ -953,6 +948,12 @@ color: rgb(255, 255, 255);</string>
            </item>
            <item>
             <widget class="QLineEdit" name="Fault_Filter_LineEdit">
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
              <property name="placeholderText">
               <string>Case-insensitive Filter</string>
              </property>
@@ -1927,21 +1928,12 @@ color: rgb(255, 255, 255);</string>
             </spacer>
            </item>
            <item>
-            <widget class="PyDMLineEdit" name="Logic_Search_Line_Edit">
+            <widget class="QLineEdit" name="Logic_Search_Line_Edit">
              <property name="font">
               <font>
                <weight>75</weight>
                <bold>true</bold>
               </font>
-             </property>
-             <property name="toolTip">
-              <string/>
-             </property>
-             <property name="inputMask">
-              <string/>
-             </property>
-             <property name="text">
-              <string/>
              </property>
              <property name="placeholderText">
               <string>Case-Insensitive Filter</string>
@@ -2008,8 +2000,8 @@ color: rgb(255, 255, 255);</string>
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>1346</width>
-               <height>269</height>
+               <width>1425</width>
+               <height>385</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -2686,6 +2678,8 @@ border: 1px solid rgb(0, 0, 0);
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
                  </font>
                 </property>
                 <property name="text">
@@ -2733,6 +2727,8 @@ border: 1px solid rgb(0, 0, 0);
                 <property name="font">
                  <font>
                   <pointsize>12</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
                  </font>
                 </property>
                 <property name="text">
@@ -2783,8 +2779,8 @@ border: 1px solid rgb(0, 0, 0);
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>1346</width>
-               <height>269</height>
+               <width>1425</width>
+               <height>441</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout">
@@ -3355,7 +3351,7 @@ border: 1px solid rgb(0, 0, 0);
          <item>
           <widget class="QTabWidget" name="Live_Interactive_Tab_Widget">
            <property name="currentIndex">
-            <number>1</number>
+            <number>0</number>
            </property>
            <widget class="QWidget" name="Live">
             <attribute name="title">
@@ -3505,15 +3501,12 @@ border: 1px solid rgb(0, 0, 0);
                 </spacer>
                </item>
                <item>
-                <widget class="PyDMLineEdit" name="Interactive_Search_Line_Edit">
+                <widget class="QLineEdit" name="Interactive_Search_Line_Edit">
                  <property name="font">
                   <font>
                    <weight>75</weight>
                    <bold>true</bold>
                   </font>
-                 </property>
-                 <property name="toolTip">
-                  <string/>
                  </property>
                  <property name="placeholderText">
                   <string>Case-Insensitive Filter</string>
@@ -3613,15 +3606,12 @@ border: 1px solid rgb(0, 0, 0);
             </spacer>
            </item>
            <item>
-            <widget class="PyDMLineEdit" name="Recent_Fault_Search_Line_Edit">
+            <widget class="QLineEdit" name="Recent_Fault_Search_Line_Edit">
              <property name="font">
               <font>
                <weight>75</weight>
                <bold>true</bold>
               </font>
-             </property>
-             <property name="toolTip">
-              <string/>
              </property>
              <property name="placeholderText">
               <string>Case-Insensitive Filter</string>
@@ -3685,13 +3675,16 @@ border: 1px solid rgb(0, 0, 0);
         <widget class="QLabel" name="what_does_ftr_stand_for">
          <property name="font">
           <font>
-           <pointsize>18</pointsize>
+           <pointsize>24</pointsize>
            <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
+         <property name="styleSheet">
+          <string notr="true">color: rgb(148, 113, 23);</string>
+         </property>
          <property name="text">
-          <string>does FACET have a cool image like LCLS</string>
+          <string>FACET</string>
          </property>
         </widget>
        </item>
@@ -3756,11 +3749,6 @@ border: 1px solid rgb(0, 0, 0);
    <extends>QFrame</extends>
    <header>pydm.widgets.frame</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>PyDMLineEdit</class>
-   <extends>QLineEdit</extends>
-   <header>pydm.widgets.line_edit</header>
   </customwidget>
   <customwidget>
    <class>PyDMRelatedDisplayButton</class>
