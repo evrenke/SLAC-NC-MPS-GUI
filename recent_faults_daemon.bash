@@ -1,3 +1,7 @@
+#!/bin/bash
+
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
 # MONITOR THE CURRENT STATES, AND LOG CHANGES INTO A GIVEN JSON:
 
 # accel_type='LCLS'
