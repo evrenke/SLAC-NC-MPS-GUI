@@ -66,7 +66,6 @@ class RecentFaultsDaemon():
         while True:
             # this is daemon thread with update checking
             while not self.newValuesQueue.empty():
-                print(len(self.newValuesQueue))
                 self.add_latest_states(self.newValuesQueue.get())
             time.sleep(5)  # 5 seconds wait completely arbitraty, I just want to avoid melting slac servers
         return
@@ -119,7 +118,7 @@ class RecentFaultsDaemon():
         if self.lastValuesList is None:  # on the first iteration, there is no previous list
             self.lastValuesList = value
         else:
-            print('getting real')
+            # print('getting real')
             changeTime = datetime.now()
             changeTime = changeTime.strftime('%Y-%m-%d %H:%M:%S')
             lastValues = self.lastValuesList
