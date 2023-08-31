@@ -211,20 +211,17 @@ class NC_MPS_Bypass(Display):
         if is_code != 1:  # non-code macro
             # we can always check the first one, and assume that all faults are passed
             # firstFaultBypassed = PV(pvs[0] + BYPASS_VALUE_POSTFIX).get()
-            firstDuration = PV(pvs[0] + BYPASS_DURATION_POSTFIX).get()
-            if firstDuration == 0:  # not bypassed
+            first_fault_num = fault_numbers[0]
+            bypassed_faults = PV(IOC_PREFIX + BYPASS_FAULT_NUMBERS_POSTFIX).value
+            seconds = PV(IOC_PREFIX + BYPASS_SECONDS_POSTFIX).value
+            if first_fault_num not in bypassed_faults:  # not bypassed
                 self.ui.cancel_bypass_button.hide()
                 self.ui.bypass_exp_time_label.hide()
                 self.ui.bypass_exp_date_time.hide()
             else:  # attach info about an existing bypass duration
                 # For checking bypassing, we need to check the fault id in the bypassed list
-                firstDuration = None
-
-                bypassed_faults = PV(IOC_PREFIX + BYPASS_FAULT_NUMBERS_POSTFIX).value
-                seconds = PV(IOC_PREFIX + BYPASS_SECONDS_POSTFIX).value
-                first_fault_num = fault_numbers[0]
-                second_index = numpy.where(bypassed_faults == first_fault_num)[0]
-                firstDuration = seconds[second_index][0] + FROM_1970_TO_1990_IN_SECONDS
+                index_of_a_second = numpy.where(bypassed_faults == first_fault_num)[0]
+                firstDuration = seconds[index_of_a_second][0] + FROM_1970_TO_1990_IN_SECONDS
 
                 exp_date = datetime.fromtimestamp(firstDuration)
                 self.ui.bypass_exp_date_time.setText(str(exp_date))
@@ -244,9 +241,9 @@ class NC_MPS_Bypass(Display):
             seconds = PV(IOC_PREFIX + BYPASS_SECONDS_POSTFIX).value
             for fault_num in fault_numbers:
                 if fault_num in bypassed_faults:
-                    second_index = numpy.where(bypassed_faults == fault_num)[0]
-                    if lowestDuration is None or lowestDuration > seconds[second_index][0]:
-                        lowestDuration = seconds[second_index][0] + FROM_1970_TO_1990_IN_SECONDS
+                    index_of_a_second = numpy.where(bypassed_faults == fault_num)[0]
+                    if lowestDuration is None or lowestDuration > seconds[index_of_a_second][0]:
+                        lowestDuration = seconds[index_of_a_second][0] + FROM_1970_TO_1990_IN_SECONDS
 
             if lowestDuration is None:
                 self.ui.bypass_exp_time_label.hide()
@@ -278,6 +275,10 @@ class NC_MPS_Bypass(Display):
         To do a bypass on both non-code or macros
         Bypass to selected state for non-code, and selected bit values for code
         """
+        failed_bypass = False
+        messagesLogged = []
+        popupMessage = ''
+
         for i, pv in enumerate(pvs):
             # Either bypass all faults of a non-code, or only the checked of a code macro
             # Ensure that there is a number to look at as duration
@@ -301,30 +302,33 @@ class NC_MPS_Bypass(Display):
                 duration = int(self.ui.bypass_duration_value.text())
                 if duration != 0:
                     writingDurationPV = PV(pv + BYPASS_DURATION_POSTFIX)
-                    # print('can we bypass here? ', writingDurationPV.write_access)
+
+                    popupMessage += f'{pv} bypassed to {state} ({value}) until {date.toString()} ({duration})\n'
+                    messagesLogged.append(f'{pv} bypassed to {state} ({value}) until {date.toString()} ({duration})')
                     if writingDurationPV.write_access:
                         writingDurationPV.put(duration)
 
                         writingValuePV = PV(pv + BYPASS_VALUE_POSTFIX)
                         writingValuePV.put(value)
-
-                        successMessageBox = QMessageBox()
-                        successMessageBox.setWindowTitle('Successful Bypass')
-
-                        messageLogged = f'{pv} bypassed to {state} ({value}) until {date.toString()} ({duration})'
-                        # print('this is where I would log a message about the bypass... IF I KNEW WHERE')
-                        successMessageBox.setText(messageLogged)
-                        successMessageBox.exec()
                     else:
-                        errorMessageBox = QMessageBox()
-                        errorMessageBox.setText('CANNOT BYPASS, NO WRITE ACCESS')
-                        errorMessageBox.setWindowTitle('BYPASS ERROR')
-                        errorMessageBox.setStandardButtons(QMessageBox.Ok)
-                        # print('what would have been logged:')
-                        messageLogged = f'{pv} bypassed to {state} ({value}) until {date.toString()} ({duration})'
-                        # print('this is where I would log a message about the bypass... IF I KNEW WHERE')
-                        errorMessageBox.setDetailedText('what would have been logged:\n' + messageLogged)
-                        errorMessageBox.exec()
+
+                        failed_bypass = True
+
+        if failed_bypass:
+            errorMessageBox = QMessageBox()
+            errorMessageBox.setText('CANNOT BYPASS, NO WRITE ACCESS')
+            errorMessageBox.setWindowTitle('BYPASS ERROR')
+            errorMessageBox.setStandardButtons(QMessageBox.Ok)
+            errorMessageBox.setDetailedText('what would have been logged:\n' + popupMessage)
+            errorMessageBox.exec()
+        else:
+            successMessageBox = QMessageBox()
+            successMessageBox.setWindowTitle('Successful Bypass')
+            successMessageBox.setText('BYPASS SUCCESSFUL')
+            successMessageBox.setDetailedText('what would have been logged:\n' + popupMessage)
+            successMessageBox.exec()
+            # TEMPORARY TEMPORARY TEMPORARY TEMPORARY TEMPORARY
+            # messagesLogged needs to be logged here, like the java MessageLogAPI does!!!!!!!!!!
 
         if is_code == 1:
             self.pop_code_values_table(ok_states, fault_states, pvs, fault_numbers, IOC_PREFIX)
@@ -335,31 +339,32 @@ class NC_MPS_Bypass(Display):
     def cancelAllBypasses(self, fault_pvs, is_code, fault_numbers, IOC_PREFIX):
         """
         Sets all of the fault pvs of value and duration to 0.
-        This removes the bypas by ending it"""
-        print('time to cancel a bypass')
+        This removes the bypass by ending it
+        """
+        failed_cancel = False
+        messagesLogged = []
+        popupMessage = ''
         for fault_pv in fault_pvs:
             writingDurationPV = PV(fault_pv + BYPASS_DURATION_POSTFIX)
-            print('can we cancel a bypass here? ', writingDurationPV.write_access)
+            messagesLogged.append(f'{fault_pv} bypassed cancelled to ({0}) with value ({0})')
+            popupMessage += f'{fault_pv} bypassed cancelled to ({0}) with value ({0})\n'
             if writingDurationPV.write_access:
-                writingDurationPV.put(0)  # 0 duration stop the bypass?
-
-                successMessageBox = QMessageBox()
-                successMessageBox.setWindowTitle('Successful Bypass Cancel')
-
-                messageLogged = f'{fault_pv} bypassed cancelled to ({0}) with value ({0})'
-                # print('this is where I would log a message about the bypass... IF I KNEW WHERE')
-                successMessageBox.setText(messageLogged)
-                successMessageBox.exec()
+                writingDurationPV.put(0)
             else:
-                errorMessageBox = QMessageBox()
-                errorMessageBox.setText('CANNOT BYPASS, NO WRITE ACCESS')
-                errorMessageBox.setWindowTitle('BYPASS CANCEL ERROR')
-                errorMessageBox.setStandardButtons(QMessageBox.Ok)
-                # print('what would have been logged:')
-                messageLogged = f'{fault_pv} bypassed cancelled to ({0}) with value ({0})'
-                # print('this is where I would log a message about the bypass... IF I KNEW WHERE')
-                errorMessageBox.setDetailedText('what would have been logged:\n' + messageLogged)
-                errorMessageBox.exec()
+                failed_cancel = True
+
+        if failed_cancel:
+            errorMessageBox = QMessageBox()
+            errorMessageBox.setText('CANNOT BYPASS, NO WRITE ACCESS')
+            errorMessageBox.setWindowTitle('BYPASS CANCEL ERROR')
+            errorMessageBox.setStandardButtons(QMessageBox.Ok)
+            errorMessageBox.setDetailedText('what would have been logged:\n' + popupMessage)
+            errorMessageBox.exec()
+        else:
+            successMessageBox = QMessageBox()
+            successMessageBox.setWindowTitle('Successful Bypass Cancel')
+            successMessageBox.setDetailedText('what would have been logged:\n' + popupMessage)
+            successMessageBox.exec()
 
         self.check_cancel_bypass_options(fault_pvs, is_code, fault_numbers, IOC_PREFIX)
 

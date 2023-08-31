@@ -58,15 +58,15 @@ class RecentFaultsDaemon():
     def recent_states_daemon_thread(self):
 
         self.lastValuesList = None
-        self.isUpdatingJSON = False
-        self.wantsToUpdateAfterUpdate = False
+        # self.isUpdatingJSON = False
+        # self.wantsToUpdateAfterUpdate = False
         PV(self.IOC_PREFIX + CURRENT_STATES_POSTFIX, callback=self.recent_states_check)
 
         # I know, some call me a programming genius, a prodigy and visionary
         while True:
             # this is daemon thread with update checking
             while not self.newValuesQueue.empty():
-                self.add_latest_states(self.newValuesQueue.get())
+                self.add_latest_states(*self.newValuesQueue.get())
             time.sleep(5)  # 5 seconds wait completely arbitraty, I just want to avoid melting slac servers
         return
 
@@ -103,11 +103,11 @@ class RecentFaultsDaemon():
            self.logic_version != self.logicPV.get()):
             self.resetModel()
 
-        self.newValuesQueue.put(value)
+        self.newValuesQueue.put((value, datetime.now()))
 
         # self.add_latest_states(value)
 
-    def add_latest_states(self, value):
+    def add_latest_states(self, value, timestamp):
         """
         Add the latest states
         start by initializing an existing list of states
@@ -119,8 +119,9 @@ class RecentFaultsDaemon():
             self.lastValuesList = value
         else:
             # print('getting real')
-            changeTime = datetime.now()
-            changeTime = changeTime.strftime('%Y-%m-%d %H:%M:%S')
+            # changeTime = datetime.now()
+            # changeTime = changeTime.strftime('%Y-%m-%d %H:%M:%S')
+            changeTime = timestamp.strftime('%Y-%m-%d %H:%M:%S')
             lastValues = self.lastValuesList
 
             # First, find each state in the list that is different from the previous list
