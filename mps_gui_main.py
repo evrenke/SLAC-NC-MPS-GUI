@@ -118,12 +118,14 @@ class MpsGuiDisplay(Display, SummaryUI, FaultsUI, LogicUI, IgnoreUI, HistoryUI, 
 
                 self.logic_connections(IOC_PREFIX=macros['IOC_PREFIX'])
                 self.fault_connections()
-                self.summ_connections()
+                self.summ_connections(is_cud=False)
                 self.ignore_connections()
                 self.history_connections()
                 self.recent_faults_connections(IOC_PREFIX=macros['IOC_PREFIX'], is_cud=False)
             if cud_mode == 'recent':
                 self.recent_faults_connections(IOC_PREFIX=macros['IOC_PREFIX'], is_cud=True)
+            if cud_mode == 'summary':
+                self.summ_connections(is_cud=True)
         else:
             print('mps_gui_main.py needs config file prefix, logic prefix, ioc prefix, accel type, and json file path')
             print('try again chump')
@@ -149,7 +151,7 @@ class MpsGuiDisplay(Display, SummaryUI, FaultsUI, LogicUI, IgnoreUI, HistoryUI, 
         self.historyWalletKey = 'mps_history'
 
     def setupFACET(self):
-        self.rateList = ["Mech Shutter", "Heater Shutter", "Gun RF Permit"]
+        self.rateList = ["Mech Shutter", "Gun RF Permit", "Heater Shutter"]
         self.rateCount = 3
         self.linactype = 'FACET'
         self.historyWalletKey = 'mps_hist_facet2'

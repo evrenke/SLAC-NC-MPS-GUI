@@ -7,8 +7,10 @@ FROM_1970_TO_1990_IN_SECONDS = 631152000
 
 CURRENT_STATES_POSTFIX = ':TTBLST.VALA'
 """Postfix to get an int8 array of current state values"""
-BYPASS_VALUE_POSTFIX = '_BYPV.RVAL'
-"""Postfix to get what a bypass value of a PV is"""
+BYPASS_VALUE_RVAL_POSTFIX = '_BYPV.RVAL'
+"""Postfix to get what a the value of a bypass value of a PV is"""
+BYPASS_VALUE_POSTFIX = '_BYPV'
+"""Postfix for what the bypass value of a PV is"""
 BYPASS_DURATION_POSTFIX = '_BYPC'
 """Postfix to get seconds of duration from when the bypass started"""
 BYPASS_STRING_POSTFIX = '_BYPS'
@@ -22,9 +24,9 @@ STATE_IS_OK_POSTFIX = '_MPS.RVAL'
 CHANNEL_PREFIX = 'ca://'
 """Channel prefix to add behind PV's"""
 BYPASS_FAULT_NUMBERS_POSTFIX = ':BYPASS_LIST.VALA'
-"""Postfix that gets bypass numbers with IOC prefix"""
+"""Postfix that gets bypass numbers list with IOC prefix"""
 BYPASS_SECONDS_POSTFIX = ':BYPASS_LIST.VALB'
-"""Postfix that gets the seconds duration of bypasses with IOC prefix"""
+"""Postfix that gets the seconds duration of bypasses list with IOC prefix"""
 CONFIG_VERSION_POSTFIX = ':DBVERS'
 """Postfix that tells us the config version"""
 LOGIC_VERSION_POSTFIX = ':ALGRNAME'

@@ -211,48 +211,7 @@ color: rgb(255, 255, 255);</string>
                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                   </property>
                   <property name="channel" stdset="0">
-                   <string>ca://EVNT:SYS1:1:BEAMRATE</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="Device_MS_RR_Title">
-                  <property name="font">
-                   <font>
-                    <pointsize>15</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
-                  </property>
-                  <property name="text">
-                   <string>Requested Rate</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="PyDMLabel" name="Device_MS_RR_Num">
-                  <property name="font">
-                   <font>
-                    <pointsize>15</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                  <property name="channel" stdset="0">
-                   <string>ca://EVNT:SYS1:1:SHUTRATE</string>
+                   <string>ca://EVNT:SYS1:1:INJECTRATE</string>
                   </property>
                  </widget>
                 </item>
@@ -331,239 +290,6 @@ color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="channel" stdset="0">
                    <string>ca://IOC:SYS1:MP01:MS_RATE</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="PyDMFrame" name="Device_MS_Frame_2">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>162</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>300</width>
-                 <height>250</height>
-                </size>
-               </property>
-               <property name="toolTip">
-                <string/>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QFrame{
-background-color: rgb(109, 109, 109);
-border-bottom-left-radius: 15px;
-border-bottom-right-radius: 15px;
-border-top-left-radius: 15px;
-border-top-right-radius: 15px;
-}</string>
-               </property>
-               <property name="alarmSensitiveBorder" stdset="0">
-                <bool>true</bool>
-               </property>
-               <property name="channel" stdset="0">
-                <string>ca://IOC:SYS1:MP01:LHSHUT_RATE</string>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout_11">
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="PyDMLabel" name="Device_MS_Title_2">
-                  <property name="font">
-                   <font>
-                    <family>Sans Serif</family>
-                    <pointsize>17</pointsize>
-                    <weight>75</weight>
-                    <italic>false</italic>
-                    <bold>true</bold>
-                    <strikeout>false</strikeout>
-                    <kerning>true</kerning>
-                   </font>
-                  </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
-                  </property>
-                  <property name="frameShape">
-                   <enum>QFrame::StyledPanel</enum>
-                  </property>
-                  <property name="frameShadow">
-                   <enum>QFrame::Plain</enum>
-                  </property>
-                  <property name="text">
-                   <string>Laser Heater</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="Device_MS_RL_Title_2">
-                  <property name="font">
-                   <font>
-                    <pointsize>15</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
-                  </property>
-                  <property name="text">
-                   <string>Rate Limit</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="PyDMLabel" name="Device_MS_RR_Num_2">
-                  <property name="font">
-                   <font>
-                    <pointsize>15</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                  <property name="channel" stdset="0">
-                   <string>ca://IOC:SYS1:MP01:LHSHUT_MEASRATE</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="Device_MS_RR_Title_2">
-                  <property name="font">
-                   <font>
-                    <pointsize>15</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
-                  </property>
-                  <property name="text">
-                   <string>Requested Rate</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="PyDMLabel" name="Device_MS_RL_Num_2">
-                  <property name="font">
-                   <font>
-                    <pointsize>15</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                  <property name="channel" stdset="0">
-                   <string>ca://EVNT:SYS1:1:POCKRATE</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="PyDMDrawingLine" name="Device_MS_Line_2">
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>5</height>
-                   </size>
-                  </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">background-color: rgb(136, 136, 136);
-</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="PyDMLabel" name="Device_MS_AR_Title_2">
-                  <property name="font">
-                   <font>
-                    <pointsize>15</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
-                  </property>
-                  <property name="text">
-                   <string>Actual Rate</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="PyDMLabel" name="Device_MS_AR_Num_2">
-                  <property name="font">
-                   <font>
-                    <family>Sans Serif</family>
-                    <pointsize>17</pointsize>
-                    <weight>75</weight>
-                    <italic>false</italic>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">border: 0px;</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                  <property name="showUnits" stdset="0">
-                   <bool>true</bool>
-                  </property>
-                  <property name="precisionFromPV" stdset="0">
-                   <bool>false</bool>
-                  </property>
-                  <property name="alarmSensitiveContent" stdset="0">
-                   <bool>true</bool>
-                  </property>
-                  <property name="alarmSensitiveBorder" stdset="0">
-                   <bool>false</bool>
-                  </property>
-                  <property name="channel" stdset="0">
-                   <string>ca://IOC:SYS1:MP01:LHSHUT_RATE</string>
                   </property>
                  </widget>
                 </item>
@@ -682,47 +408,6 @@ color: rgb(255, 255, 255);</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="Device_GunL_RR_Title">
-                  <property name="font">
-                   <font>
-                    <pointsize>15</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
-                  </property>
-                  <property name="text">
-                   <string>Requested Rate</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="PyDMLabel" name="Device_GunL_RL_Num">
-                  <property name="font">
-                   <font>
-                    <pointsize>15</pointsize>
-                    <weight>75</weight>
-                    <bold>true</bold>
-                   </font>
-                  </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                  <property name="channel" stdset="0">
-                   <string>ca://EVNT:SYS1:1:POCKRATE</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
                  <widget class="PyDMDrawingLine" name="Device_GunL_Line">
                   <property name="maximumSize">
                    <size>
@@ -794,6 +479,198 @@ color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="channel" stdset="0">
                    <string>ca://IOC:SYS1:MP01:PC_RATE</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="PyDMFrame" name="Device_MS_Frame_2">
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>162</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>300</width>
+                 <height>250</height>
+                </size>
+               </property>
+               <property name="toolTip">
+                <string/>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QFrame{
+background-color: rgb(109, 109, 109);
+border-bottom-left-radius: 15px;
+border-bottom-right-radius: 15px;
+border-top-left-radius: 15px;
+border-top-right-radius: 15px;
+}</string>
+               </property>
+               <property name="alarmSensitiveBorder" stdset="0">
+                <bool>true</bool>
+               </property>
+               <property name="channel" stdset="0">
+                <string>ca://IOC:SYS1:MP01:LHSHUT_RATE</string>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_11">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="PyDMLabel" name="Device_MS_Title_2">
+                  <property name="font">
+                   <font>
+                    <family>Sans Serif</family>
+                    <pointsize>17</pointsize>
+                    <weight>75</weight>
+                    <italic>false</italic>
+                    <bold>true</bold>
+                    <strikeout>false</strikeout>
+                    <kerning>true</kerning>
+                   </font>
+                  </property>
+                  <property name="toolTip">
+                   <string/>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">border: 0px;
+color: rgb(255, 255, 255);</string>
+                  </property>
+                  <property name="frameShape">
+                   <enum>QFrame::StyledPanel</enum>
+                  </property>
+                  <property name="frameShadow">
+                   <enum>QFrame::Plain</enum>
+                  </property>
+                  <property name="text">
+                   <string>Laser Heater</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="Device_MS_RL_Title_2">
+                  <property name="font">
+                   <font>
+                    <pointsize>15</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">border: 0px;
+color: rgb(255, 255, 255);</string>
+                  </property>
+                  <property name="text">
+                   <string>Rate Limit</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="PyDMLabel" name="Device_MS_RR_Num_2">
+                  <property name="font">
+                   <font>
+                    <pointsize>15</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="toolTip">
+                   <string/>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                  <property name="channel" stdset="0">
+                   <string>ca://IOC:SYS1:MP01:LHSHUT_MEASRATE</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="PyDMDrawingLine" name="Device_MS_Line_2">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>5</height>
+                   </size>
+                  </property>
+                  <property name="toolTip">
+                   <string/>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(136, 136, 136);
+</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="PyDMLabel" name="Device_MS_AR_Title_2">
+                  <property name="font">
+                   <font>
+                    <pointsize>15</pointsize>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="toolTip">
+                   <string/>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">border: 0px;
+color: rgb(255, 255, 255);</string>
+                  </property>
+                  <property name="text">
+                   <string>Actual Rate</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="PyDMLabel" name="Device_MS_AR_Num_2">
+                  <property name="font">
+                   <font>
+                    <family>Sans Serif</family>
+                    <pointsize>17</pointsize>
+                    <weight>75</weight>
+                    <italic>false</italic>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="toolTip">
+                   <string/>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">border: 0px;</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                  <property name="showUnits" stdset="0">
+                   <bool>true</bool>
+                  </property>
+                  <property name="precisionFromPV" stdset="0">
+                   <bool>false</bool>
+                  </property>
+                  <property name="alarmSensitiveContent" stdset="0">
+                   <bool>true</bool>
+                  </property>
+                  <property name="alarmSensitiveBorder" stdset="0">
+                   <bool>false</bool>
+                  </property>
+                  <property name="channel" stdset="0">
+                   <string>ca://IOC:SYS1:MP01:LHSHUT_RATE</string>
                   </property>
                  </widget>
                 </item>
@@ -2361,7 +2238,7 @@ border: 1px solid rgb(0, 0, 0);
                      </property>
                      <property name="filenames" stdset="0">
                       <stringlist>
-                       <string>./ui/nc_mps_bypass.py </string>
+                       <string>./nc_mps_bypass.py </string>
                       </stringlist>
                      </property>
                      <property name="showIcon" stdset="0">
@@ -3140,7 +3017,7 @@ border: 1px solid rgb(0, 0, 0);
                      </property>
                      <property name="filenames" stdset="0">
                       <stringlist>
-                       <string>./ui/nc_mps_bypass.py </string>
+                       <string>./nc_mps_bypass.py </string>
                       </stringlist>
                      </property>
                      <property name="showIcon" stdset="0">
@@ -3622,6 +3499,9 @@ border: 1px solid rgb(0, 0, 0);
          </item>
          <item>
           <widget class="QTableView" name="Recent_Faults_View">
+           <property name="contextMenuPolicy">
+            <enum>Qt::CustomContextMenu</enum>
+           </property>
            <property name="editTriggers">
             <set>QAbstractItemView::NoEditTriggers</set>
            </property>

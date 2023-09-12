@@ -170,47 +170,6 @@ color: rgb(255, 255, 255);</string>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="Device_MS_RR_Title">
-            <property name="font">
-             <font>
-              <pointsize>22</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
-            </property>
-            <property name="text">
-             <string>Requested Rate</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="PyDMLabel" name="Device_MS_RR_Num">
-            <property name="font">
-             <font>
-              <pointsize>22</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="toolTip">
-             <string/>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-            <property name="channel" stdset="0">
-             <string>ca://EVNT:SYS1:1:SHUTRATE</string>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="PyDMDrawingLine" name="Device_MS_Line">
             <property name="maximumSize">
              <size>
@@ -403,47 +362,6 @@ color: rgb(255, 255, 255);</string>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="Device_MS_RR_Title_2">
-            <property name="font">
-             <font>
-              <pointsize>22</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
-            </property>
-            <property name="text">
-             <string>Requested Rate</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="PyDMLabel" name="Device_MS_RL_Num_2">
-            <property name="font">
-             <font>
-              <pointsize>22</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="toolTip">
-             <string/>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-            <property name="channel" stdset="0">
-             <string>ca://EVNT:SYS1:1:POCKRATE</string>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="PyDMDrawingLine" name="Device_MS_Line_2">
             <property name="maximumSize">
              <size>
@@ -632,47 +550,6 @@ color: rgb(255, 255, 255);</string>
             </property>
             <property name="channel" stdset="0">
              <string>ca://IOC:SYS1:MP01:PC_MEASRATE</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="Device_GunL_RR_Title">
-            <property name="font">
-             <font>
-              <pointsize>22</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
-            </property>
-            <property name="text">
-             <string>Requested Rate</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="PyDMLabel" name="Device_GunL_RL_Num">
-            <property name="font">
-             <font>
-              <pointsize>22</pointsize>
-              <weight>75</weight>
-              <bold>true</bold>
-             </font>
-            </property>
-            <property name="toolTip">
-             <string/>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-            <property name="channel" stdset="0">
-             <string>ca://EVNT:SYS1:1:POCKRATE</string>
             </property>
            </widget>
           </item>

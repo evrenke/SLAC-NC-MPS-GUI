@@ -174,10 +174,10 @@
       <enum>QAbstractItemView::NoSelection</enum>
      </property>
      <property name="columnCount">
-      <number>2</number>
+      <number>3</number>
      </property>
      <attribute name="horizontalHeaderDefaultSectionSize">
-      <number>50</number>
+      <number>120</number>
      </attribute>
      <attribute name="horizontalHeaderHighlightSections">
       <bool>false</bool>
@@ -198,7 +198,12 @@
      </column>
      <column>
       <property name="text">
-       <string>Value</string>
+       <string>Current Value</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>New Value</string>
       </property>
      </column>
     </widget>

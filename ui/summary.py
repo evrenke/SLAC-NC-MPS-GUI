@@ -27,7 +27,8 @@ class SummaryUI:
         self.ui.Logic_Summary_Table.setModel(self.summ_model)
         for i in range(self.logic_tbl_model.conind[0], self.logic_tbl_model.conind[-1] + 1):
             self.ui.Logic_Summary_Table.hideColumn(i)
-        self.ui.Logic_Summary_Table.sortByColumn(0, Qt.AscendingOrder)
+        # self.ui.Logic_Summary_Table.sortByColumn(2, Qt.AscendingOrder)
+
         self.ui.Logic_Summary_Table.setItemDelegate(self.delegate)
 
         hdr = self.ui.Logic_Summary_Table.horizontalHeader()
@@ -68,15 +69,18 @@ class SummaryUI:
             self.menu = QMenu(self)
             self.menu.addAction(self.action)
 
-    def summ_connections(self):
+    def summ_connections(self, is_cud: bool):
         """
         Establish connections for the context menus and their action.
         """
-        self.ui.Logic_Summary_Table.customContextMenuRequested.connect(
-            self.custom_context_menu)
-        self.ui.Bypassed_Summary_Table.customContextMenuRequested.connect(
-            self.custom_context_menu)
-        self.action.triggered.connect(self.logic_select)
+        self.ui.Logic_Summary_Table.sortByColumn(2, Qt.AscendingOrder)
+
+        if not is_cud:
+            self.ui.Logic_Summary_Table.customContextMenuRequested.connect(
+                self.custom_context_menu)
+            self.ui.Bypassed_Summary_Table.customContextMenuRequested.connect(
+                self.custom_context_menu)
+            self.action.triggered.connect(self.logic_select)
 
     def logic_select(self):
         """

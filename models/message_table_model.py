@@ -143,7 +143,7 @@ class MessageTableModel(QAbstractTableModel):
         elif message_type == 'BR':
             status = Statuses.BLU
         elif message_type == 'BT':
-            status = Statuses.YEL
+            status = Statuses.GRN
         elif message_type == 'BV':
             status = Statuses.MAG
         else:  # if messageObj.message_type == 'F':

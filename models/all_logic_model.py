@@ -159,15 +159,19 @@ class AllLogicModel:
             preppedMacroState.state_number = ms.state_number
             preppedMacroState.state_name = ms.state_name
 
-            preppedMacroState.rate_enums.append(10 if ms.rate_enum_ms == -1 else ms.rate_enum_ms)
-            preppedMacroState.rate_enums.append(10 if ms.rate_enum_lhs == -1 else ms.rate_enum_lhs)
-            preppedMacroState.rate_enums.append(10 if ms.rate_enum_gunl == -1 else ms.rate_enum_gunl)
-
             if accel_type == 'LCLS':
+                preppedMacroState.rate_enums.append(10 if ms.rate_enum_ms == -1 else ms.rate_enum_ms)
+                preppedMacroState.rate_enums.append(10 if ms.rate_enum_lhs == -1 else ms.rate_enum_lhs)
+                preppedMacroState.rate_enums.append(10 if ms.rate_enum_gunl == -1 else ms.rate_enum_gunl)
                 preppedMacroState.rate_enums.append(10 if ms.rate_enum_gunh == -1 else ms.rate_enum_gunh)
                 preppedMacroState.rate_enums.append(10 if ms.rate_enum_guns == -1 else ms.rate_enum_guns)
                 preppedMacroState.rate_enums.append(10 if ms.rate_enum_bykik == -1 else ms.rate_enum_bykik)
                 preppedMacroState.rate_enums.append(10 if ms.rate_enum_bykiks == -1 else ms.rate_enum_bykiks)
+            else:  # FACET
+                preppedMacroState.rate_enums.append(10 if ms.rate_enum_ms == -1 else ms.rate_enum_ms)
+                preppedMacroState.rate_enums.append(10 if ms.rate_enum_gunl == -1 else ms.rate_enum_gunl)
+                # different order for where laser heater is on facet
+                preppedMacroState.rate_enums.append(10 if ms.rate_enum_lhs == -1 else ms.rate_enum_lhs)
 
             preppedMacroState.relatedPreppedDevice = preppedDevice
             preppedMacroState.is_ignored = preppedMacroState.state_number < 0

@@ -27,11 +27,7 @@ class NC_MPS_Bypass(Display):
     each for their own new selected value, for a given duration.
 
     This class will adjust the UI based on either type of macro
-
-    EDIT BEFORE FINISHING NC MPS GUI:
     ====================================================================================
-    This is so far the only place where NC_MPS_GUI ever writes into a PV rather than just read.
-    It has been adjusted to not make that writing for now.
     """
     def __init__(self, parent=None, args=[], macros=None, ui_filename=None):
         super(NC_MPS_Bypass, self).__init__(parent=None, args=None,
@@ -60,15 +56,18 @@ class NC_MPS_Bypass(Display):
             self.resize(800, self.size().height())
         # Change the window elements for a non-code macro, so the only table is the pv and value table
         else:
-            self.device_hdr = ["Device", "Value"]
+            self.device_hdr = ["Device", "Current Value", "New Value"]
             self.ui.bypass_values_table.setColumnCount(len(self.device_hdr))
             self.ui.bypass_values_table.setHorizontalHeaderLabels(self.device_hdr)
 
             hdr = self.ui.bypass_values_table.horizontalHeader()
             hdr.setSectionResizeMode(QHeaderView.Interactive)
             hdr.setSectionResizeMode(0, QHeaderView.Stretch)
-            self.set_states_combo_box(macros['DEVICE_MACRO_STATES'], macros['DEVICE_MACRO_STATE_MINS'])
-            self.pop_values_table(macros['DEVICE_CURRENT_STATE_NUMBER'], macros['DEVICE_FAULT_PVS'])
+            self.set_states_combo_box(macros['DEVICE_MACRO_STATES'],
+                                      macros['DEVICE_MACRO_STATE_MINS'],
+                                      macros['DEVICE_CURRENT_STATE_NUMBER'],
+                                      macros['DEVICE_FAULT_PVS'])
+            # self.pop_values_table(macros['DEVICE_FAULT_PVS'])
             self.ui.bypass_code_values_table.hide()
 
         self.ui.bypassed_device_name.setText(macros['DEVICE_NAME'])
@@ -104,18 +103,22 @@ class NC_MPS_Bypass(Display):
             self.ui.code_info_label.hide()
             self.ui.code_instructions_label.hide()
 
-    def pop_values_table(self, current_state_number, fault_pvs):
+    def pop_values_table(self, state_number, fault_pvs):
         """Populate the values table. The values table holds a fault pv
         and its related bit value based on the current state of the macro"""
         self.ui.bypass_values_table.setRowCount(len(fault_pvs))
         for i, fault_pv in enumerate(fault_pvs):
             pv_item = CellItem(fault_pv)
 
-            value_str = self.get_bit_at(current_state_number, i)
-            bypassed_value_item = CellItem(str(value_str))
+            faultvalue = PV(fault_pv + STATE_IS_OK_POSTFIX).get()
+
+            value_int = self.get_bit_at(state_number, i)
+            bypassed_value_item = CellItem(str(faultvalue))
+            new_value_item = CellItem(str(value_int))
 
             self.ui.bypass_values_table.setItem(i, 0, pv_item)
             self.ui.bypass_values_table.setItem(i, 1, bypassed_value_item)
+            self.ui.bypass_values_table.setItem(i, 2, new_value_item)
 
     def pop_code_values_table(self, ok_states, faulted_states, fault_pvs, fault_numbers, IOC_PREFIX):
         """Populate the code values table. The code values table
@@ -188,20 +191,24 @@ class NC_MPS_Bypass(Display):
             index -= 1
         return number % 2
 
-    def set_states_combo_box(self, state_names, state_mins):
+    def set_states_combo_box(self, state_names, state_mins, current_state_number, fault_pvs):
         """
         For non-code macro, sets the combo box to have a list of the possible states of the macro
         """
         self.ui.bypass_states_combobox.addItems(state_names)
-        self.update_min_rate_label(state_mins)
-        self.ui.bypass_states_combobox.currentIndexChanged.connect(partial(self.update_min_rate_label, state_mins))
+        self.ui.bypass_states_combobox.setCurrentIndex(current_state_number)
+        self.update_with_state_combobox(state_mins, fault_pvs)
+        self.ui.bypass_states_combobox.currentIndexChanged.connect(partial(self.update_with_state_combobox,
+                                                                           state_mins, fault_pvs))
 
-    def update_min_rate_label(self, state_mins):
+    def update_with_state_combobox(self, state_mins, fault_pvs):
         """
         A small label for the min rate of the selected combo box state
         """
         self.ui.min_rate_limit_label.setText('will rate limit to ' +
                                              state_mins[self.ui.bypass_states_combobox.currentIndex()])
+
+        self.pop_values_table(state_number=self.ui.bypass_states_combobox.currentIndex(), fault_pvs=fault_pvs)
 
     def check_cancel_bypass_options(self, pvs, is_code, fault_numbers, IOC_PREFIX):
         """
@@ -275,7 +282,7 @@ class NC_MPS_Bypass(Display):
         To do a bypass on both non-code or macros
         Bypass to selected state for non-code, and selected bit values for code
         """
-        failed_bypass = False
+        failed_bypass = True
         messagesLogged = []
         popupMessage = ''
 
@@ -292,7 +299,7 @@ class NC_MPS_Bypass(Display):
                     bypass_state_number = self.ui.bypass_states_combobox.currentIndex()
                     state = self.ui.bypass_states_combobox.currentText()
                     value = self.get_bit_at(bypass_state_number, i)
-                else:
+                else:  # code
                     value = self.comboBoxes[i].currentIndex()
                     if value == 0:
                         state = ok_states[i]
@@ -307,12 +314,9 @@ class NC_MPS_Bypass(Display):
                     messagesLogged.append(f'{pv} bypassed to {state} ({value}) until {date.toString()} ({duration})')
                     if writingDurationPV.write_access:
                         writingDurationPV.put(duration)
-
+                        failed_bypass = False
                         writingValuePV = PV(pv + BYPASS_VALUE_POSTFIX)
                         writingValuePV.put(value)
-                    else:
-
-                        failed_bypass = True
 
         if failed_bypass:
             errorMessageBox = QMessageBox()
@@ -328,7 +332,8 @@ class NC_MPS_Bypass(Display):
             successMessageBox.setDetailedText('what would have been logged:\n' + popupMessage)
             successMessageBox.exec()
             # TEMPORARY TEMPORARY TEMPORARY TEMPORARY TEMPORARY
-            # messagesLogged needs to be logged here, like the java MessageLogAPI does!!!!!!!!!!
+            # messagesLogged needs to be logged here, like the old java MessageLogAPI does!!!!!!!!!!
+            # [INSERT HERE]
 
         if is_code == 1:
             self.pop_code_values_table(ok_states, fault_states, pvs, fault_numbers, IOC_PREFIX)
@@ -341,7 +346,7 @@ class NC_MPS_Bypass(Display):
         Sets all of the fault pvs of value and duration to 0.
         This removes the bypass by ending it
         """
-        failed_cancel = False
+        failed_cancel = True
         messagesLogged = []
         popupMessage = ''
         for fault_pv in fault_pvs:
@@ -350,8 +355,7 @@ class NC_MPS_Bypass(Display):
             popupMessage += f'{fault_pv} bypassed cancelled to ({0}) with value ({0})\n'
             if writingDurationPV.write_access:
                 writingDurationPV.put(0)
-            else:
-                failed_cancel = True
+                failed_cancel = False
 
         if failed_cancel:
             errorMessageBox = QMessageBox()

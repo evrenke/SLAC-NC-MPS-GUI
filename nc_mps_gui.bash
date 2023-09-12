@@ -33,25 +33,24 @@ CUD_MODE=''
 IOC_PREFIX='IOC:BSY0:MP01'
 CONFIG_DB_FILE=${EPICS_IOC_TOP}/MpsConfiguration/current/database/
 LOGIC_DB_FILE=${EPICS_IOC_TOP}/MpsConfiguration/current/algorithm/
-JSONFILEPATH=recent_states_lcls.json
+JSONFILEPATH='dbinteraction/recentStatesJSON/recent_states_lcls.json'
 
 
 while [ $# -gt 0 ]
 do
-    echo $1
     case $1 in
         -f | --facet) accel_type=FACET
         IOC_PREFIX=IOC:SYS1:MP01
         CONFIG_DB_FILE=${EPICS_IOC_TOP}/MpsConfiguration-FACET/current/database/
         LOGIC_DB_FILE=${EPICS_IOC_TOP}/MpsConfiguration-FACET/current/algorithm/
-        JSONFILEPATH=recent_states_facet.json;;
+        JSONFILEPATH='dbinteraction/recentStatesJSON/recent_states_facet.json' ;;
         -c | --cud) CUD_MODE="$2" 
                     shift 
-                    echo $CUD_MODE;;
+                    echo $CUD_MODE ;;
         -confd | --configdbfile) CONFIG_DB_FILE="$2" 
-                                 shift;;
+                                 shift ;;
         -logicd | --logicdbfile) LOGIC_DB_FILE="$2"
-                                 shift;;
+                                 shift ;;
         -h | --help) exit_abnormal ;;
         *) exit_abnormal
     esac

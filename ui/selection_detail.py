@@ -114,7 +114,6 @@ class SelectionDetailsHelper:
 
         # Set the bypass button to launch a new window for the bypass screen
         # Feed it all of the relevant information about the selected device
-        # self.bypass_button.setText('Bypass...')
         self.bypass_button.macros = dumps({'DEVICE_NAME': macro.macro_name,
                                            'DEVICE_CURRENT_STATE_NUMBER':
                                            int(macro.get_current_state().state_number),
