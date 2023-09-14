@@ -15,124 +15,151 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QFrame" name="bypass_information_frame">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>60</height>
-      </size>
-     </property>
+    <widget class="QFrame" name="byp_info_frame">
      <property name="frameShape">
       <enum>QFrame::Box</enum>
      </property>
      <property name="frameShadow">
       <enum>QFrame::Plain</enum>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="2" column="1">
-       <widget class="QLabel" name="code_instructions_label">
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>15</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Specify all bits to bypass, give duration, then press OK.</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QFrame" name="byp_dev_frame">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="byp_dev_title_lbl">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>15</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Bypass:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="byp_dev_lbl">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>15</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>&lt;Device Name&gt;</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="byp_dev_spcr">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
        </widget>
       </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="code_info_label">
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>15</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Code Logic:</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_4">
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>15</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Bypass:</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="2" column="2">
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLabel" name="bypassed_device_name">
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>15</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>set device macro name here</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
+      <item>
+       <widget class="QFrame" name="code_logic_frame">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="code_logic_title_lbl">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>15</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Code Logic:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="code_logic_lbl">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>15</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Specify all bits to bypass, give duration, then press OK.</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="code_logic_spcr">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="values_label">
+    <widget class="QLabel" name="values_lbl">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -154,7 +181,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QTableWidget" name="bypass_values_table">
+    <widget class="QTableWidget" name="byp_val_tbl">
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
@@ -168,13 +195,13 @@
       <bool>false</bool>
      </property>
      <property name="alternatingRowColors">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="selectionMode">
       <enum>QAbstractItemView::NoSelection</enum>
      </property>
      <property name="columnCount">
-      <number>3</number>
+      <number>2</number>
      </property>
      <attribute name="horizontalHeaderDefaultSectionSize">
       <number>120</number>
@@ -198,72 +225,13 @@
      </column>
      <column>
       <property name="text">
-       <string>Current Value</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>New Value</string>
+       <string>Value</string>
       </property>
      </column>
     </widget>
    </item>
    <item>
-    <widget class="QTableWidget" name="bypass_code_values_table">
-     <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
-     </property>
-     <property name="sizeAdjustPolicy">
-      <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
-     </property>
-     <property name="editTriggers">
-      <set>QAbstractItemView::NoEditTriggers</set>
-     </property>
-     <property name="dragDropOverwriteMode">
-      <bool>false</bool>
-     </property>
-     <property name="alternatingRowColors">
-      <bool>true</bool>
-     </property>
-     <property name="selectionMode">
-      <enum>QAbstractItemView::NoSelection</enum>
-     </property>
-     <attribute name="horizontalHeaderHighlightSections">
-      <bool>false</bool>
-     </attribute>
-     <attribute name="verticalHeaderVisible">
-      <bool>false</bool>
-     </attribute>
-     <attribute name="verticalHeaderMinimumSectionSize">
-      <number>20</number>
-     </attribute>
-     <attribute name="verticalHeaderHighlightSections">
-      <bool>false</bool>
-     </attribute>
-     <column>
-      <property name="text">
-       <string>Bit</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Current Machine Value</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Check For Bypass</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>New Machine Value</string>
-      </property>
-     </column>
-    </widget>
-   </item>
-   <item>
-    <widget class="QLabel" name="label_10">
+    <widget class="QLabel" name="byp_ctrl_lbl">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -285,7 +253,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QFrame" name="bypass_control_frame">
+    <widget class="QFrame" name="byp_control_frame">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
        <horstretch>0</horstretch>
@@ -306,7 +274,7 @@
      </property>
      <layout class="QFormLayout" name="formLayout_2">
       <item row="1" column="0">
-       <widget class="QLabel" name="bypass_states_label">
+       <widget class="QLabel" name="byp_states_lbl">
         <property name="maximumSize">
          <size>
           <width>16777215</width>
@@ -322,17 +290,17 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="bypass_states_combobox"/>
+       <widget class="QComboBox" name="byp_states_cmbx"/>
       </item>
       <item row="2" column="1">
-       <widget class="QLabel" name="min_rate_limit_label">
+       <widget class="QLabel" name="min_rate_lbl">
         <property name="text">
-         <string>Will rate limit rate to [THE MIN RATE OF THE SELECTED STATE]</string>
+         <string>Will rate limit rate to &lt;State Min Rate&gt;</string>
         </property>
        </widget>
       </item>
       <item row="3" column="0" colspan="2">
-       <widget class="QFrame" name="frame_5">
+       <widget class="QFrame" name="byp_set_frame">
         <property name="frameShape">
          <enum>QFrame::Box</enum>
         </property>
@@ -347,7 +315,7 @@
           <number>0</number>
          </property>
          <item row="2" column="0">
-          <widget class="QLabel" name="label_3">
+          <widget class="QLabel" name="byp_exp_lbl">
            <property name="maximumSize">
             <size>
              <width>16777215</width>
@@ -363,7 +331,7 @@
           </widget>
          </item>
          <item row="4" column="0">
-          <widget class="QLabel" name="label_12">
+          <widget class="QLabel" name="byp_duration_lbl">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -386,7 +354,7 @@
           </widget>
          </item>
          <item row="5" column="1">
-          <widget class="QLabel" name="label_15">
+          <widget class="QLabel" name="byp_howto_lbl">
            <property name="maximumSize">
             <size>
              <width>16777215</width>
@@ -399,7 +367,7 @@
             </font>
            </property>
            <property name="text">
-            <string>Press &quot;Enter&quot; on Duration to Confirm</string>
+            <string>Press &quot;Enter&quot; to Confirm</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
@@ -407,7 +375,7 @@
           </widget>
          </item>
          <item row="4" column="1">
-          <widget class="QLineEdit" name="bypass_duration_value">
+          <widget class="QLineEdit" name="byp_duration_edt">
            <property name="minimumSize">
             <size>
              <width>0</width>
@@ -420,7 +388,7 @@
           </widget>
          </item>
          <item row="2" column="1">
-          <widget class="PyDMDateTimeEdit" name="bypass_expiration_calendar">
+          <widget class="PyDMDateTimeEdit" name="byp_exp_cal">
            <property name="toolTip">
             <string/>
            </property>
@@ -432,30 +400,8 @@
         </layout>
        </widget>
       </item>
-      <item row="4" column="0">
-       <widget class="PyDMPushButton" name="cancel_bypass_button">
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>23</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="text">
-         <string>Cancel Bypass</string>
-        </property>
-        <property name="channel" stdset="0">
-         <string/>
-        </property>
-        <property name="pressValue" stdset="0">
-         <string>0</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="PyDMFrame" name="PyDMFrame">
+      <item row="4" column="0" colspan="2">
+       <widget class="PyDMFrame" name="byp_exp_frame">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
           <horstretch>0</horstretch>
@@ -468,9 +414,22 @@
         <property name="rules" stdset="0">
          <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;channel&quot;: &quot;ca://${DEVICE_BYP}_SCBYPS.RVAL&quot;}], &quot;property&quot;: &quot;Visible&quot;, &quot;expression&quot;: &quot;ch[0]&gt;0.5&quot;, &quot;name&quot;: &quot;Visibility&quot;, &quot;initial_value&quot;: &quot;&quot;}]</string>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
-         <item>
-          <widget class="QLabel" name="bypass_exp_time_label">
+        <layout class="QGridLayout" name="gridLayout_2" rowstretch="1,2">
+         <item row="1" column="1">
+          <widget class="PyDMDateTimeLabel" name="byp_exp_datetime">
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="alarmSensitiveContent" stdset="0">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="byp_exp_time_lbl">
            <property name="maximumSize">
             <size>
              <width>16777215</width>
@@ -485,16 +444,19 @@
            </property>
           </widget>
          </item>
-         <item>
-          <widget class="PyDMDateTimeLabel" name="bypass_exp_date_time">
+         <item row="0" column="0">
+          <widget class="QPushButton" name="cancel_byp_btn">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>23</height>
+            </size>
+           </property>
            <property name="toolTip">
             <string/>
            </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-           <property name="alarmSensitiveContent" stdset="0">
-            <bool>true</bool>
+           <property name="text">
+            <string>Cancel Bypass</string>
            </property>
           </widget>
          </item>
@@ -502,12 +464,11 @@
        </widget>
       </item>
      </layout>
-     <zorder>frame_5</zorder>
-     <zorder>bypass_states_label</zorder>
-     <zorder>bypass_states_combobox</zorder>
-     <zorder>PyDMFrame</zorder>
-     <zorder>cancel_bypass_button</zorder>
-     <zorder>min_rate_limit_label</zorder>
+     <zorder>byp_set_frame</zorder>
+     <zorder>byp_states_lbl</zorder>
+     <zorder>byp_states_cmbx</zorder>
+     <zorder>byp_exp_frame</zorder>
+     <zorder>min_rate_lbl</zorder>
     </widget>
    </item>
    <item>
@@ -555,11 +516,6 @@
    <extends>QFrame</extends>
    <header>pydm.widgets.frame</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>PyDMPushButton</class>
-   <extends>QPushButton</extends>
-   <header>pydm.widgets.pushbutton</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -1,15 +1,15 @@
+import math
+from os import path
 from json import dumps
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import (QHeaderView, QTableWidgetItem)
 from qtpy.QtGui import QColor
-from pydm.widgets import PyDMShellCommand
-from models.prepped_macro_state import PreppedMacroState
-import math
+from edmbutton import PyDMEDMDisplayButton
 from dbinteraction.configDB.link_node_fault import Link_Node_Fault as LNF
 from dbinteraction.configDB.epics_fault import Epics_Fault as EF
 from dbinteraction.configDB.link_node_channel_fault import Link_Node_Channel_Fault as LNCF
 from dbinteraction.configDB.link_processor_fault import Link_Processor_Fault as LPF
-from os import path
+from models.prepped_macro_state import PreppedMacroState
 from mps_constants import FAULT_STATE_CURRENT_POSTFIX, FAULT_STATE_POSTFIX
 
 
@@ -141,6 +141,12 @@ class SelectionDetailsHelper:
         for i in range(row_count):
             for j in range(col_count):
                 table.setItem(i, j, CellItem("--"))
+        if row_count == 1:
+            # Height for one row + header
+            table.setMaximumHeight(49)
+        else:
+            # Maximum height value
+            table.setMaximumHeight(16777215)
 
     def pop_truth_table(self, macro):
         """
@@ -221,41 +227,43 @@ class SelectionDetailsHelper:
         Creates a PyDMShellCommand button
         for connecting to a separate EDM screen based on fault type
         """
-        edmcommand = self.get_edm_command(fault)
-        buttontext = 'My cool button'
+        buttontext = ""
         if fault.fault_type is EF:
-            buttontext = 'EPICS Fault PV...'
+            buttontext = "EPICS Fault PV..."
         elif fault.fault_type is LNF:
-            buttontext = 'Link Node Fault PV...'
+            buttontext = f"LN {fault.link_node_id}..."
         elif fault.fault_type is LNCF:
-            buttontext = 'Link Node Channel Fault...'
+            buttontext = f"LN {fault.link_node_id}, Card {fault.card}, Ch {fault.channel}..."
         elif fault.fault_type is LPF:
-            buttontext = 'Link Processor Fault...'
+            buttontext = "Link Processor Fault..."
 
-        edmbutton = PyDMShellCommand(command=edmcommand, title=buttontext)
+        edmbutton = PyDMEDMDisplayButton(filename=self.get_edm_file(fault))
         edmbutton.setText(buttontext)
+        edmbutton.showIcon = False
         return edmbutton
 
-    def get_edm_command(self, fault):
+    def get_edm_file(self, fault):
         """
-        Gets the command used for launching fault EDM screens
+        Gets the EDM file used by the Related Display button
         """
-        edmCommand = ""
-        TOOLS = path.expandvars("$TOOLS")
+        edm_path = path.expandvars("$EDM")
+        facet = path.expandvars("$FACILITY") == "facet"
 
-        if fault.fault_type is EF:
-            edmCommand = "edm -x "+TOOLS+"/edm/display/mps/EPICSFaultInputs.edl"
-        elif fault.fault_type is LNF:
-            edmCommand = f'edm -x ${TOOLS}/edm/display/mps/LinkNodeAll.edl'
-        elif fault.fault_type is LNCF:
-            LNid = fault.link_node_id
-            edmCommand = "edm -x "+TOOLS+"/edm/display/mps/LinkNode"+str(LNid)+".edl"
-        elif fault.fault_type is LPF:
-            edmCommand = "edm -x "+TOOLS+"/edm/display/mps/LPFaultInputs.edl"
-        else:
-            edmCommand = None  # SHOULD NOT HAPPEN, but here just in case
+        filepath = f"{edm_path}/mps/"
+        filename = "LinkNodeAll.edl"
+        if fault.fault_type is EF or fault.fault_type is LPF:
+            filename = "EPICSFaultInputs.edl"
+        elif fault.fault_type is LNF or fault.fault_type is LNCF:
+            filename = f"LinkNode{fault.link_node_id}.edl"
+            if facet:
+                filename = "Facet" + filename
 
-        return edmCommand
+            if not path.exists(filepath + filename):
+                filename = "LinkNodeAll.edl"
+                if facet:
+                    filename = "Facet" + filename
+
+        return filepath + filename
 
     # @Slot()
     def save_split_state(self):

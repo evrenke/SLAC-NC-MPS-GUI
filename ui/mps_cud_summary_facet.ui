@@ -95,7 +95,7 @@ border-top-right-radius: 15px;
            <number>0</number>
           </property>
           <item>
-           <widget class="PyDMLabel" name="Device_MS_Title">
+           <widget class="QLabel" name="Device_MS_Title">
             <property name="font">
              <font>
               <family>Sans Serif</family>
@@ -161,6 +161,9 @@ color: rgb(255, 255, 255);</string>
             <property name="toolTip">
              <string/>
             </property>
+            <property name="styleSheet">
+             <string notr="true">color: rgb(255, 255, 255);</string>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -187,7 +190,7 @@ color: rgb(255, 255, 255);</string>
            </widget>
           </item>
           <item>
-           <widget class="PyDMLabel" name="Device_MS_AR_Title">
+           <widget class="QLabel" name="Device_MS_AR_Title">
             <property name="font">
              <font>
               <pointsize>22</pointsize>
@@ -251,7 +254,7 @@ color: rgb(255, 255, 255);</string>
         </widget>
        </item>
        <item>
-        <widget class="PyDMFrame" name="Device_MS_Frame_2">
+        <widget class="PyDMFrame" name="Device_LH_Frame">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -287,7 +290,7 @@ border-top-right-radius: 15px;
            <number>0</number>
           </property>
           <item>
-           <widget class="PyDMLabel" name="Device_MS_Title_2">
+           <widget class="QLabel" name="Device_LH_Title">
             <property name="font">
              <font>
               <family>Sans Serif</family>
@@ -321,7 +324,7 @@ color: rgb(255, 255, 255);</string>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="Device_MS_RL_Title_2">
+           <widget class="QLabel" name="Device_LH_RL_Title">
             <property name="font">
              <font>
               <pointsize>22</pointsize>
@@ -342,7 +345,7 @@ color: rgb(255, 255, 255);</string>
            </widget>
           </item>
           <item>
-           <widget class="PyDMLabel" name="Device_MS_RR_Num_2">
+           <widget class="PyDMLabel" name="Device_LH_RL_Num">
             <property name="font">
              <font>
               <pointsize>22</pointsize>
@@ -353,6 +356,9 @@ color: rgb(255, 255, 255);</string>
             <property name="toolTip">
              <string/>
             </property>
+            <property name="styleSheet">
+             <string notr="true">color: rgb(255, 255, 255);</string>
+            </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
@@ -362,7 +368,7 @@ color: rgb(255, 255, 255);</string>
            </widget>
           </item>
           <item>
-           <widget class="PyDMDrawingLine" name="Device_MS_Line_2">
+           <widget class="PyDMDrawingLine" name="Device_LH_Line">
             <property name="maximumSize">
              <size>
               <width>16777215</width>
@@ -379,7 +385,7 @@ color: rgb(255, 255, 255);</string>
            </widget>
           </item>
           <item>
-           <widget class="PyDMLabel" name="Device_MS_AR_Title_2">
+           <widget class="QLabel" name="Device_LH_AR_Title">
             <property name="font">
              <font>
               <pointsize>22</pointsize>
@@ -403,7 +409,7 @@ color: rgb(255, 255, 255);</string>
            </widget>
           </item>
           <item>
-           <widget class="PyDMLabel" name="Device_MS_AR_Num_2">
+           <widget class="PyDMLabel" name="Device_LH_AR_Num">
             <property name="font">
              <font>
               <family>Sans Serif</family>
@@ -479,7 +485,7 @@ border-top-right-radius: 15px;
            <number>0</number>
           </property>
           <item>
-           <widget class="PyDMLabel" name="Device_GunL_Title">
+           <widget class="QLabel" name="Device_GunL_Title">
             <property name="font">
              <font>
               <family>Sans Serif</family>
@@ -534,7 +540,7 @@ color: rgb(255, 255, 255);</string>
            </widget>
           </item>
           <item>
-           <widget class="PyDMLabel" name="Device_GunL_RR_Num">
+           <widget class="PyDMLabel" name="Device_GunL_RL_Num">
             <property name="font">
              <font>
               <pointsize>22</pointsize>
@@ -544,6 +550,9 @@ color: rgb(255, 255, 255);</string>
             </property>
             <property name="toolTip">
              <string/>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: rgb(255, 255, 255);</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -571,7 +580,7 @@ color: rgb(255, 255, 255);</string>
            </widget>
           </item>
           <item>
-           <widget class="PyDMLabel" name="Device_GunL_AR_Title">
+           <widget class="QLabel" name="Device_GunL_AR_Title">
             <property name="font">
              <font>
               <pointsize>22</pointsize>

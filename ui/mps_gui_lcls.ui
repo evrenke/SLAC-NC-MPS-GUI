@@ -10,14 +10,13 @@
     <height>867</height>
    </rect>
   </property>
-  <property name="font">
-   <font>
-    <weight>75</weight>
-    <bold>true</bold>
-   </font>
-  </property>
   <property name="windowTitle">
    <string>MPS GUI</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QSplitter::handle {
+	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0 rgba(121, 121, 121, 255), stop:0.3 rgba(121, 121, 121, 255), stop:0.301 rgba(255, 255, 255, 255), stop:1 rgba(255, 255, 255, 128));
+}</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="spacing">
@@ -143,36 +142,22 @@ border-top-right-radius: 15px;
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="PyDMLabel" name="Device_MS_Title">
+                 <widget class="QLabel" name="Device_MS_Title">
                   <property name="font">
                    <font>
-                    <family>Sans Serif</family>
                     <pointsize>17</pointsize>
                     <weight>75</weight>
-                    <italic>false</italic>
                     <bold>true</bold>
-                    <strikeout>false</strikeout>
-                    <kerning>true</kerning>
                    </font>
                   </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
                   <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
-                  </property>
-                  <property name="frameShape">
-                   <enum>QFrame::StyledPanel</enum>
-                  </property>
-                  <property name="frameShadow">
-                   <enum>QFrame::Plain</enum>
+                   <string notr="true">color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="text">
                    <string>Mechanical Shutter</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
                   </property>
                  </widget>
                 </item>
@@ -193,7 +178,7 @@ color: rgb(255, 255, 255);</string>
                    <string>Rate Limit</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
                   </property>
                  </widget>
                 </item>
@@ -212,8 +197,7 @@ color: rgb(255, 255, 255);</string>
                    <string/>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
+                   <string notr="true">color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -221,17 +205,11 @@ color: rgb(255, 255, 255);</string>
                   <property name="rules" stdset="0">
                    <string>[{&quot;name&quot;: &quot;Add Hz&quot;, &quot;property&quot;: &quot;Text&quot;, &quot;initial_value&quot;: &quot;&quot;, &quot;expression&quot;: &quot;str(ch[0]) + ' Hz'&quot;, &quot;channels&quot;: [{&quot;channel&quot;: &quot;ca://IOC:BSY0:MP01:MS_MEASRATE&quot;, &quot;trigger&quot;: true, &quot;use_enum&quot;: true}]}]</string>
                   </property>
-                  <property name="showUnits" stdset="0">
-                   <bool>true</bool>
-                  </property>
-                  <property name="alarmSensitiveContent" stdset="0">
-                   <bool>false</bool>
-                  </property>
                   <property name="alarmSensitiveBorder" stdset="0">
                    <bool>false</bool>
                   </property>
                   <property name="channel" stdset="0">
-                   <string/>
+                   <string>ca://IOC:BSY0:MP01:MS_MEASRATE</string>
                   </property>
                  </widget>
                 </item>
@@ -253,7 +231,7 @@ color: rgb(255, 255, 255);</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="PyDMLabel" name="Device_MS_AR_Title">
+                 <widget class="QLabel" name="Device_MS_AR_Title">
                   <property name="font">
                    <font>
                     <pointsize>15</pointsize>
@@ -261,18 +239,14 @@ color: rgb(255, 255, 255);</string>
                     <bold>true</bold>
                    </font>
                   </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
                   <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
+                   <string notr="true">color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="text">
                    <string>Actual Rate</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
                   </property>
                  </widget>
                 </item>
@@ -353,36 +327,22 @@ border-top-right-radius: 15px;
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="PyDMLabel" name="Device_LHS_Title">
+                 <widget class="QLabel" name="Device_LHS_Title">
                   <property name="font">
                    <font>
-                    <family>Sans Serif</family>
                     <pointsize>17</pointsize>
                     <weight>75</weight>
-                    <italic>false</italic>
                     <bold>true</bold>
-                    <strikeout>false</strikeout>
-                    <kerning>true</kerning>
                    </font>
                   </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
                   <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
-                  </property>
-                  <property name="frameShape">
-                   <enum>QFrame::StyledPanel</enum>
-                  </property>
-                  <property name="frameShadow">
-                   <enum>QFrame::Plain</enum>
+                   <string notr="true">color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="text">
                    <string>Laser Heater</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
                   </property>
                  </widget>
                 </item>
@@ -403,7 +363,7 @@ color: rgb(255, 255, 255);</string>
                    <string>Rate Limit</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
                   </property>
                  </widget>
                 </item>
@@ -422,8 +382,7 @@ color: rgb(255, 255, 255);</string>
                    <string/>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
+                   <string notr="true">color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -431,14 +390,11 @@ color: rgb(255, 255, 255);</string>
                   <property name="rules" stdset="0">
                    <string>[{&quot;name&quot;: &quot;Add Hz&quot;, &quot;property&quot;: &quot;Text&quot;, &quot;initial_value&quot;: &quot;&quot;, &quot;expression&quot;: &quot;str(ch[0]) + ' Hz'&quot;, &quot;channels&quot;: [{&quot;channel&quot;: &quot;ca://IOC:BSY0:MP01:LHSHUT_MEASRATE&quot;, &quot;trigger&quot;: true, &quot;use_enum&quot;: true}]}]</string>
                   </property>
-                  <property name="showUnits" stdset="0">
-                   <bool>true</bool>
-                  </property>
-                  <property name="alarmSensitiveContent" stdset="0">
-                   <bool>false</bool>
-                  </property>
                   <property name="alarmSensitiveBorder" stdset="0">
                    <bool>false</bool>
+                  </property>
+                  <property name="channel" stdset="0">
+                   <string>ca://IOC:BSY0:MP01:LHSHUT_MEASRATE</string>
                   </property>
                  </widget>
                 </item>
@@ -460,7 +416,7 @@ color: rgb(255, 255, 255);</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="PyDMLabel" name="Device_LHS_AR_Title">
+                 <widget class="QLabel" name="Device_LHS_AR_Title">
                   <property name="font">
                    <font>
                     <pointsize>15</pointsize>
@@ -468,18 +424,14 @@ color: rgb(255, 255, 255);</string>
                     <bold>true</bold>
                    </font>
                   </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
                   <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
+                   <string notr="true">color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="text">
                    <string>Actual Rate</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
                   </property>
                  </widget>
                 </item>
@@ -557,36 +509,22 @@ border-top-right-radius: 15px;
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="PyDMLabel" name="Device_GunL_Title">
+                 <widget class="QLabel" name="Device_GunL_Title">
                   <property name="font">
                    <font>
-                    <family>Sans Serif</family>
                     <pointsize>17</pointsize>
                     <weight>75</weight>
-                    <italic>false</italic>
                     <bold>true</bold>
-                    <strikeout>false</strikeout>
-                    <kerning>true</kerning>
                    </font>
                   </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
                   <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
-                  </property>
-                  <property name="frameShape">
-                   <enum>QFrame::StyledPanel</enum>
-                  </property>
-                  <property name="frameShadow">
-                   <enum>QFrame::Plain</enum>
+                   <string notr="true">color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="text">
                    <string>Gun Linac Permit</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
                   </property>
                  </widget>
                 </item>
@@ -607,7 +545,7 @@ color: rgb(255, 255, 255);</string>
                    <string>Rate Limit</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
                   </property>
                  </widget>
                 </item>
@@ -618,16 +556,11 @@ color: rgb(255, 255, 255);</string>
                     <family>Sans Serif</family>
                     <pointsize>15</pointsize>
                     <weight>75</weight>
-                    <italic>false</italic>
                     <bold>true</bold>
                    </font>
                   </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
                   <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
+                   <string notr="true">color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -635,14 +568,14 @@ color: rgb(255, 255, 255);</string>
                   <property name="rules" stdset="0">
                    <string>[{&quot;name&quot;: &quot;Add Hz&quot;, &quot;property&quot;: &quot;Text&quot;, &quot;initial_value&quot;: &quot;&quot;, &quot;expression&quot;: &quot;str(ch[0]) + ' Hz'&quot;, &quot;channels&quot;: [{&quot;channel&quot;: &quot;ca://IOC:BSY0:MP01:PC_MEASRATE&quot;, &quot;trigger&quot;: true, &quot;use_enum&quot;: true}]}]</string>
                   </property>
-                  <property name="showUnits" stdset="0">
-                   <bool>true</bool>
-                  </property>
                   <property name="alarmSensitiveContent" stdset="0">
                    <bool>false</bool>
                   </property>
                   <property name="alarmSensitiveBorder" stdset="0">
                    <bool>false</bool>
+                  </property>
+                  <property name="channel" stdset="0">
+                   <string>ca://IOC:BSY0:MP01:PC_MEASRATE</string>
                   </property>
                  </widget>
                 </item>
@@ -664,7 +597,7 @@ color: rgb(255, 255, 255);</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="PyDMLabel" name="Device_GunL_AR_Title">
+                 <widget class="QLabel" name="Device_GunL_AR_Title">
                   <property name="font">
                    <font>
                     <pointsize>15</pointsize>
@@ -672,18 +605,14 @@ color: rgb(255, 255, 255);</string>
                     <bold>true</bold>
                    </font>
                   </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
                   <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
+                   <string notr="true">color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="text">
                    <string>Actual Rate</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
                   </property>
                  </widget>
                 </item>
@@ -761,36 +690,22 @@ border-top-right-radius: 15px;
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="PyDMLabel" name="Device_GunS_Title">
+                 <widget class="QLabel" name="Device_GunS_Title">
                   <property name="font">
                    <font>
-                    <family>Sans Serif</family>
                     <pointsize>17</pointsize>
                     <weight>75</weight>
-                    <italic>false</italic>
                     <bold>true</bold>
-                    <strikeout>false</strikeout>
-                    <kerning>true</kerning>
                    </font>
                   </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
                   <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
-                  </property>
-                  <property name="frameShape">
-                   <enum>QFrame::StyledPanel</enum>
-                  </property>
-                  <property name="frameShadow">
-                   <enum>QFrame::Plain</enum>
+                   <string notr="true">color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="text">
                    <string>Gun SXR Permit</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
                   </property>
                  </widget>
                 </item>
@@ -811,7 +726,7 @@ color: rgb(255, 255, 255);</string>
                    <string>Rate Limit</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
                   </property>
                  </widget>
                 </item>
@@ -822,16 +737,11 @@ color: rgb(255, 255, 255);</string>
                     <family>Sans Serif</family>
                     <pointsize>15</pointsize>
                     <weight>75</weight>
-                    <italic>false</italic>
                     <bold>true</bold>
                    </font>
                   </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
                   <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
+                   <string notr="true">color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -839,14 +749,14 @@ color: rgb(255, 255, 255);</string>
                   <property name="rules" stdset="0">
                    <string>[{&quot;name&quot;: &quot;Add Hz&quot;, &quot;property&quot;: &quot;Text&quot;, &quot;initial_value&quot;: &quot;&quot;, &quot;expression&quot;: &quot;str(ch[0]) + ' Hz'&quot;, &quot;channels&quot;: [{&quot;channel&quot;: &quot;ca://IOC:BSY0:MP01:GUNSXR_MEASRATE&quot;, &quot;trigger&quot;: true, &quot;use_enum&quot;: true}]}]</string>
                   </property>
-                  <property name="showUnits" stdset="0">
-                   <bool>true</bool>
-                  </property>
                   <property name="alarmSensitiveContent" stdset="0">
                    <bool>false</bool>
                   </property>
                   <property name="alarmSensitiveBorder" stdset="0">
                    <bool>false</bool>
+                  </property>
+                  <property name="channel" stdset="0">
+                   <string>ca://IOC:BSY0:MP01:GUNSXR_MEASRATE</string>
                   </property>
                  </widget>
                 </item>
@@ -868,7 +778,7 @@ color: rgb(255, 255, 255);</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="PyDMLabel" name="Device_GunS_AR_Title">
+                 <widget class="QLabel" name="Device_GunS_AR_Title">
                   <property name="font">
                    <font>
                     <pointsize>15</pointsize>
@@ -876,18 +786,14 @@ color: rgb(255, 255, 255);</string>
                     <bold>true</bold>
                    </font>
                   </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
                   <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
+                   <string notr="true">color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="text">
                    <string>Actual Rate</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
                   </property>
                  </widget>
                 </item>
@@ -965,36 +871,22 @@ border-top-right-radius: 15px;
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="PyDMLabel" name="Device_GunH_Title">
+                 <widget class="QLabel" name="Device_GunH_Title">
                   <property name="font">
                    <font>
-                    <family>Sans Serif</family>
                     <pointsize>17</pointsize>
                     <weight>75</weight>
-                    <italic>false</italic>
                     <bold>true</bold>
-                    <strikeout>false</strikeout>
-                    <kerning>true</kerning>
                    </font>
                   </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
                   <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
-                  </property>
-                  <property name="frameShape">
-                   <enum>QFrame::StyledPanel</enum>
-                  </property>
-                  <property name="frameShadow">
-                   <enum>QFrame::Plain</enum>
+                   <string notr="true">color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="text">
                    <string>Gun HXR Permit</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
                   </property>
                  </widget>
                 </item>
@@ -1015,7 +907,7 @@ color: rgb(255, 255, 255);</string>
                    <string>Rate Limit</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
                   </property>
                  </widget>
                 </item>
@@ -1026,16 +918,11 @@ color: rgb(255, 255, 255);</string>
                     <family>Sans Serif</family>
                     <pointsize>15</pointsize>
                     <weight>75</weight>
-                    <italic>false</italic>
                     <bold>true</bold>
                    </font>
                   </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
                   <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
+                   <string notr="true">color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1043,14 +930,11 @@ color: rgb(255, 255, 255);</string>
                   <property name="rules" stdset="0">
                    <string>[{&quot;name&quot;: &quot;Add Hz&quot;, &quot;property&quot;: &quot;Text&quot;, &quot;initial_value&quot;: &quot;&quot;, &quot;expression&quot;: &quot;str(ch[0]) + ' Hz'&quot;, &quot;channels&quot;: [{&quot;channel&quot;: &quot;ca://IOC:BSY0:MP01:GUNHXR_MEASRATE&quot;, &quot;trigger&quot;: true, &quot;use_enum&quot;: true}]}]</string>
                   </property>
-                  <property name="showUnits" stdset="0">
-                   <bool>true</bool>
-                  </property>
-                  <property name="alarmSensitiveContent" stdset="0">
-                   <bool>false</bool>
-                  </property>
                   <property name="alarmSensitiveBorder" stdset="0">
                    <bool>false</bool>
+                  </property>
+                  <property name="channel" stdset="0">
+                   <string>ca://IOC:BSY0:MP01:GUNHXR_MEASRATE</string>
                   </property>
                  </widget>
                 </item>
@@ -1072,7 +956,7 @@ color: rgb(255, 255, 255);</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="PyDMLabel" name="Device_GunH_AR_Title">
+                 <widget class="QLabel" name="Device_GunH_AR_Title">
                   <property name="font">
                    <font>
                     <pointsize>15</pointsize>
@@ -1080,18 +964,14 @@ color: rgb(255, 255, 255);</string>
                     <bold>true</bold>
                    </font>
                   </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
                   <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
+                   <string notr="true">color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="text">
                    <string>Actual Rate</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
                   </property>
                  </widget>
                 </item>
@@ -1168,36 +1048,22 @@ border-top-right-radius: 15px;
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="PyDMLabel" name="Device_BYKIKS_Title">
+                 <widget class="QLabel" name="Device_BYKIKS_Title">
                   <property name="font">
                    <font>
-                    <family>Sans Serif</family>
                     <pointsize>17</pointsize>
                     <weight>75</weight>
-                    <italic>false</italic>
                     <bold>true</bold>
-                    <strikeout>false</strikeout>
-                    <kerning>true</kerning>
                    </font>
                   </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
                   <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
-                  </property>
-                  <property name="frameShape">
-                   <enum>QFrame::StyledPanel</enum>
-                  </property>
-                  <property name="frameShadow">
-                   <enum>QFrame::Plain</enum>
+                   <string notr="true">color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="text">
                    <string>BYKIK SXR Permit</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
                   </property>
                  </widget>
                 </item>
@@ -1218,7 +1084,7 @@ color: rgb(255, 255, 255);</string>
                    <string>Rate Limit</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
                   </property>
                  </widget>
                 </item>
@@ -1233,12 +1099,8 @@ color: rgb(255, 255, 255);</string>
                     <bold>true</bold>
                    </font>
                   </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
                   <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
+                   <string notr="true">color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1246,14 +1108,11 @@ color: rgb(255, 255, 255);</string>
                   <property name="rules" stdset="0">
                    <string>[{&quot;name&quot;: &quot;Add Hz&quot;, &quot;property&quot;: &quot;Text&quot;, &quot;initial_value&quot;: &quot;&quot;, &quot;expression&quot;: &quot;str(ch[0]) + ' Hz'&quot;, &quot;channels&quot;: [{&quot;channel&quot;: &quot;ca://IOC:BSY0:MP01:BYKIKS_MEASRATE&quot;, &quot;trigger&quot;: true, &quot;use_enum&quot;: true}]}]</string>
                   </property>
-                  <property name="showUnits" stdset="0">
-                   <bool>true</bool>
-                  </property>
-                  <property name="alarmSensitiveContent" stdset="0">
-                   <bool>false</bool>
-                  </property>
                   <property name="alarmSensitiveBorder" stdset="0">
                    <bool>false</bool>
+                  </property>
+                  <property name="channel" stdset="0">
+                   <string>ca://IOC:BSY0:MP01:BYKIKS_MEASRATE</string>
                   </property>
                  </widget>
                 </item>
@@ -1275,7 +1134,7 @@ color: rgb(255, 255, 255);</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="PyDMLabel" name="Device_BYKIKS_AR_Title">
+                 <widget class="QLabel" name="Device_BYKIKS_AR_Title">
                   <property name="font">
                    <font>
                     <pointsize>15</pointsize>
@@ -1283,18 +1142,14 @@ color: rgb(255, 255, 255);</string>
                     <bold>true</bold>
                    </font>
                   </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
                   <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
+                   <string notr="true">color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="text">
                    <string>Actual Rate</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
                   </property>
                  </widget>
                 </item>
@@ -1375,22 +1230,19 @@ border-top-right-radius: 15px;
                  <widget class="QLabel" name="Device_BYKIKH_Title">
                   <property name="font">
                    <font>
-                    <family>Sans Serif</family>
                     <pointsize>17</pointsize>
                     <weight>75</weight>
-                    <italic>false</italic>
                     <bold>true</bold>
                    </font>
                   </property>
                   <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
+                   <string notr="true">color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="text">
                    <string>BYKIK HXR Permit</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
                   </property>
                  </widget>
                 </item>
@@ -1411,7 +1263,7 @@ color: rgb(255, 255, 255);</string>
                    <string>Rate Limit</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
                   </property>
                  </widget>
                 </item>
@@ -1422,16 +1274,11 @@ color: rgb(255, 255, 255);</string>
                     <family>Sans Serif</family>
                     <pointsize>15</pointsize>
                     <weight>75</weight>
-                    <italic>false</italic>
                     <bold>true</bold>
                    </font>
                   </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
                   <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
+                   <string notr="true">color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1439,14 +1286,11 @@ color: rgb(255, 255, 255);</string>
                   <property name="rules" stdset="0">
                    <string>[{&quot;name&quot;: &quot;Add Hz&quot;, &quot;property&quot;: &quot;Text&quot;, &quot;initial_value&quot;: &quot;&quot;, &quot;expression&quot;: &quot;str(ch[0]) + ' Hz'&quot;, &quot;channels&quot;: [{&quot;channel&quot;: &quot;ca://IOC:BSY0:MP01:BYKIK_MEASRATE&quot;, &quot;trigger&quot;: true, &quot;use_enum&quot;: true}]}]</string>
                   </property>
-                  <property name="showUnits" stdset="0">
-                   <bool>true</bool>
-                  </property>
-                  <property name="alarmSensitiveContent" stdset="0">
-                   <bool>false</bool>
-                  </property>
                   <property name="alarmSensitiveBorder" stdset="0">
                    <bool>false</bool>
+                  </property>
+                  <property name="channel" stdset="0">
+                   <string>ca://IOC:BSY0:MP01:BYKIK_MEASRATE</string>
                   </property>
                  </widget>
                 </item>
@@ -1468,7 +1312,7 @@ color: rgb(255, 255, 255);</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="PyDMLabel" name="Device_BYKIKH_AR_Title">
+                 <widget class="QLabel" name="Device_BYKIKH_AR_Title">
                   <property name="font">
                    <font>
                     <pointsize>15</pointsize>
@@ -1476,18 +1320,14 @@ color: rgb(255, 255, 255);</string>
                     <bold>true</bold>
                    </font>
                   </property>
-                  <property name="toolTip">
-                   <string/>
-                  </property>
                   <property name="styleSheet">
-                   <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
+                   <string notr="true">color: rgb(255, 255, 255);</string>
                   </property>
                   <property name="text">
                    <string>Actual Rate</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   <set>Qt::AlignBottom|Qt::AlignRight|Qt::AlignTrailing</set>
                   </property>
                  </widget>
                 </item>
@@ -1676,12 +1516,6 @@ color: rgb(255, 255, 255);</string>
            </item>
            <item>
             <widget class="QLineEdit" name="Fault_Filter_LineEdit">
-             <property name="font">
-              <font>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
              <property name="placeholderText">
               <string>Case-insensitive Filter</string>
              </property>
@@ -1796,6 +1630,12 @@ color: rgb(255, 255, 255);</string>
              </item>
              <item>
               <widget class="QTableView" name="Faults_Table_View">
+               <property name="font">
+                <font>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
                <property name="editTriggers">
                 <set>QAbstractItemView::NoEditTriggers</set>
                </property>
@@ -2657,12 +2497,6 @@ color: rgb(255, 255, 255);</string>
            </item>
            <item>
             <widget class="QLineEdit" name="Logic_Search_Line_Edit">
-             <property name="font">
-              <font>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
              <property name="placeholderText">
               <string>Case-insensitive Filter</string>
              </property>
@@ -2676,6 +2510,12 @@ color: rgb(255, 255, 255);</string>
             <enum>Qt::Vertical</enum>
            </property>
            <widget class="QTableView" name="Logic_Table_View">
+            <property name="font">
+             <font>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
             <property name="editTriggers">
              <set>QAbstractItemView::NoEditTriggers</set>
             </property>
@@ -2705,9 +2545,6 @@ color: rgb(255, 255, 255);</string>
             </attribute>
            </widget>
            <widget class="QScrollArea" name="Logic_Scroll_Area">
-            <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
-            </property>
             <property name="widgetResizable">
              <bool>true</bool>
             </property>
@@ -2719,8 +2556,8 @@ color: rgb(255, 255, 255);</string>
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>1346</width>
-               <height>269</height>
+               <width>1669</width>
+               <height>416</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -2744,11 +2581,6 @@ color: rgb(255, 255, 255);</string>
                 <property name="enabled">
                  <bool>true</bool>
                 </property>
-                <property name="styleSheet">
-                 <string notr="true">QFrame{
-border: 1px solid rgb(0, 0, 0);
-}</string>
-                </property>
                 <property name="frameShape">
                  <enum>QFrame::StyledPanel</enum>
                 </property>
@@ -2765,10 +2597,7 @@ border: 1px solid rgb(0, 0, 0);
                     <widget class="QLabel" name="Logic_Selection_Detals_Title_Label">
                      <property name="font">
                       <font>
-                       <family>Sans Serif</family>
-                       <pointsize>9</pointsize>
                        <weight>75</weight>
-                       <italic>false</italic>
                        <bold>true</bold>
                       </font>
                      </property>
@@ -2815,11 +2644,8 @@ border: 1px solid rgb(0, 0, 0);
                      </property>
                      <property name="font">
                       <font>
-                       <family>Sans Serif</family>
-                       <pointsize>9</pointsize>
-                       <weight>50</weight>
-                       <italic>false</italic>
-                       <bold>false</bold>
+                       <weight>75</weight>
+                       <bold>true</bold>
                       </font>
                      </property>
                      <property name="styleSheet">
@@ -2851,12 +2677,6 @@ border: 1px solid rgb(0, 0, 0);
                        <height>20</height>
                       </size>
                      </property>
-                     <property name="font">
-                      <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
                      <property name="styleSheet">
                       <string notr="true">border: 0px;</string>
                      </property>
@@ -2875,12 +2695,6 @@ border: 1px solid rgb(0, 0, 0);
                        <width>16777215</width>
                        <height>20</height>
                       </size>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
                      </property>
                      <property name="toolTip">
                       <string/>
@@ -2930,12 +2744,6 @@ border: 1px solid rgb(0, 0, 0);
                        <height>20</height>
                       </size>
                      </property>
-                     <property name="font">
-                      <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
                      <property name="styleSheet">
                       <string notr="true">border: 0px;</string>
                      </property>
@@ -2951,12 +2759,6 @@ border: 1px solid rgb(0, 0, 0);
                        <width>1200</width>
                        <height>0</height>
                       </size>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
                      </property>
                      <property name="toolTip">
                       <string/>
@@ -3011,8 +2813,8 @@ border: 1px solid rgb(0, 0, 0);
                      </property>
                      <property name="font">
                       <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
+                       <weight>50</weight>
+                       <bold>false</bold>
                       </font>
                      </property>
                      <property name="styleSheet">
@@ -3030,12 +2832,6 @@ border: 1px solid rgb(0, 0, 0);
                        <width>16777215</width>
                        <height>20</height>
                       </size>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
                      </property>
                      <property name="toolTip">
                       <string/>
@@ -3066,12 +2862,6 @@ border: 1px solid rgb(0, 0, 0);
                    </item>
                    <item>
                     <widget class="PyDMRelatedDisplayButton" name="Logic_Bypass_Button">
-                     <property name="font">
-                      <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
                      <property name="toolTip">
                       <string/>
                      </property>
@@ -3117,12 +2907,6 @@ border: 1px solid rgb(0, 0, 0);
                        <height>20</height>
                       </size>
                      </property>
-                     <property name="font">
-                      <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
                      <property name="styleSheet">
                       <string notr="true">border: 0px;</string>
                      </property>
@@ -3135,12 +2919,6 @@ border: 1px solid rgb(0, 0, 0);
                     <widget class="QLabel" name="Logic_Code_Field">
                      <property name="enabled">
                       <bool>true</bool>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
                      </property>
                      <property name="styleSheet">
                       <string notr="true">border: 0px;</string>
@@ -3170,15 +2948,11 @@ border: 1px solid rgb(0, 0, 0);
                  </item>
                  <item>
                   <widget class="QTableWidget" name="Logic_Details_Truth_Table">
-                   <property name="font">
-                    <font>
-                     <pointsize>9</pointsize>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">border: 0px;</string>
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
                    </property>
                    <property name="sizeAdjustPolicy">
                     <enum>QAbstractScrollArea::AdjustToContents</enum>
@@ -3217,12 +2991,6 @@ border: 1px solid rgb(0, 0, 0);
                      <height>20</height>
                     </size>
                    </property>
-                   <property name="font">
-                    <font>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
                    <property name="styleSheet">
                     <string notr="true">border: 0px;</string>
                    </property>
@@ -3233,15 +3001,11 @@ border: 1px solid rgb(0, 0, 0);
                  </item>
                  <item>
                   <widget class="QTableWidget" name="Logic_Details_PVs_Table">
-                   <property name="font">
-                    <font>
-                     <pointsize>9</pointsize>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">border: 0px;</string>
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Maximum">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
                    </property>
                    <property name="sizeAdjustPolicy">
                     <enum>QAbstractScrollArea::AdjustToContents</enum>
@@ -3274,6 +3038,19 @@ border: 1px solid rgb(0, 0, 0);
                     <bool>false</bool>
                    </attribute>
                   </widget>
+                 </item>
+                 <item>
+                  <spacer name="Logic_Details_Spacer">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </spacer>
                  </item>
                 </layout>
                </widget>
@@ -3347,11 +3124,7 @@ border: 1px solid rgb(0, 0, 0);
             <widget class="QLabel" name="Logic_Number_Filters_Label">
              <property name="font">
               <font>
-               <family>Sans Serif</family>
-               <pointsize>9</pointsize>
-               <weight>75</weight>
-               <italic>false</italic>
-               <bold>true</bold>
+               <pointsize>7</pointsize>
               </font>
              </property>
              <property name="text">
@@ -3413,6 +3186,12 @@ border: 1px solid rgb(0, 0, 0);
               </item>
               <item>
                <widget class="QTableView" name="Ignoring_Logic_Table">
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
                 <property name="editTriggers">
                  <set>QAbstractItemView::NoEditTriggers</set>
                 </property>
@@ -3465,6 +3244,12 @@ border: 1px solid rgb(0, 0, 0);
               </item>
               <item>
                <widget class="QTableView" name="Ignored_Logic_Table">
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
                 <property name="editTriggers">
                  <set>QAbstractItemView::NoEditTriggers</set>
                 </property>
@@ -3503,8 +3288,8 @@ border: 1px solid rgb(0, 0, 0);
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>1346</width>
-               <height>269</height>
+               <width>1669</width>
+               <height>449</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout">
@@ -3528,11 +3313,6 @@ border: 1px solid rgb(0, 0, 0);
                 <property name="enabled">
                  <bool>true</bool>
                 </property>
-                <property name="styleSheet">
-                 <string notr="true">QFrame{
-border: 1px solid rgb(0, 0, 0);
-}</string>
-                </property>
                 <property name="frameShape">
                  <enum>QFrame::StyledPanel</enum>
                 </property>
@@ -3549,7 +3329,6 @@ border: 1px solid rgb(0, 0, 0);
                     <widget class="QLabel" name="Ignore_Selection_Details_Label">
                      <property name="font">
                       <font>
-                       <pointsize>9</pointsize>
                        <weight>75</weight>
                        <bold>true</bold>
                       </font>
@@ -3597,11 +3376,8 @@ border: 1px solid rgb(0, 0, 0);
                      </property>
                      <property name="font">
                       <font>
-                       <family>Sans Serif</family>
-                       <pointsize>9</pointsize>
-                       <weight>50</weight>
-                       <italic>false</italic>
-                       <bold>false</bold>
+                       <weight>75</weight>
+                       <bold>true</bold>
                       </font>
                      </property>
                      <property name="styleSheet">
@@ -3633,13 +3409,6 @@ border: 1px solid rgb(0, 0, 0);
                        <height>20</height>
                       </size>
                      </property>
-                     <property name="font">
-                      <font>
-                       <pointsize>9</pointsize>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
                      <property name="styleSheet">
                       <string notr="true">border: 0px;</string>
                      </property>
@@ -3658,12 +3427,6 @@ border: 1px solid rgb(0, 0, 0);
                        <width>16777215</width>
                        <height>20</height>
                       </size>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
                      </property>
                      <property name="toolTip">
                       <string/>
@@ -3713,13 +3476,6 @@ border: 1px solid rgb(0, 0, 0);
                        <height>20</height>
                       </size>
                      </property>
-                     <property name="font">
-                      <font>
-                       <pointsize>9</pointsize>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
                      <property name="styleSheet">
                       <string notr="true">border: 0px;</string>
                      </property>
@@ -3735,12 +3491,6 @@ border: 1px solid rgb(0, 0, 0);
                        <width>1200</width>
                        <height>0</height>
                       </size>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
                      </property>
                      <property name="toolTip">
                       <string/>
@@ -3793,12 +3543,6 @@ border: 1px solid rgb(0, 0, 0);
                        <height>20</height>
                       </size>
                      </property>
-                     <property name="font">
-                      <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
                      <property name="styleSheet">
                       <string notr="true">border: 0px;</string>
                      </property>
@@ -3814,12 +3558,6 @@ border: 1px solid rgb(0, 0, 0);
                        <width>16777215</width>
                        <height>20</height>
                       </size>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
                      </property>
                      <property name="toolTip">
                       <string/>
@@ -3850,12 +3588,6 @@ border: 1px solid rgb(0, 0, 0);
                    </item>
                    <item>
                     <widget class="PyDMRelatedDisplayButton" name="Ignore_Bypass_Button">
-                     <property name="font">
-                      <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
                      <property name="toolTip">
                       <string/>
                      </property>
@@ -3904,12 +3636,6 @@ border: 1px solid rgb(0, 0, 0);
                        <height>20</height>
                       </size>
                      </property>
-                     <property name="font">
-                      <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
-                     </property>
                      <property name="styleSheet">
                       <string notr="true">border: 0px;</string>
                      </property>
@@ -3922,12 +3648,6 @@ border: 1px solid rgb(0, 0, 0);
                     <widget class="QLabel" name="Ignore_Code_Field">
                      <property name="enabled">
                       <bool>true</bool>
-                     </property>
-                     <property name="font">
-                      <font>
-                       <weight>75</weight>
-                       <bold>true</bold>
-                      </font>
                      </property>
                      <property name="styleSheet">
                       <string notr="true">border: 0px;</string>
@@ -3957,15 +3677,11 @@ border: 1px solid rgb(0, 0, 0);
                  </item>
                  <item>
                   <widget class="QTableWidget" name="Ignore_Logic_Details_Truth_Table">
-                   <property name="font">
-                    <font>
-                     <pointsize>9</pointsize>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">border: 0px;</string>
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
                    </property>
                    <property name="sizeAdjustPolicy">
                     <enum>QAbstractScrollArea::AdjustToContents</enum>
@@ -4001,12 +3717,6 @@ border: 1px solid rgb(0, 0, 0);
                      <height>20</height>
                     </size>
                    </property>
-                   <property name="font">
-                    <font>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
                    <property name="styleSheet">
                     <string notr="true">border: 0px;</string>
                    </property>
@@ -4017,15 +3727,11 @@ border: 1px solid rgb(0, 0, 0);
                  </item>
                  <item>
                   <widget class="QTableWidget" name="Ignore_Logic_Details_PVs_Table">
-                   <property name="font">
-                    <font>
-                     <pointsize>9</pointsize>
-                     <weight>75</weight>
-                     <bold>true</bold>
-                    </font>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">border: 0px;</string>
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
                    </property>
                    <property name="sizeAdjustPolicy">
                     <enum>QAbstractScrollArea::AdjustToContents</enum>
@@ -4058,6 +3764,19 @@ border: 1px solid rgb(0, 0, 0);
                     <bool>false</bool>
                    </attribute>
                   </widget>
+                 </item>
+                 <item>
+                  <spacer name="Ignore_Logic_Details_Spacer">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </spacer>
                  </item>
                 </layout>
                </widget>
@@ -4113,6 +3832,12 @@ border: 1px solid rgb(0, 0, 0);
              </item>
              <item>
               <widget class="QTableView" name="History_Table_View">
+               <property name="font">
+                <font>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
                <property name="editTriggers">
                 <set>QAbstractItemView::NoEditTriggers</set>
                </property>
@@ -4146,11 +3871,7 @@ border: 1px solid rgb(0, 0, 0);
                 <widget class="QLabel" name="Live_Number_Filters_Label">
                  <property name="font">
                   <font>
-                   <family>Sans Serif</family>
-                   <pointsize>9</pointsize>
-                   <weight>75</weight>
-                   <italic>false</italic>
-                   <bold>true</bold>
+                   <pointsize>7</pointsize>
                   </font>
                  </property>
                  <property name="text">
@@ -4228,12 +3949,6 @@ border: 1px solid rgb(0, 0, 0);
                </item>
                <item>
                 <widget class="QLineEdit" name="Interactive_Search_Line_Edit">
-                 <property name="font">
-                  <font>
-                   <weight>75</weight>
-                   <bold>true</bold>
-                  </font>
-                 </property>
                  <property name="placeholderText">
                   <string>Case-Insensitive Filter</string>
                  </property>
@@ -4243,6 +3958,12 @@ border: 1px solid rgb(0, 0, 0);
              </item>
              <item>
               <widget class="QTableView" name="History_Interactive_Table_View">
+               <property name="font">
+                <font>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
                <property name="editTriggers">
                 <set>QAbstractItemView::NoEditTriggers</set>
                </property>
@@ -4264,7 +3985,7 @@ border: 1px solid rgb(0, 0, 0);
                  <property name="sizeHint" stdset="0">
                   <size>
                    <width>40</width>
-                   <height>12</height>
+                   <height>7</height>
                   </size>
                  </property>
                 </spacer>
@@ -4273,11 +3994,7 @@ border: 1px solid rgb(0, 0, 0);
                 <widget class="QLabel" name="Interactive_Number_Filters_Label">
                  <property name="font">
                   <font>
-                   <family>Sans Serif</family>
-                   <pointsize>9</pointsize>
-                   <weight>75</weight>
-                   <italic>false</italic>
-                   <bold>true</bold>
+                   <pointsize>7</pointsize>
                   </font>
                  </property>
                  <property name="text">
@@ -4333,12 +4050,6 @@ border: 1px solid rgb(0, 0, 0);
            </item>
            <item>
             <widget class="QLineEdit" name="Recent_Fault_Search_Line_Edit">
-             <property name="font">
-              <font>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
              <property name="placeholderText">
               <string>Case-Insensitive Filter</string>
              </property>
@@ -4348,6 +4059,12 @@ border: 1px solid rgb(0, 0, 0);
          </item>
          <item>
           <widget class="QTableView" name="Recent_Faults_View">
+           <property name="font">
+            <font>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
            <property name="contextMenuPolicy">
             <enum>Qt::CustomContextMenu</enum>
            </property>
@@ -4440,12 +4157,6 @@ border: 1px solid rgb(0, 0, 0);
        </item>
        <item>
         <widget class="PyDMLabel" name="ftr_time_lbl">
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
          <property name="toolTip">
           <string/>
          </property>
