@@ -4,7 +4,7 @@ from functools import partial
 from qtpy.QtGui import QIntValidator
 from qtpy.QtCore import (QDateTime, Qt, Slot)
 from qtpy.QtWidgets import (QWidget, QHBoxLayout, QCheckBox, QComboBox, QHeaderView, QTableWidgetItem, QMessageBox)
-from epics import (caput, PV)
+from epics import PV
 from pydm import Display
 import mps_constants as const
 
@@ -65,6 +65,7 @@ class NC_MPS_Bypass(Display):
             fault_dict['fault_state'] = macros['DEVICE_FAULTED_STATES'][i]
             fault_dict['fault_pv'] = PV(fault_dict['pvname'] + const.STATE_IS_OK_POSTFIX)
             fault_dict['byp_pv'] = PV(fault_dict['pvname'] + const.BYPASS_VALUE_POSTFIX)
+            fault_dict['byp_dur_pv'] = PV(fault_dict['pvname'] + const.BYPASS_DURATION_POSTFIX)
             self.fault_states.append(fault_dict)
 
     def init_ui(self):
@@ -103,7 +104,7 @@ class NC_MPS_Bypass(Display):
         self.ui.byp_duration_edt.editingFinished.connect(self.duration_matching)
         self.ui.byp_duration_edt.returnPressed.connect(self.bypass)
 
-        self.ui.cancel_byp_btn.clicked.connect(self.cancel_bypass)
+        self.ui.cancel_byp_btn.clicked.connect(partial(self.bypass, cancel=True))
 
         for i, fault in enumerate(self.fault_states):
             fault['fault_pv'].add_callback(partial(self.update_current_val, row=i), run_now=True)
@@ -165,86 +166,64 @@ class NC_MPS_Bypass(Display):
         self.ui.byp_duration_edt.setText(str(remaining))
         self.ui.byp_exp_datetime.setText(str(exp_date))
 
+    def bypass_message(self, main_text, details):
+        msg_dialog = QMessageBox()
+        msg_dialog.setWindowTitle(main_text)
+        msg_dialog.setText(main_text)
+        msg_dialog.setStandardButtons(QMessageBox.Ok)
+        msg_dialog.setDetailedText('\n'.join(details))
+        msg_dialog.exec()
+
     @Slot()
-    def bypass(self):
-        failed = False
+    def bypass(self, cancel=False):
         dialog_details = []
 
+        if cancel:
+            byp_duration = 0
+        else:
+            try:
+                byp_duration = int(self.ui.byp_duration_edt.text())
+                if byp_duration <= 0:
+                    raise ValueError
+            except ValueError:
+                self.bypass_message("BYPASS FAILED", ["[FAILED] Invalid bypass duration"])
+                return
+
+        write_pvs = []
         for i, fault in enumerate(self.fault_states):
-            if failed or (self.is_code and not self.checkboxes[i].isChecked()):
+            if (self.is_code and not self.checkboxes[i].isChecked()):
                 continue
-
-            curr = QDateTime.currentDateTime()
-            byp_exp = self.ui.byp_exp_cal.dateTime()
-            byp_duration = curr.secsTo(byp_exp)
-            if byp_duration <= 0:
-                failed = True
-                dialog_details.append("Selected Bypass Expiration Date is invalid")
-                continue
-
-            if not self.is_code:
-                byp_state = self.ui.byp_states_cmbx.currentText()
+            elif cancel:
+                byp_val = 0
+            elif self.is_code:
+                byp_val = self.comboboxes[i].currentIndex()
+            else:
                 byp_state_ind = self.ui.byp_states_cmbx.currentIndex()
                 byp_val = (byp_state_ind & (0b1 << i)) >> i
-            else:
-                byp_val = self.comboboxes[i].currentIndex()
-                byp_state = fault['fault_state'] if byp_val else fault['ok_state']
 
-            if fault['byp_pv'].write_access:
-                caput(fault['pvname'] + "_BYPC", byp_duration)
-                caput(fault['pvname'] + "_BYPV", byp_val)
-                dialog_details.append(f"[SUCCESS] Bypass {fault['byp_pv'].pvname} "
-                                      + f"to state {byp_state} ({byp_val}) for {byp_duration}s")
-            else:
-                dialog_details.append(f"[FAILED] Could not bypass {fault['byp_pv'].pvname} "
-                                      + f"to state {byp_state} ({byp_val}) for {byp_duration}s")
-                failed = True
+            write_pvs.append((fault, byp_val))
 
-        msg_dialog = QMessageBox()
-        if not failed:
-            msg_dialog.setWindowTitle('Successful Bypass')
-            msg_dialog.setText('BYPASS SUCCESSFUL')
-        else:
-            msg_dialog.setWindowTitle('BYPASS ERROR')
-            msg_dialog.setText('CANNOT BYPASS, NO WRITE ACCESS')
-        msg_dialog.setStandardButtons(QMessageBox.Ok)
-        msg_dialog.setDetailedText('\n'.join(dialog_details))
-        msg_dialog.exec()
+        for fault, _ in write_pvs:
+            for k in ['byp_pv', 'byp_dur_pv']:
+                if not fault[k].write_access:
+                    dialog_details.append(f"[FAILED] Unable to write to {fault[k].pvname}")
 
-        # TODO: Some Message Logger API for dialog_details
+        if dialog_details:
+            main_text = "BYPASS FAILED" if not cancel else "BYPASS CANCEL FAILED"
+            self.bypass_message(main_text, dialog_details)
+            return
 
-        self.populate_values_table()
+        for fault, byp_val in write_pvs:
+            if not cancel:
+                fault['byp_pv'].value = byp_val
 
-    @Slot()
-    def cancel_bypass(self):
-        failed = False
-        dialog_details = []
+            fault['byp_dur_pv'].value = byp_duration
+            dialog_details.append("[SUCCESS] Successfully bypassed "
+                                  + f"{fault['byp_pv'].pvname} for "
+                                  + f"{byp_duration} seconds")
 
-        for fault in self.fault_states:
-            if failed:
-                continue
-
-            if fault['byp_pv'].write_access:
-                caput(fault['pvname'] + "_BYPC", 0)
-                dialog_details.append(f"[SUCCESS] Bypass {fault['byp_pv'].pvname} canceled")
-            else:
-                dialog_details.append(f"[FAILED] Bypass {fault['byp_pv'].pvname} was not canceled")
-                failed = True
-
-        msg_dialog = QMessageBox()
-        if not failed:
-            msg_dialog.setWindowTitle('Successful Bypass Cancelation')
-            msg_dialog.setText('BYPASS SUCCESSFULLY CANCELLED')
-        else:
-            msg_dialog.setWindowTitle('BYPASS ERROR')
-            msg_dialog.setText('CANNOT CANCEL BYPASS, NO WRITE ACCESS')
-        msg_dialog.setStandardButtons(QMessageBox.Ok)
-        msg_dialog.setDetailedText('\n'.join(dialog_details))
-        msg_dialog.exec()
-
-        # TODO: Some Message Logger API for dialog_details
-
-        self.populate_values_table()
+        main_text = "BYPASS SUCCEEDED" if not cancel else "BYPASS CANCEL SUCCEEDED"
+        self.bypass_message(main_text, dialog_details)
 
     def update_current_val(self, value, row, **kw):
         if not self.is_code:
