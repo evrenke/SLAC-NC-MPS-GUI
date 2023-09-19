@@ -89,21 +89,23 @@ class AllLogicModel:
         Takes all macro and relevant macro_state information into the macro_and_states list
         """
         if accel_type == 'LCLS':
-            self._macro_states = self.configurator.session.query(Macro.macro_number, Macro.name, Macro.is_code,
-                                                                 Macro.code, Macro_State.state_number,
-                                                                 Macro_State.state_name,
-                                                                 Macro_State.rate_enum_gunl, Macro_State.rate_enum_ms,
-                                                                 Macro_State.rate_enum_bykik, Macro_State.rate_enum_lhs,
-                                                                 Macro_State.rate_enum_gunh, Macro_State.rate_enum_guns,
-                                                                 Macro_State.rate_enum_bykiks
-                                                                 ).where(Macro.pk == Macro_State.macro_fk).all()
+            with self.configurator.Session() as session:
+                self._macro_states = session.query(Macro.macro_number, Macro.name, Macro.is_code,
+                                                   Macro.code, Macro_State.state_number,
+                                                   Macro_State.state_name,
+                                                   Macro_State.rate_enum_gunl, Macro_State.rate_enum_ms,
+                                                   Macro_State.rate_enum_bykik, Macro_State.rate_enum_lhs,
+                                                   Macro_State.rate_enum_gunh, Macro_State.rate_enum_guns,
+                                                   Macro_State.rate_enum_bykiks
+                                                   ).where(Macro.pk == Macro_State.macro_fk).all()
         else:  # FACET
-            self._macro_states = self.configurator.session.query(Macro.macro_number, Macro.name, Macro.is_code,
-                                                                 Macro.code, Macro_State.state_number,
-                                                                 Macro_State.state_name,
-                                                                 Macro_State.rate_enum_gunl, Macro_State.rate_enum_ms,
-                                                                 Macro_State.rate_enum_lhs
-                                                                 ).where(Macro.pk == Macro_State.macro_fk).all()
+            with self.configurator.Session() as session:
+                self._macro_states = session.query(Macro.macro_number, Macro.name, Macro.is_code,
+                                                   Macro.code, Macro_State.state_number,
+                                                   Macro_State.state_name,
+                                                   Macro_State.rate_enum_gunl, Macro_State.rate_enum_ms,
+                                                   Macro_State.rate_enum_lhs
+                                                   ).where(Macro.pk == Macro_State.macro_fk).all()
 
     def set_ignoring_macro_numbers(self):
         """
@@ -123,7 +125,8 @@ class AllLogicModel:
         queryStatement = select(text('ignoring_macro.macro_number'), text('ignored_macro.macro_number')).select_from(
             joinStatement)
 
-        results = self.configurator.session.execute(queryStatement).all()
+        with self.configurator.Session() as session:
+            results = session.execute(queryStatement).all()
 
         self.ignoring_macro_numbers = {}
 
@@ -184,9 +187,10 @@ class AllLogicModel:
         Create a list of device name-macro number pairs
         Only used for pairing faults to the macro
         """
-        device_query = self.configurator.session.query(Macro.macro_number, Macro_Device.device_name).where(
-                                                       Macro.pk == Macro_Device.macro_fk).order_by(
-            Macro_Device.position.asc()).all()
+        with self.configurator.Session() as session:
+            device_query = session.query(Macro.macro_number, Macro_Device.device_name).where(
+                                         Macro.pk == Macro_Device.macro_fk).order_by(
+                Macro_Device.position.asc()).all()
 
         self._macro_devices = [(macro_number, device_name) for macro_number, device_name in device_query]
 

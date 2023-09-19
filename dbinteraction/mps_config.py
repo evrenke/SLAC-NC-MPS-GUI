@@ -6,6 +6,6 @@ from sqlalchemy.orm import sessionmaker
 
 class MPSConfig:
     def __init__(self, filename=None):
-        self.engine = create_engine(f"sqlite:///{filename}")
+        self.engine = create_engine(f"sqlite:///{filename}?check_same_thread=False")
         self.Session = sessionmaker(bind=self.engine)
-        self.session = self.Session()
+        # self.session = self.Session()
