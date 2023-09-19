@@ -1,10 +1,15 @@
-R1.0.3  Evren Keskin    09/14/2023
-        Transition Recent Faults tab to use a SQLite database instead of a JSON file
-        Bypassed device countdown in bypassed display
-        Add current value column for bypass display
-        Add information to Related Information buttons in selection details
-        FACET: right click table to navigate to fault in logic tab
-        FACET: Add Laser Heater beam permit
+R1.0.4  Evren Keskin, Zach Domke        09/19/2023
+        Updating main GUI to use SQLite based Recent Faults
+
+R1.0.3  Evren Keskin, Zach Domke        09/12/2023
+        Added a new column to bypass UI table for non-code macros
+        Added link node information to the related link node EDM display button on selection details
+        Remake for FACET Summary Screen with proper PV's
+        Made adjustments to the bypass ui screen for cancellation options
+        Fixed Recent Faults not showing the latest items on table
+        Fixed write and read conflict issues for the recent states JSON
+        Fixed FACET recent faults right click to logic tab
+        Fixed recent fault daemon writing with correct times
 
 R1.0.2  Evren Keskin    08/29/2023
         Added jumping from recent fault screen to logic screen with selected device, with right click

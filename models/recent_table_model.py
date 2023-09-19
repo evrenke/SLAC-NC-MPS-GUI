@@ -1,3 +1,5 @@
+import time
+import threading
 from logging import getLogger
 from platform import system
 from qtpy.QtCore import (Qt, QModelIndex, QAbstractTableModel,
@@ -6,10 +8,9 @@ from qtpy.QtWidgets import (QStyledItemDelegate, QApplication, QToolTip)
 from .enums import Statuses
 from models.all_logic_model import AllLogicModel
 from models.prepped_macro_state import PreppedMacroState
-import json
-import fcntl
-import time
 from mps_constants import RECENT_FAULTS_MAX
+from dbinteraction.mps_config import MPSConfig
+from dbinteraction.recentStatesDB.recent_sql import do_select
 
 
 class RecentTableModel(QAbstractTableModel):
@@ -29,7 +30,7 @@ class RecentTableModel(QAbstractTableModel):
     """
     logger = getLogger(__name__)
 
-    def __init__(self, parent, model: AllLogicModel, rates_list):
+    def __init__(self, parent, model: AllLogicModel, rates_list, recent_faults_filename):
         super(RecentTableModel, self).__init__(parent)
         self.model = model
 
@@ -45,6 +46,8 @@ class RecentTableModel(QAbstractTableModel):
         self._data = [['not an item', 'DATABASE ERROR', 'no state', '--',
                        '--', '--', '--', '--', '--', '--', '--', '--', -1]] * RECENT_FAULTS_MAX
         self.channels = []  # channels used to copy the name of the logic item easily with middle click
+
+        self.config = MPSConfig(recent_faults_filename)
 
     def rowCount(self, index: QModelIndex = QModelIndex()):
         """Return the number of rows in the model."""
@@ -94,31 +97,39 @@ class RecentTableModel(QAbstractTableModel):
         if orientation == Qt.Horizontal and role == Qt.DisplayRole:
             return self.hdr_lst[section]
 
-    def set_data(self, jsonFilePath):
+    def set_data(self):
         """
         Set initial data for each row, based on a recent state.
         Populate each recent fault item with the
         date, macro name, state name, and state rates info.
         """
-        time.sleep(0.1)  # Give the daemon additional time to go first
-        state_messages = self.get_recent_states(jsonFilePath)
+        # Problem to improve upon
+        # The daemon AND this table both try to change data when current state PV changes
+        # IF the daemon writes new changes to sqlite db in time, this is fine
+        # BUT!!! this program has no idea if its pulling in new changes or not
+        # Easy, but odd fix: have a long time(5 seconds) to pull in recent fault changes
+        # Probably very annoying for control operators. Lol.
+        time.sleep(5)  # Give the daemon additional time to go first
+        state_messages = self.get_sqlite_recent_states()
 
         self._data = []
 
         self.channels = []
 
         for index, recent_state in enumerate(state_messages):
-            macro_name = recent_state['macro']
-            state_name = recent_state['statename']
-            state_rates = recent_state['staterates']
-            date = recent_state['date']
+            date = recent_state[1]
+            macro_name = recent_state[2]
+            state_name = recent_state[3]
+            min_rate = recent_state[4]
+            state_rates = recent_state[5:]
 
             lst = [date] * len(self.hdr_lst)
             lst[0] = date
             lst[1] = macro_name
             lst[2] = state_name
+            lst[3] = min_rate
             for index, rate in enumerate(state_rates):
-                lst[index + 3] = rate
+                lst[index + 4] = rate
 
             macro_num = -1
             for num in self.model.numbersToPreppedDevices:
@@ -129,44 +140,17 @@ class RecentTableModel(QAbstractTableModel):
 
             self._data.insert(0, lst)
 
-            self.dataChanged.emit(self.index(index, 0),
-                                  self.index(index, 10))
+            self.dataChanged.emit(self.index(0, 1),
+                                  self.index(0, len(self.hdr_lst) - 1))
 
             self.channels.insert(0, macro_name)
 
-    def get_recent_states(self, jsonFilepath):
+    def get_sqlite_recent_states(self):
 
-        file_path = jsonFilepath
-        file_lock = open(file_path, 'a')  # Open the file
-        recent_states_list = []
-
-        # Lock the file (fcntl.F_LOCK)
-        try:
-            fcntl.flock(file_lock.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-            # print("File is locked")
-
-            input_file = open(jsonFilepath)
-            json_array = json.load(input_file)
-            recent_states_list = []
-
-            for item in json_array['recent faults']:
-                recent_state_details = {'statename': None, 'staterates': None, 'macro': None, 'date': None}
-                recent_state_details['statename'] = item['statename']
-                recent_state_details['staterates'] = item['staterates']
-                recent_state_details['macro'] = item['macro']
-                recent_state_details['date'] = item['date']
-                recent_states_list.append(recent_state_details)
-
-        except IOError:
-            # print("File is already locked by another process")
-            time.sleep(2)
-            return self.get_recent_states(jsonFilepath)
-
-        finally:
-            # Unlock the file (fcntl.F_UNLOCK)
-            fcntl.flock(file_lock.fileno(), fcntl.LOCK_UN)
-            # print("File is unlocked")
-            file_lock.close()
+        lock = threading.Lock()
+        with lock:
+            with self.config.Session() as session:
+                recent_states_list = do_select(session)
 
         return recent_states_list
 

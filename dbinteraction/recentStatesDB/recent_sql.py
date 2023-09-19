@@ -2,7 +2,6 @@ from sqlalchemy import create_engine, exc
 from sqlalchemy import Table, Column, String, MetaData
 from sqlalchemy import BigInteger
 from sqlalchemy.dialects import postgresql, mysql, sqlite
-from dbinteraction.mps_config import MPSConfig
 from dbinteraction.recentStatesDB.recent_state import Recent_State
 from mps_constants import RECENT_FAULTS_MAX
 
@@ -35,21 +34,19 @@ def do_single_insert(session, date_param, macro_name_param, state_name_param,
     # print('new length:', configurator.session.query(Recent_State.id).count())
 
 
-def do_select(recent_sqlite_file):
-    configurator = MPSConfig(recent_sqlite_file)
+def do_select(session):
 
     # SELECT id, date, macro_name, state_name, min_rate, \
     # rate_gunl, rate_ms, rate_bykik, rate_lhs, rate_gunh, rate_guns, rate_bykiks \
     # FROM recent_states \
     # ORDER BY date ;
 
-    with configurator.Session() as session:
-        results = session.query(Recent_State.id, Recent_State.date, Recent_State.macro_name,
-                                Recent_State.state_name, Recent_State.min_rate, Recent_State.rate_gunl,
-                                Recent_State.rate_ms, Recent_State.rate_bykik,
-                                Recent_State.rate_lhs, Recent_State.rate_gunh,
-                                Recent_State.rate_guns, Recent_State.rate_bykiks).order_by(
-                                    Recent_State.date).all()
+    results = session.query(Recent_State.id, Recent_State.date, Recent_State.macro_name,
+                            Recent_State.state_name, Recent_State.min_rate, Recent_State.rate_gunl,
+                            Recent_State.rate_ms, Recent_State.rate_bykik,
+                            Recent_State.rate_lhs, Recent_State.rate_gunh,
+                            Recent_State.rate_guns, Recent_State.rate_bykiks).order_by(
+                                Recent_State.date).all()
     notsqliterelatedresults = []  # convert results to a regular list in python
     for item in results:
         notsqliterelatedresults.append(item)

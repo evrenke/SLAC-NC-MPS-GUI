@@ -33,7 +33,7 @@ CUD_MODE=''
 IOC_PREFIX='IOC:BSY0:MP01'
 CONFIG_DB_FILE=${EPICS_IOC_TOP}/MpsConfiguration/current/database/
 LOGIC_DB_FILE=${EPICS_IOC_TOP}/MpsConfiguration/current/algorithm/
-JSONFILEPATH='dbinteraction/recentStatesJSON/recent_states_lcls.json'
+RECENT_DB_FILE='dbinteraction/recentStatesDB/recent_states_lcls.sqlite'
 
 
 while [ $# -gt 0 ]
@@ -43,7 +43,7 @@ do
         IOC_PREFIX=IOC:SYS1:MP01
         CONFIG_DB_FILE=${EPICS_IOC_TOP}/MpsConfiguration-FACET/current/database/
         LOGIC_DB_FILE=${EPICS_IOC_TOP}/MpsConfiguration-FACET/current/algorithm/
-        JSONFILEPATH='dbinteraction/recentStatesJSON/recent_states_facet.json' ;;
+        RECENT_DB_FILE='dbinteraction/recentStatesDB/recent_states_facet.sqlite';;
         -c | --cud) CUD_MODE="$2" 
                     shift 
                     echo $CUD_MODE ;;
@@ -58,7 +58,7 @@ do
 done
 
 
-MACROS="accel_type=$accel_type, IOC_PREFIX=$IOC_PREFIX, configDB_Prefix=$CONFIG_DB_FILE, logicDB_Prefix=$LOGIC_DB_FILE, JSONFILEPATH=$JSONFILEPATH"
+MACROS="accel_type=$accel_type, IOC_PREFIX=$IOC_PREFIX, configDB_Prefix=$CONFIG_DB_FILE, logicDB_Prefix=$LOGIC_DB_FILE, RECENT_DB_FILE=$RECENT_DB_FILE"
 
 
 if [[ -n $CUD_MODE ]]
