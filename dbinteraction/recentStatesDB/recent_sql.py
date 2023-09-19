@@ -42,10 +42,10 @@ def do_select(session):
     # ORDER BY date ;
 
     results = session.query(Recent_State.id, Recent_State.date, Recent_State.macro_name,
-                            Recent_State.state_name, Recent_State.min_rate, Recent_State.rate_gunl,
-                            Recent_State.rate_ms, Recent_State.rate_bykik,
-                            Recent_State.rate_lhs, Recent_State.rate_gunh,
-                            Recent_State.rate_guns, Recent_State.rate_bykiks).order_by(
+                            Recent_State.state_name, Recent_State.min_rate, Recent_State.rate_ms,
+                            Recent_State.rate_lhs, Recent_State.rate_gunl, Recent_State.rate_gunh,
+                            Recent_State.rate_guns, Recent_State.rate_bykik,
+                            Recent_State.rate_bykiks).order_by(
                                 Recent_State.date).all()
     notsqliterelatedresults = []  # convert results to a regular list in python
     for item in results:

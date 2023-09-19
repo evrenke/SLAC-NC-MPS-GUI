@@ -17,12 +17,13 @@ class RecentFaultsUI():
     PV changed.
     ===================================================================
     """
-    def recent_faults_init(self, is_cud, rates_list):
+    def recent_faults_init(self, is_cud, rates_list, accel_type):
         """
         Initializer for everything in Logic tab: Message Table Model,
         Message Item Delegate, and the header.
         """
-        self.recent_states_tbl_model = RecentTableModel(self, self.model, rates_list, self.recentStatesDBPath)
+        self.recent_states_tbl_model = RecentTableModel(self, self.model, rates_list,
+                                                        self.recentStatesDBPath, accel_type)
 
         self.recent_faults_model = MPSSortFilterModel(self)
         self.recent_faults_model.setSourceModel(self.recent_states_tbl_model)
