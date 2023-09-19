@@ -22,7 +22,7 @@ class RecentFaultsUI():
         Initializer for everything in Logic tab: Message Table Model,
         Message Item Delegate, and the header.
         """
-        self.recent_states_tbl_model = RecentTableModel(self, self.model, rates_list)
+        self.recent_states_tbl_model = RecentTableModel(self, self.model, rates_list, self.recentStatesDBPath)
 
         self.recent_faults_model = MPSSortFilterModel(self)
         self.recent_faults_model.setSourceModel(self.recent_states_tbl_model)
@@ -84,17 +84,17 @@ class RecentFaultsUI():
     @Slot()
     def update_table(self, **kw):
         """
-        Use the json file path that the UI was launched with to update the table data
+        Use the sqlite db file path that the UI was launched with to update the table data
         """
-        self.recent_states_tbl_model.set_data(self.jsonFilePath)
+        self.recent_states_tbl_model.set_data()
         self.show_recent_faults_row_count()
 
     @Slot()
     def update_table_cud(self, **kw):
         """
-        Use the json file path that the UI was launched with to update the table data
+        Use the sqlite db file path that the UI was launched with to update the table data
         """
-        self.recent_states_tbl_model.set_data(self.jsonFilePath)
+        self.recent_states_tbl_model.set_data()
 
     @Slot()
     def show_recent_faults_row_count(self):

@@ -11,7 +11,6 @@ from ui.ignore import IgnoreUI
 from ui.history import HistoryUI
 from ui.recent_faults import RecentFaultsUI
 from epics import PV
-# from functools import partial
 import time
 from mps_constants import CURRENT_STATES_POSTFIX, CONFIG_VERSION_POSTFIX, LOGIC_VERSION_POSTFIX
 
@@ -25,7 +24,7 @@ class MpsGuiDisplay(Display, SummaryUI, FaultsUI, LogicUI, IgnoreUI, HistoryUI, 
     1) the database file paths for configDB
     2) LogicDB path
     3) HistoryDB path
-    4) Recent states JSON path
+    4) Recent states DB path
     4) Whether or not to run in CUD mode
     5) Choosing LCLS or FACET
     6) IOC_PREFIX (different between LCLS and FACET)
@@ -65,7 +64,7 @@ class MpsGuiDisplay(Display, SummaryUI, FaultsUI, LogicUI, IgnoreUI, HistoryUI, 
                 'configDB_Prefix' in macros and
                 'logicDB_Prefix' in macros and
                 'IOC_PREFIX' in macros and
-                'JSONFILEPATH' in macros and
+                'RECENT_DB_FILE' in macros and
                 'accel_type' in macros):
             configPrefix = macros['configDB_Prefix']
             logicPrefix = macros['logicDB_Prefix']
@@ -87,7 +86,7 @@ class MpsGuiDisplay(Display, SummaryUI, FaultsUI, LogicUI, IgnoreUI, HistoryUI, 
 
             self.model = myLogicDB
             self.messageModel = messageModel
-            self.jsonFilePath = macros['JSONFILEPATH']
+            self.recentStatesDBPath = macros['RECENT_DB_FILE']
 
             # Initialize all screens first
 
