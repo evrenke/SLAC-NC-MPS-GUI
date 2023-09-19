@@ -118,7 +118,7 @@ class RecentTableModel(QAbstractTableModel):
 
         self.channels = []
 
-        for index, recent_state in enumerate(state_messages):
+        for recent_state in state_messages:
             date = recent_state[1]
             macro_name = recent_state[2]
             state_name = recent_state[3]
@@ -134,9 +134,9 @@ class RecentTableModel(QAbstractTableModel):
                 for index, rate in enumerate(state_rates):
                     lst[index + 4] = rate
             else:  # FACET
-                lst[index + 4] = state_rates[0]
-                lst[index + 5] = state_rates[2]
-                lst[index + 6] = state_rates[1]
+                lst[4] = state_rates[0]
+                lst[5] = state_rates[2]
+                lst[6] = state_rates[1]
 
             macro_num = -1
             for num in self.model.numbersToPreppedDevices:
