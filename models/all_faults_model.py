@@ -73,12 +73,13 @@ class ALLFaultsModel:
         Each query sets specific attributes alongside common ones, adding to the final list
         """
         query_results = []
-        ef_query_results = self.configurator.session.query(EF.area, EF.description, EF.device_name,
-                                                           EF.fault_name, EF.fault_number, EF.faulted_state_name,
-                                                           EF.is_autorecoverable, EF.ok_state_name, EF.pv_area,
-                                                           EF.pv_attribute, EF.pv_device_type, EF.pv_position,
-                                                           EF.input_pv, EF.position_x,
-                                                           EF.position_y, EF.position_z).all()
+        with self.configurator.Session() as session:
+            ef_query_results = session.query(EF.area, EF.description, EF.device_name,
+                                             EF.fault_name, EF.fault_number, EF.faulted_state_name,
+                                             EF.is_autorecoverable, EF.ok_state_name, EF.pv_area,
+                                             EF.pv_attribute, EF.pv_device_type, EF.pv_position,
+                                             EF.input_pv, EF.position_x,
+                                             EF.position_y, EF.position_z).all()
 
         for ef in ef_query_results:
             fault = PreppedFault()
@@ -99,12 +100,13 @@ class ALLFaultsModel:
 
             query_results.append(fault)
 
-        lnf_query_results = self.configurator.session.query(LNF.area, LNF.description, LNF.device_name,
-                                                            LNF.fault_name, LNF.fault_number, LNF.faulted_state_name,
-                                                            LNF.is_autorecoverable, LNF.ok_state_name, LNF.pv_area,
-                                                            LNF.pv_attribute, LNF.pv_device_type, LNF.pv_position,
-                                                            LNF.link_node_id, zln.ZHOSTNAME).where(
-            LNF.link_node_id == zln.ZLINKNODEID).all()
+        with self.configurator.Session() as session:
+            lnf_query_results = session.query(LNF.area, LNF.description, LNF.device_name,
+                                              LNF.fault_name, LNF.fault_number, LNF.faulted_state_name,
+                                              LNF.is_autorecoverable, LNF.ok_state_name, LNF.pv_area,
+                                              LNF.pv_attribute, LNF.pv_device_type, LNF.pv_position,
+                                              LNF.link_node_id, zln.ZHOSTNAME).where(
+                LNF.link_node_id == zln.ZLINKNODEID).all()
 
         for lnf in lnf_query_results:
             fault = PreppedFault()
@@ -123,14 +125,15 @@ class ALLFaultsModel:
 
             query_results.append(fault)
 
-        lncf_query_results = self.configurator.session.query(LNCF.area, LNCF.description, LNCF.device_name,
-                                                             LNCF.fault_name, LNCF.fault_number,
-                                                             LNCF.faulted_state_name,
-                                                             LNCF.is_autorecoverable, LNCF.ok_state_name, LNCF.pv_area,
-                                                             LNCF.pv_attribute, LNCF.pv_device_type, LNCF.pv_position,
-                                                             LNCF.cable, LNCF.card, LNCF.channel,
-                                                             LNCF.debounce_time, LNCF.is_deadman, LNCF.link_node_id,
-                                                             LNCF.position_x, LNCF.position_y, LNCF.position_z).all()
+        with self.configurator.Session() as session:
+            lncf_query_results = session.query(LNCF.area, LNCF.description, LNCF.device_name,
+                                               LNCF.fault_name, LNCF.fault_number,
+                                               LNCF.faulted_state_name,
+                                               LNCF.is_autorecoverable, LNCF.ok_state_name, LNCF.pv_area,
+                                               LNCF.pv_attribute, LNCF.pv_device_type, LNCF.pv_position,
+                                               LNCF.cable, LNCF.card, LNCF.channel,
+                                               LNCF.debounce_time, LNCF.is_deadman, LNCF.link_node_id,
+                                               LNCF.position_x, LNCF.position_y, LNCF.position_z).all()
 
         for lncf in lncf_query_results:
             fault = PreppedFault()
@@ -156,11 +159,12 @@ class ALLFaultsModel:
 
             query_results.append(fault)
 
-        lpf_query_results = self.configurator.session.query(LPF.area, LPF.description, LPF.device_name,
-                                                            LPF.fault_name, LPF.fault_number, LPF.faulted_state_name,
-                                                            LPF.is_autorecoverable, LPF.ok_state_name, LPF.pv_area,
-                                                            LPF.pv_attribute, LPF.pv_device_type, LPF.pv_position,
-                                                            LPF.position_x, LPF.position_y, LPF.position_z).all()
+        with self.configurator.Session() as session:
+            lpf_query_results = session.query(LPF.area, LPF.description, LPF.device_name,
+                                              LPF.fault_name, LPF.fault_number, LPF.faulted_state_name,
+                                              LPF.is_autorecoverable, LPF.ok_state_name, LPF.pv_area,
+                                              LPF.pv_attribute, LPF.pv_device_type, LPF.pv_position,
+                                              LPF.position_x, LPF.position_y, LPF.position_z).all()
 
         for lpf in lpf_query_results:
             fault = PreppedFault()

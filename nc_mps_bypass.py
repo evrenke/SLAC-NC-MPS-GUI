@@ -1,14 +1,12 @@
-from pydm import Display
-from functools import partial
-from qtpy.QtCore import (QDateTime, Qt)
-from qtpy.QtGui import QIntValidator
-from qtpy.QtWidgets import (QWidget, QHBoxLayout, QCheckBox, QComboBox, QHeaderView, QTableWidgetItem)
-from epics import PV
-import numpy
+import numpy as np
 from datetime import datetime
-from mps_constants import (BYPASS_VALUE_POSTFIX, STATE_IS_OK_POSTFIX,
-                           BYPASS_DURATION_POSTFIX, BYPASS_FAULT_NUMBERS_POSTFIX,
-                           BYPASS_SECONDS_POSTFIX, FROM_1970_TO_1990_IN_SECONDS)
+from functools import partial
+from qtpy.QtGui import QIntValidator
+from qtpy.QtCore import (QDateTime, Qt, Slot)
+from qtpy.QtWidgets import (QWidget, QHBoxLayout, QCheckBox, QComboBox, QHeaderView, QTableWidgetItem, QMessageBox)
+from epics import PV
+from pydm import Display
+import mps_constants as const
 
 
 class NC_MPS_Bypass(Display):
@@ -34,320 +32,253 @@ class NC_MPS_Bypass(Display):
     It has been adjusted to not make that writing for now.
     """
     def __init__(self, parent=None, args=[], macros=None, ui_filename=None):
-        super(NC_MPS_Bypass, self).__init__(parent=None, args=None,
-                                            macros=None, ui_filename='ui/nc_mps_bypass.ui')
+        super(NC_MPS_Bypass, self).__init__(parent=parent, args=args,
+                                            macros=macros, ui_filename='ui/nc_mps_bypass.ui')
 
-        # Change the window elements for a code macro, so the only table is the fault specific bypasser
-        if macros['DEVICE_IS_CODE'] == 1:
-            self.device_hdr = ["Bit", "Current Value", "Is Bypassed", "Expiration Date", "Bypass", "New Value"]
-            self.ui.bypass_code_values_table.setColumnCount(len(self.device_hdr))
-            self.ui.bypass_code_values_table.setHorizontalHeaderLabels(self.device_hdr)
+        self.init_macros(macros)
+        self.init_ui()
+        self.populate_values_table()
+        self.init_slots()
 
-            hdr = self.ui.bypass_code_values_table.horizontalHeader()
-            hdr.setSectionResizeMode(QHeaderView.Interactive)
-            hdr.setSectionResizeMode(0, QHeaderView.Stretch)
-            hdr.setSectionResizeMode(2, QHeaderView.Fixed)
+    def init_macros(self, macros):
+        self.ioc_prefix = macros['IOC_PREFIX']
+        self.byp_ids = PV(self.ioc_prefix + const.BYPASS_FAULT_NUMBERS_POSTFIX)
+        self.byp_durations = PV(self.ioc_prefix + const.BYPASS_SECONDS_POSTFIX)
 
-            self.pop_code_values_table(macros['DEVICE_OK_STATES'],
-                                       macros['DEVICE_FAULTED_STATES'],
-                                       macros['DEVICE_FAULT_PVS'],
-                                       macros['DEVICE_FAULT_NUMBERS'],
-                                       macros['IOC_PREFIX'])
-            self.ui.bypass_values_table.hide()
-            self.ui.bypass_states_label.hide()
-            self.ui.bypass_states_combobox.hide()
-            self.ui.min_rate_limit_label.hide()
-            self.resize(800, self.size().height())
-        # Change the window elements for a non-code macro, so the only table is the pv and value table
+        self.is_code = macros['DEVICE_IS_CODE'] == 1
+        self.device_name = macros['DEVICE_NAME']
+        self.current_state = macros['DEVICE_CURRENT_STATE_NUMBER']
+
+        self.macro_states = []
+        for i in range(len(macros['DEVICE_MACRO_STATES'])):
+            macro_dict = {}
+            macro_dict['state'] = macros['DEVICE_MACRO_STATES'][i]
+            macro_dict['min_rate'] = macros['DEVICE_MACRO_STATE_MINS'][i]
+            self.macro_states.append(macro_dict)
+
+        self.fault_states = []
+        for i in range(len(macros['DEVICE_FAULT_PVS'])):
+            fault_dict = {}
+            fault_dict['pvname'] = macros['DEVICE_FAULT_PVS'][i]
+            fault_dict['id'] = macros['DEVICE_FAULT_NUMBERS'][i]
+            fault_dict['ok_state'] = macros['DEVICE_OK_STATES'][i]
+            fault_dict['fault_state'] = macros['DEVICE_FAULTED_STATES'][i]
+            fault_dict['fault_pv'] = PV(fault_dict['pvname'] + const.STATE_IS_OK_POSTFIX)
+            fault_dict['byp_pv'] = PV(fault_dict['pvname'] + const.BYPASS_VALUE_POSTFIX)
+            fault_dict['byp_dur_pv'] = PV(fault_dict['pvname'] + const.BYPASS_DURATION_POSTFIX)
+            self.fault_states.append(fault_dict)
+
+    def init_ui(self):
+        self.ui.byp_dev_lbl.setText(self.device_name)
+
+        if not self.is_code:
+            device_hdr = ["Device", "Current Value", " New Value"]
+            self.ui.code_logic_frame.hide()
         else:
-            self.device_hdr = ["Device", "Value"]
-            self.ui.bypass_values_table.setColumnCount(len(self.device_hdr))
-            self.ui.bypass_values_table.setHorizontalHeaderLabels(self.device_hdr)
+            device_hdr = ["Bit", "Current Value", "Is Bypassed", "Expiration", "Bypass", "New Value"]
+            self.ui.byp_states_lbl.hide()
+            self.ui.byp_states_cmbx.hide()
+            self.ui.min_rate_lbl.hide()
+            self.resize(800, self.size().height())
 
-            hdr = self.ui.bypass_values_table.horizontalHeader()
-            hdr.setSectionResizeMode(QHeaderView.Interactive)
-            hdr.setSectionResizeMode(0, QHeaderView.Stretch)
-            self.set_states_combo_box(macros['DEVICE_MACRO_STATES'], macros['DEVICE_MACRO_STATE_MINS'])
-            self.pop_values_table(macros['DEVICE_CURRENT_STATE_NUMBER'], macros['DEVICE_FAULT_PVS'])
-            self.ui.bypass_code_values_table.hide()
+        self.ui.byp_val_tbl.setColumnCount(len(device_hdr))
+        self.ui.byp_val_tbl.setHorizontalHeaderLabels(device_hdr)
 
-        self.ui.bypassed_device_name.setText(macros['DEVICE_NAME'])
+        hdr = self.ui.byp_val_tbl.horizontalHeader()
+        hdr.setSectionResizeMode(QHeaderView.Interactive)
+        hdr.setSectionResizeMode(0, QHeaderView.Stretch)
 
-        # Set up limits for duration setting: calendar has to be past current time
-        # Duration has to be above 0
-        self.ui.bypass_expiration_calendar.setMinimumDateTime(QDateTime.currentDateTime())
-        self.bypass_duration_value.setValidator(QIntValidator(bottom=0))
+        states = [ms['state'] for ms in self.macro_states]
+        self.ui.byp_states_cmbx.addItems(states)
+        self.ui.byp_states_cmbx.setCurrentIndex(self.current_state)
+        self.update_state(self.current_state)
 
-        self.check_code_macro_info(macros['DEVICE_IS_CODE'])
+        self.ui.byp_exp_cal.setMinimumDateTime(QDateTime.currentDateTime())
+        self.ui.byp_duration_edt.setValidator(QIntValidator(bottom=0))
 
-        self.check_cancel_bypass_options(macros['DEVICE_FAULT_PVS'],
-                                         macros['DEVICE_IS_CODE'],
-                                         macros['DEVICE_FAULT_NUMBERS'],
-                                         macros['IOC_PREFIX'])
+    def init_slots(self):
+        self.ui.byp_states_cmbx.currentIndexChanged.connect(self.update_state)
 
-        # Connect the calendar to modify the duration number display
-        # And connect the duration number display to do a bypass on 'Enter' press
-        self.ui.bypass_expiration_calendar.editingFinished.connect(partial(self.set_duration_from_calendar))
+        self.ui.byp_exp_cal.dateTimeChanged.connect(self.duration_matching)
+        self.ui.byp_exp_cal.returnPressed.connect(self.bypass)
+        self.ui.byp_duration_edt.editingFinished.connect(self.duration_matching)
+        self.ui.byp_duration_edt.returnPressed.connect(self.bypass)
 
-        self.ui.bypass_duration_value.returnPressed.connect(partial(self.attempt_bypass, macros['DEVICE_IS_CODE'],
-                                                                    macros['DEVICE_FAULT_PVS'],
-                                                                    macros['DEVICE_OK_STATES'],
-                                                                    macros['DEVICE_FAULTED_STATES'],
-                                                                    macros['DEVICE_CURRENT_STATE_NUMBER'],
-                                                                    macros['DEVICE_FAULT_NUMBERS'],
-                                                                    macros['IOC_PREFIX']))
+        self.ui.cancel_byp_btn.clicked.connect(partial(self.bypass, cancel=True))
 
-    def check_code_macro_info(self, is_code):
-        """
-        Hides code instructions on non-code macros
-        """
-        if is_code != 1:
-            self.ui.code_info_label.hide()
-            self.ui.code_instructions_label.hide()
+        for i, fault in enumerate(self.fault_states):
+            fault['fault_pv'].add_callback(partial(self.update_current_val, row=i), run_now=True)
+            fault['byp_pv'].add_callback(self.populate_exp_frame, run_now=True)
 
-    def pop_values_table(self, current_state_number, fault_pvs):
-        """Populate the values table. The values table holds a fault pv
-        and its related bit value based on the current state of the macro"""
-        self.ui.bypass_values_table.setRowCount(len(fault_pvs))
-        for i, fault_pv in enumerate(fault_pvs):
-            pv_item = CellItem(fault_pv)
+            if self.is_code:
+                fault['byp_pv'].add_callback(partial(self.update_is_byp, row=i, id=fault['id']), run_now=True)
 
-            value_str = self.get_bit_at(current_state_number, i)
-            bypassed_value_item = CellItem(str(value_str))
+    def populate_values_table(self):
+        self.comboboxes = []
+        self.checkboxes = []
 
-            self.ui.bypass_values_table.setItem(i, 0, pv_item)
-            self.ui.bypass_values_table.setItem(i, 1, bypassed_value_item)
+        self.ui.byp_val_tbl.setRowCount(len(self.fault_states))
 
-    def pop_code_values_table(self, ok_states, faulted_states, fault_pvs, fault_numbers, IOC_PREFIX):
-        """Populate the code values table. The code values table
-        allows users to set the bypassing by bit values, and gives additional buttons for this input
-        Each row will show the actual fault pv, the current fault pv as the screen is opened,
-        and a combo box for choosing a state to bypass to"""
+        for i, fault in enumerate(self.fault_states):
+            pv_item = CellItem(fault['pvname'])
+            self.ui.byp_val_tbl.setItem(i, 0, pv_item)
 
-        self.checkBoxes = []
-        self.comboBoxes = []
+            if not self.is_code:
+                byp_val = (self.current_state & (0b1 << i)) >> i
+                byp_val_item = CellItem(str(byp_val))
+                self.ui.byp_val_tbl.setItem(i, 2, byp_val_item)
+                continue
 
-        self.ui.bypass_code_values_table.setRowCount(len(fault_pvs))
-        for i, fault_pv in enumerate(fault_pvs):
-            pv_item = CellItem(fault_pv)
+            byp_checkbox = QCheckBox()
+            byp_checkbox.setChecked(fault['id'] in self.byp_ids.value)
+            self.checkboxes.append(byp_checkbox)
 
-            faultvalue = PV(fault_pv + STATE_IS_OK_POSTFIX).get()
-
-            state_combobox_widget = QComboBox()
-            state_combobox_widget.addItem(ok_states[i])
-            state_combobox_widget.addItem(faulted_states[i])
-
-            self.comboBoxes.append(state_combobox_widget)
-
-            current_state_item = CellItem(state_combobox_widget.itemText(int(faultvalue)))
-
-            will_bypass_item = QCheckBox()
-            will_bypass_item.setChecked(True)
-
-            is_bypassed = PV(fault_pv + BYPASS_VALUE_POSTFIX).get()
-            is_bypassed_text = 'YES'
-            if is_bypassed == 0:
-                will_bypass_item.setChecked(False)
-                is_bypassed_text = 'NO'
-            is_bypassed_item = CellItem(is_bypassed_text)
-
-            bypassed_faults = PV(IOC_PREFIX + BYPASS_FAULT_NUMBERS_POSTFIX).value
-            seconds = PV(IOC_PREFIX + BYPASS_SECONDS_POSTFIX).value
-
-            if fault_numbers[i] in bypassed_faults:
-                second_index = numpy.where(bypassed_faults == fault_numbers[i])[0]
-                duration = seconds[second_index][0] + FROM_1970_TO_1990_IN_SECONDS
-                exp_date = datetime.fromtimestamp(duration).strftime("%A, %B %d, %Y %I:%M:%S")
-            else:
-                exp_date = '-'
-
-            expiration_date_item = CellItem(exp_date)
-
-            bypass_checkox_widget = QWidget()
+            byp_checkbox_wid = QWidget()
             layout = QHBoxLayout()
             layout.setAlignment(Qt.AlignCenter)
             layout.setContentsMargins(0, 0, 0, 0)
-            layout.addWidget(will_bypass_item)
-            bypass_checkox_widget.setLayout(layout)
-            self.checkBoxes.append(will_bypass_item)
+            layout.addWidget(byp_checkbox)
+            byp_checkbox_wid.setLayout(layout)
 
-            # Set the base value of the buttons based on the given current state of the faults
-            # Columns to set: ["Bit", "Current Value", "Is Bypassed", "New Value", "Bypass Duration Left", "Bypass"]
-            self.ui.bypass_code_values_table.setItem(i, 0, pv_item)
-            self.ui.bypass_code_values_table.setItem(i, 1, current_state_item)
-            self.ui.bypass_code_values_table.setItem(i, 2, is_bypassed_item)
-            self.ui.bypass_code_values_table.setItem(i, 3, expiration_date_item)
-            self.ui.bypass_code_values_table.setCellWidget(i, 4, bypass_checkox_widget)
-            self.ui.bypass_code_values_table.setCellWidget(i, 5, state_combobox_widget)
+            state_combobox = QComboBox()
+            state_combobox.addItems((fault['ok_state'], fault['fault_state']))
+            state_combobox.setCurrentIndex(fault['byp_pv'].value)
+            self.comboboxes.append(state_combobox)
 
-    def get_bit_at(self, number: int, index: int):
-        """
-        Gets a bitwise value for a pv using a given state number
-        """
-        while (index > 0):
-            number = number >> 1
-            index -= 1
-        return number % 2
+            self.ui.byp_val_tbl.setCellWidget(i, 4, byp_checkbox_wid)
+            self.ui.byp_val_tbl.setCellWidget(i, 5, state_combobox)
 
-    def set_states_combo_box(self, state_names, state_mins):
-        """
-        For non-code macro, sets the combo box to have a list of the possible states of the macro
-        """
-        self.ui.bypass_states_combobox.addItems(state_names)
-        self.update_min_rate_label(state_mins)
-        self.ui.bypass_states_combobox.currentIndexChanged.connect(partial(self.update_min_rate_label, state_mins))
+    def populate_exp_frame(self, **kw):
+        fault_ids = [f['id'] for f in self.fault_states]
+        byp_ind = np.where(np.isin(self.byp_ids.value, fault_ids))[0].tolist()
 
-    def update_min_rate_label(self, state_mins):
-        """
-        A small label for the min rate of the selected combo box state
-        """
-        self.ui.min_rate_limit_label.setText('will rate limit to ' +
-                                             state_mins[self.ui.bypass_states_combobox.currentIndex()])
+        if not byp_ind:
+            self.ui.byp_exp_frame.hide()
+            return
 
-    def check_cancel_bypass_options(self, pvs, is_code, fault_numbers, IOC_PREFIX):
-        """
-        Either hides the cancel bypass options, or shows them with a given PV
-        This logic only really works for a non-code macro to bypass
-        """
-        if is_code != 1:  # non-code macro
-            # we can always check the first one, and assume that all faults are passed
-            # firstFaultBypassed = PV(pvs[0] + BYPASS_VALUE_POSTFIX).get()
-            firstDuration = PV(pvs[0] + BYPASS_DURATION_POSTFIX).get()
-            if firstDuration == 0:  # not bypassed
-                self.ui.cancel_bypass_button.hide()
-                self.ui.bypass_exp_time_label.hide()
-                self.ui.bypass_exp_date_time.hide()
-            else:  # attach info about an existing bypass duration
-                # For checking bypassing, we need to check the fault id in the bypassed list
-                firstDuration = None
+        min_duration = int(min([self.byp_durations.value[i] for i in byp_ind]))
+        duration = min_duration + const.FROM_1970_TO_1990_IN_SECONDS
+        exp_qdt = QDateTime.fromSecsSinceEpoch(duration)
+        exp_date = datetime.fromtimestamp(duration)
+        remaining = QDateTime.currentDateTime().secsTo(exp_qdt)
 
-                bypassed_faults = PV(IOC_PREFIX + BYPASS_FAULT_NUMBERS_POSTFIX).value
-                seconds = PV(IOC_PREFIX + BYPASS_SECONDS_POSTFIX).value
-                first_fault_num = fault_numbers[0]
-                second_index = numpy.where(bypassed_faults == first_fault_num)[0]
-                firstDuration = seconds[second_index][0] + FROM_1970_TO_1990_IN_SECONDS
+        self.ui.byp_exp_cal.setDateTime(exp_qdt)
+        self.ui.byp_duration_edt.setText(str(remaining))
+        self.ui.byp_exp_datetime.setText(str(exp_date))
 
-                exp_date = datetime.fromtimestamp(firstDuration)
-                self.ui.bypass_exp_date_time.setText(str(exp_date))
-                self.ui.cancel_bypass_button.clicked.connect(partial(self.cancelAllBypasses,
-                                                                     pvs,
-                                                                     is_code,
-                                                                     fault_numbers,
-                                                                     IOC_PREFIX))
-        else:  # code macro
-            # Check if ANY fault is bypassed
-            lowestDuration = None
+    def bypass_message(self, main_text, details):
+        msg_dialog = QMessageBox()
+        msg_dialog.setWindowTitle(main_text)
+        msg_dialog.setText(main_text)
+        msg_dialog.setStandardButtons(QMessageBox.Ok)
+        msg_dialog.setDetailedText('\n'.join(details))
+        msg_dialog.exec()
 
-            # To set the duration, we find the lowest bypass duration of any of the faults
-            # So, if a code macro were to have many various durations, the lowest is shown
-            # 'lowestDuration' is the second count from the Epoch (Jan 1st 1970)
-            bypassed_faults = PV(IOC_PREFIX + BYPASS_FAULT_NUMBERS_POSTFIX).value
-            seconds = PV(IOC_PREFIX + BYPASS_SECONDS_POSTFIX).value
-            for fault_num in fault_numbers:
-                if fault_num in bypassed_faults:
-                    second_index = numpy.where(bypassed_faults == fault_num)[0]
-                    if lowestDuration is None or lowestDuration > seconds[second_index][0]:
-                        lowestDuration = seconds[second_index][0] + FROM_1970_TO_1990_IN_SECONDS
+    @Slot()
+    def bypass(self, cancel=False):
+        dialog_details = []
 
-            if lowestDuration is None:
-                self.ui.bypass_exp_time_label.hide()
-                self.ui.bypass_exp_date_time.hide()
-                self.ui.cancel_bypass_button.hide()
-            else:
-                exp_date = datetime.fromtimestamp(lowestDuration)
-                self.ui.bypass_exp_date_time.setText(exp_date)
-                self.ui.cancel_bypass_button.clicked.connect(partial(self.cancelAllBypasses,
-                                                                     pvs,
-                                                                     is_code,
-                                                                     fault_numbers,
-                                                                     IOC_PREFIX))
-
-    def set_duration_from_calendar(self):
-        """
-        Changes the duration value based on a calendar edit,
-        with the current time of launching this window taken as "the origin"
-        """
-        duration = QDateTime.currentDateTime().secsTo(self.ui.bypass_expiration_calendar.dateTime())
-        if duration >= 0:
-            durationStr = str(duration)
-            self.ui.bypass_duration_value.setText(durationStr)
-
-    def attempt_bypass(self, is_code, pvs, ok_states, fault_states, current_state_number, fault_numbers, IOC_PREFIX):
-        """
-        Uses values passed to this class about the macro device
-        And the selections of time, and value from the user
-        Do do a bypass on both non-code or macros
-        """
-        for i, pv in enumerate(pvs):
-            # Either bypass all faults of a non-code, or only the checked of a code macro
-            # Ensure that there is a number to look at as duration
-            if self.ui.bypass_duration_value.text().isdigit() and (is_code != 1 or self.checkBoxes[i].isChecked()):
-                duration = int(self.ui.bypass_duration_value.text())
-                date = QDateTime.currentDateTime().addSecs(int(self.ui.bypass_duration_value.text()))
-
-                value = ''
-                if is_code != 1:
-                    value = self.get_bit_at(current_state_number, i)
-                else:
-                    value = self.comboBoxes[i].currentIndex()
-                state = ''
-                if value == 0:
-                    state = ok_states[i]
-                else:
-                    state = fault_states[i]
-
-                duration = int(self.ui.bypass_duration_value.text())
-                if duration != 0:
-                    writingDurationPV = PV(pv + BYPASS_DURATION_POSTFIX)
-                    print('can we bypass here? ', writingDurationPV.write_access)
-                    if writingDurationPV.write_access:
-                        writingDurationPV.put(duration)
-
-                        writingValuePV = PV(pv + BYPASS_VALUE_POSTFIX)
-                        writingValuePV.put(value)
-
-                        messageLogged = f'{pv} bypassed to {state} ({value}) until {date.toString()} ({duration})'
-                        print('this is where I would log a message about the bypass... IF I KNEW WHERE')
-                        print(messageLogged)
-                    else:
-                        print('CANNOT BYPASS, NO WRITE ACCESS')
-                        print('what would have been logged:')
-                        messageLogged = f'{pv} bypassed to {state} ({value}) until {date.toString()} ({duration})'
-                        print('this is where I would log a message about the bypass... IF I KNEW WHERE')
-                        print(messageLogged)
-
-        if is_code == 1:
-            self.pop_code_values_table(ok_states, fault_states, pvs, fault_numbers, IOC_PREFIX)
+        if cancel:
+            byp_duration = 0
         else:
-            self.pop_values_table(current_state_number, pvs)
-        self.check_cancel_bypass_options(pvs, is_code, fault_numbers, IOC_PREFIX)
+            try:
+                byp_duration = int(self.ui.byp_duration_edt.text())
+                if byp_duration <= 0:
+                    raise ValueError
+            except ValueError:
+                self.bypass_message("BYPASS FAILED", ["[FAILED] Invalid bypass duration"])
+                return
 
-    def cancelAllBypasses(self, fault_pvs, is_code, fault_numbers, IOC_PREFIX):
-        """
-        Sets all of the fault pvs of value and duration to 0.
-        This removes the bypas by ending it"""
-        print('time to cancel a bypass')
-        for fault_pv in fault_pvs:
-            writingDurationPV = PV(fault_pv + BYPASS_DURATION_POSTFIX)
-            print('can we cancel a bypass here? ', writingDurationPV.write_access)
-            if writingDurationPV.write_access:
-                writingDurationPV.put(0)  # 0 duration stop the bypass?
-
-                # POTENTIALLY NOT NECESSARY?
-                writingValuePV = PV(fault_pv + BYPASS_VALUE_POSTFIX)
-                writingValuePV.put(0)  # 0 value for bypass cancels the bypass ?
-
-                messageLogged = f'{fault_pv} bypassed cancelled to ({0}) with value ({0})'
-                print('this is where I would log a message about the bypass... IF I KNEW WHERE')
-                print(messageLogged)
+        write_pvs = []
+        for i, fault in enumerate(self.fault_states):
+            if (self.is_code and not self.checkboxes[i].isChecked()):
+                continue
+            elif cancel:
+                byp_val = 0
+            elif self.is_code:
+                byp_val = self.comboboxes[i].currentIndex()
             else:
-                print('CANNOT BYPASS, NO WRITE ACCESS')
-                print('what would have been logged:')
-                messageLogged = f'{fault_pv} bypassed cancelled to ({0}) with value ({0})'
-                print('this is where I would log a message about the bypass... IF I KNEW WHERE')
-                print(messageLogged)
+                byp_state_ind = self.ui.byp_states_cmbx.currentIndex()
+                byp_val = (byp_state_ind & (0b1 << i)) >> i
 
-        self.check_cancel_bypass_options(fault_pvs, is_code, fault_numbers, IOC_PREFIX)
+            write_pvs.append((fault, byp_val))
+
+        for fault, _ in write_pvs:
+            for k in ['byp_pv', 'byp_dur_pv']:
+                if not fault[k].write_access:
+                    dialog_details.append(f"[FAILED] Unable to write to {fault[k].pvname}")
+
+        if dialog_details:
+            main_text = "BYPASS FAILED" if not cancel else "BYPASS CANCEL FAILED"
+            self.bypass_message(main_text, dialog_details)
+            return
+
+        for fault, byp_val in write_pvs:
+            if not cancel:
+                fault['byp_pv'].value = byp_val
+
+            fault['byp_dur_pv'].value = byp_duration
+            dialog_details.append("[SUCCESS] Successfully bypassed "
+                                  + f"{fault['byp_pv'].pvname} for "
+                                  + f"{byp_duration} seconds")
+
+        main_text = "BYPASS SUCCEEDED" if not cancel else "BYPASS CANCEL SUCCEEDED"
+        self.bypass_message(main_text, dialog_details)
+
+    def update_current_val(self, value, row, **kw):
+        if not self.is_code:
+            item = CellItem(str(int(value)))
+        else:
+            print(row, value)
+            state = self.comboboxes[row].itemText(value)
+            item = CellItem(state)
+        self.ui.byp_val_tbl.setItem(row, 1, item)
+
+    def update_is_byp(self, value, row, id, **kw):
+        item = CellItem("YES" if value else "NO")
+        self.ui.byp_val_tbl.setItem(row, 2, item)
+
+        if id not in self.byp_ids.value:
+            exp = '-'
+        else:
+            second_index = np.where(self.byp_ids.value == id)[0]
+            duration = self.byp_durations.value[second_index][0] + const.FROM_1970_TO_1990_IN_SECONDS
+            exp = datetime.fromtimestamp(duration).strftime("%A, %B %d, %Y %I:%M:%S")
+        item = CellItem(exp)
+        self.ui.byp_val_tbl.setItem(row, 3, item)
+
+    @Slot(int)
+    def update_state(self, index):
+        for i in range(self.byp_val_tbl.rowCount()):
+            item = CellItem(str((index & (0b1 << i)) >> i))
+            self.ui.byp_val_tbl.setItem(i, 2, item)
+
+        rate = self.macro_states[index]['min_rate']
+        self.ui.min_rate_lbl.setText(f"Will limit rate to {rate}")
+
+    @Slot()
+    @Slot(QDateTime)
+    def duration_matching(self, new_duration=None):
+        curr = QDateTime.currentDateTime()
+        if not new_duration:
+            new_duration = self.ui.byp_duration_edt.text()
+            new_duration = int(new_duration) if new_duration else 0
+            new_dt = curr.addSecs(new_duration)
+
+            self.ui.byp_exp_cal.blockSignals(True)
+            self.ui.byp_exp_cal.setDateTime(new_dt)
+            self.ui.byp_exp_cal.blockSignals(False)
+        elif isinstance(new_duration, QDateTime):
+            new_duration = curr.secsTo(new_duration)
+            if new_duration < 0:
+                self.ui.byp_exp_cal.blockSignals(True)
+                self.ui.byp_exp_cal.setDateTime(curr)
+                self.ui.byp_exp_cal.blockSignals(False)
+                return
+
+            self.ui.byp_duration_edt.blockSignals(True)
+            self.ui.byp_duration_edt.setText(str(new_duration))
+            self.ui.byp_duration_edt.blockSignals(False)
 
 
 class CellItem(QTableWidgetItem):
@@ -355,4 +286,3 @@ class CellItem(QTableWidgetItem):
     def __init__(self, text: str, *args, **kwargs):
         super(CellItem, self).__init__(text, *args, **kwargs)
         self.setTextAlignment(Qt.AlignCenter)
-        self.setBackground(Qt.white)

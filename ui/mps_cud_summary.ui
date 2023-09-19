@@ -104,7 +104,7 @@ border-top-right-radius: 15px;
            <number>0</number>
           </property>
           <item>
-           <widget class="PyDMLabel" name="Device_MS_Title">
+           <widget class="QLabel" name="Device_MS_Title">
             <property name="font">
              <font>
               <family>Sans Serif</family>
@@ -120,8 +120,7 @@ border-top-right-radius: 15px;
              <string/>
             </property>
             <property name="styleSheet">
-             <string notr="true">border: 0px;
-color: rgb(255, 255, 255);</string>
+             <string notr="true">color: rgb(255, 255, 255);</string>
             </property>
             <property name="frameShape">
              <enum>QFrame::StyledPanel</enum>
@@ -192,7 +191,7 @@ color: rgb(255, 255, 255);</string>
              <bool>false</bool>
             </property>
             <property name="channel" stdset="0">
-             <string/>
+             <string>ca://IOC:BSY0:MP01:MS_MEASRATE</string>
             </property>
            </widget>
           </item>
@@ -214,7 +213,7 @@ color: rgb(255, 255, 255);</string>
            </widget>
           </item>
           <item>
-           <widget class="PyDMLabel" name="Device_MS_AR_Title">
+           <widget class="QLabel" name="Device_MS_AR_Title">
             <property name="font">
              <font>
               <pointsize>15</pointsize>
@@ -314,7 +313,7 @@ border-top-right-radius: 15px;
            <number>0</number>
           </property>
           <item>
-           <widget class="PyDMLabel" name="Device_LHS_Title">
+           <widget class="QLabel" name="Device_LHS_Title">
             <property name="font">
              <font>
               <family>Sans Serif</family>
@@ -401,6 +400,9 @@ color: rgb(255, 255, 255);</string>
             <property name="alarmSensitiveBorder" stdset="0">
              <bool>false</bool>
             </property>
+            <property name="channel" stdset="0">
+             <string>ca://IOC:BSY0:MP01:LHSHUT_MEASRATE</string>
+            </property>
            </widget>
           </item>
           <item>
@@ -421,7 +423,7 @@ color: rgb(255, 255, 255);</string>
            </widget>
           </item>
           <item>
-           <widget class="PyDMLabel" name="Device_LHS_AR_Title">
+           <widget class="QLabel" name="Device_LHS_AR_Title">
             <property name="font">
              <font>
               <pointsize>15</pointsize>
@@ -518,7 +520,7 @@ border-top-right-radius: 15px;
            <number>0</number>
           </property>
           <item>
-           <widget class="PyDMLabel" name="Device_GunL_Title">
+           <widget class="QLabel" name="Device_GunL_Title">
             <property name="font">
              <font>
               <family>Sans Serif</family>
@@ -605,6 +607,9 @@ color: rgb(255, 255, 255);</string>
             <property name="alarmSensitiveBorder" stdset="0">
              <bool>false</bool>
             </property>
+            <property name="channel" stdset="0">
+             <string>ca://IOC:BSY0:MP01:PC_MEASRATE</string>
+            </property>
            </widget>
           </item>
           <item>
@@ -625,7 +630,7 @@ color: rgb(255, 255, 255);</string>
            </widget>
           </item>
           <item>
-           <widget class="PyDMLabel" name="Device_GunL_AR_Title">
+           <widget class="QLabel" name="Device_GunL_AR_Title">
             <property name="font">
              <font>
               <pointsize>15</pointsize>
@@ -722,7 +727,7 @@ border-top-right-radius: 15px;
            <number>0</number>
           </property>
           <item>
-           <widget class="PyDMLabel" name="Device_GunS_Title">
+           <widget class="QLabel" name="Device_GunS_Title">
             <property name="font">
              <font>
               <family>Sans Serif</family>
@@ -809,6 +814,9 @@ color: rgb(255, 255, 255);</string>
             <property name="alarmSensitiveBorder" stdset="0">
              <bool>false</bool>
             </property>
+            <property name="channel" stdset="0">
+             <string>ca://IOC:BSY0:MP01:GUNSXR_MEASRATE</string>
+            </property>
            </widget>
           </item>
           <item>
@@ -829,7 +837,7 @@ color: rgb(255, 255, 255);</string>
            </widget>
           </item>
           <item>
-           <widget class="PyDMLabel" name="Device_GunS_AR_Title">
+           <widget class="QLabel" name="Device_GunS_AR_Title">
             <property name="font">
              <font>
               <pointsize>15</pointsize>
@@ -926,7 +934,7 @@ border-top-right-radius: 15px;
            <number>0</number>
           </property>
           <item>
-           <widget class="PyDMLabel" name="Device_GunH_Title">
+           <widget class="QLabel" name="Device_GunH_Title">
             <property name="font">
              <font>
               <family>Sans Serif</family>
@@ -1013,6 +1021,9 @@ color: rgb(255, 255, 255);</string>
             <property name="alarmSensitiveBorder" stdset="0">
              <bool>false</bool>
             </property>
+            <property name="channel" stdset="0">
+             <string>ca://IOC:BSY0:MP01:GUNHXR_MEASRATE</string>
+            </property>
            </widget>
           </item>
           <item>
@@ -1033,7 +1044,7 @@ color: rgb(255, 255, 255);</string>
            </widget>
           </item>
           <item>
-           <widget class="PyDMLabel" name="Device_GunH_AR_Title">
+           <widget class="QLabel" name="Device_GunH_AR_Title">
             <property name="font">
              <font>
               <pointsize>15</pointsize>
@@ -1129,7 +1140,7 @@ border-top-right-radius: 15px;
            <number>0</number>
           </property>
           <item>
-           <widget class="PyDMLabel" name="Device_BYKIKS_Title">
+           <widget class="QLabel" name="Device_BYKIKS_Title">
             <property name="font">
              <font>
               <family>Sans Serif</family>
@@ -1216,6 +1227,9 @@ color: rgb(255, 255, 255);</string>
             <property name="alarmSensitiveBorder" stdset="0">
              <bool>false</bool>
             </property>
+            <property name="channel" stdset="0">
+             <string>ca://IOC:BSY0:MP01:BYKIKS_MEASRATE</string>
+            </property>
            </widget>
           </item>
           <item>
@@ -1236,7 +1250,7 @@ color: rgb(255, 255, 255);</string>
            </widget>
           </item>
           <item>
-           <widget class="PyDMLabel" name="Device_BYKIKS_AR_Title">
+           <widget class="QLabel" name="Device_BYKIKS_AR_Title">
             <property name="font">
              <font>
               <pointsize>15</pointsize>
@@ -1409,6 +1423,9 @@ color: rgb(255, 255, 255);</string>
             <property name="alarmSensitiveBorder" stdset="0">
              <bool>false</bool>
             </property>
+            <property name="channel" stdset="0">
+             <string>ca://IOC:BSY0:MP01:BYKIK_MEASRATE</string>
+            </property>
            </widget>
           </item>
           <item>
@@ -1429,7 +1446,7 @@ color: rgb(255, 255, 255);</string>
            </widget>
           </item>
           <item>
-           <widget class="PyDMLabel" name="Device_BYKIKH_AR_Title">
+           <widget class="QLabel" name="Device_BYKIKH_AR_Title">
             <property name="font">
              <font>
               <pointsize>15</pointsize>

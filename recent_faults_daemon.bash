@@ -1,7 +1,5 @@
 #!/bin/bash
 
-cd "$(dirname "${BASH_SOURCE[0]}")"
-
 # MONITOR THE CURRENT STATES, AND LOG CHANGES INTO A GIVEN JSON:
 
 # accel_type='LCLS'
@@ -13,5 +11,5 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 python recent_faults_daemon.py ${EPICS_IOC_TOP}/MpsConfiguration/current/database \
     ${EPICS_IOC_TOP}/MpsConfiguration/current/algorithm \
     IOC:BSY0:MP01 \
-    recent_states_lcls.json \
+    dbinteraction/recentStatesDB/recent_states_lcls.sqlite \
     LCLS

@@ -8,7 +8,7 @@ from dbinteraction.configDB.link_node_channel_fault import Link_Node_Channel_Fau
 from dbinteraction.configDB.link_processor_fault import Link_Processor_Fault as LPF
 from epics import caget
 from mps_constants import (FAULT_STATE_POSTFIX, CHANNEL_PREFIX,
-                           STATE_IS_OK_POSTFIX, BYPASS_VALUE_POSTFIX, BYPASS_STRING_POSTFIX)
+                           STATE_IS_OK_POSTFIX, BYPASS_VALUE_RVAL_POSTFIX, BYPASS_STRING_POSTFIX)
 
 
 class FaultsUI:
@@ -258,7 +258,7 @@ class FaultsUI:
             ui.Fault_Position_Field.show()
             ui.Fault_Position_Field.setText(f'({fault.position_x}, {fault.position_y}, {fault.position_z})')
 
-            if caget(fault.pv + BYPASS_VALUE_POSTFIX):
+            if caget(fault.pv + BYPASS_VALUE_RVAL_POSTFIX):
                 ui.Fault_Bypassed_Label.show()
             else:
                 ui.Fault_Bypassed_Label.hide()
