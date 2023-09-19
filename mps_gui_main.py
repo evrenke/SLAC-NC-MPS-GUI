@@ -97,14 +97,14 @@ class MpsGuiDisplay(Display, SummaryUI, FaultsUI, LogicUI, IgnoreUI, HistoryUI, 
             if cud_mode == 'summary':
                 self.summary_init(is_cud=True)
             elif cud_mode == 'recent':
-                self.recent_faults_init(rates_list=self.rateList, is_cud=True)
+                self.recent_faults_init(rates_list=self.rateList, is_cud=True, accel_type=self.linactype)
             else:
                 self.summary_init(is_cud=False)
                 self.logic_init(self.rateList, macros['IOC_PREFIX'])
                 self.fault_init()
                 self.ignore_init(self.rateList, macros['IOC_PREFIX'])
                 self.history_init()
-                self.recent_faults_init(rates_list=self.rateList, is_cud=False)
+                self.recent_faults_init(rates_list=self.rateList, is_cud=False, accel_type=self.linactype)
 
             if cud_mode != 'recent':
                 PV(macros['IOC_PREFIX'] + CURRENT_STATES_POSTFIX, callback=self.update_current_states)

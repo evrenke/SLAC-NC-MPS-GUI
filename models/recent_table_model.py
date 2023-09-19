@@ -30,7 +30,7 @@ class RecentTableModel(QAbstractTableModel):
     """
     logger = getLogger(__name__)
 
-    def __init__(self, parent, model: AllLogicModel, rates_list, recent_faults_filename):
+    def __init__(self, parent, model: AllLogicModel, rates_list, recent_faults_filename, accel_type):
         super(RecentTableModel, self).__init__(parent)
         self.model = model
 
@@ -45,6 +45,8 @@ class RecentTableModel(QAbstractTableModel):
         # table data, which will hold inputs from database data
         self._data = [['not an item', 'DATABASE ERROR', 'no state', '--',
                        '--', '--', '--', '--', '--', '--', '--', '--', -1]] * RECENT_FAULTS_MAX
+
+        self.accel_type = accel_type
         self.channels = []  # channels used to copy the name of the logic item easily with middle click
 
         self.config = MPSConfig(recent_faults_filename)
@@ -128,8 +130,13 @@ class RecentTableModel(QAbstractTableModel):
             lst[1] = macro_name
             lst[2] = state_name
             lst[3] = min_rate
-            for index, rate in enumerate(state_rates):
-                lst[index + 4] = rate
+            if self.accel_type == 'LCLS':
+                for index, rate in enumerate(state_rates):
+                    lst[index + 4] = rate
+            else:  # FACET
+                lst[index + 4] = state_rates[0]
+                lst[index + 5] = state_rates[2]
+                lst[index + 6] = state_rates[1]
 
             macro_num = -1
             for num in self.model.numbersToPreppedDevices:
