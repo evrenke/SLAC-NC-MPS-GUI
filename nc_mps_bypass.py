@@ -90,7 +90,11 @@ class NC_MPS_Bypass(Display):
 
         states = [ms['state'] for ms in self.macro_states]
         self.ui.byp_states_cmbx.addItems(states)
-        self.ui.byp_states_cmbx.setCurrentIndex(self.current_state)
+
+        # Check for special macro states
+        if self.current_state not in [-53, -54, -55, -56]:
+            self.ui.byp_states_cmbx.setCurrentIndex(self.current_state)
+
         self.update_state(self.current_state)
 
         self.ui.byp_exp_cal.setMinimumDateTime(QDateTime.currentDateTime())
@@ -108,7 +112,7 @@ class NC_MPS_Bypass(Display):
 
         for i, fault in enumerate(self.fault_states):
             fault['fault_pv'].add_callback(partial(self.update_current_val, row=i), run_now=True)
-            fault['byp_pv'].add_callback(self.populate_exp_frame, run_now=True)
+            fault['byp_dur_pv'].add_callback(self.populate_exp_frame, run_now=True)
 
             if self.is_code:
                 fault['byp_pv'].add_callback(partial(self.update_is_byp, row=i, id=fault['id']), run_now=True)
@@ -218,9 +222,10 @@ class NC_MPS_Bypass(Display):
                 fault['byp_pv'].value = byp_val
 
             fault['byp_dur_pv'].value = byp_duration
-            dialog_details.append("[SUCCESS] Successfully bypassed "
-                                  + f"{fault['byp_pv'].pvname} for "
-                                  + f"{byp_duration} seconds")
+            detail_str = "[SUCCESS] Successfully "
+            detail_str += "canceled" if cancel else "bypassed"
+            detail_str += f" {fault['byp_pv'].pvname} for {byp_duration} seconds"
+            dialog_details.append(detail_str)
 
         main_text = "BYPASS SUCCEEDED" if not cancel else "BYPASS CANCEL SUCCEEDED"
         self.bypass_message(main_text, dialog_details)
