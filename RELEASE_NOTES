@@ -1,3 +1,8 @@
+R1.0.5  Evren Keskin, Zach Domke        09/21/2023
+        Make bypass screen show bypass duration when macro is bypassed
+        Make bypass screen account for special macro states
+        Make MPSConfig object use a scoped session factory to make the sessions thread safe
+
 R1.0.4  Evren Keskin, Zach Domke        09/19/2023
         Updating main GUI to use SQLite based Recent Faults
 

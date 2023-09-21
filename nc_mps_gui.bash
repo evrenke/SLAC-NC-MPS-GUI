@@ -43,7 +43,7 @@ do
         IOC_PREFIX=IOC:SYS1:MP01
         CONFIG_DB_FILE=${EPICS_IOC_TOP}/MpsConfiguration-FACET/current/database/
         LOGIC_DB_FILE=${EPICS_IOC_TOP}/MpsConfiguration-FACET/current/algorithm/
-        RECENT_DB_FILE='dbinteraction/recentStatesDB/recent_states_facet.sqlite';;
+        RECENT_DB_FILE='dbinteraction/recentStatesDB/recent_states_facet.sqlite' ;;
         -c | --cud) CUD_MODE="$2" 
                     shift 
                     echo $CUD_MODE ;;

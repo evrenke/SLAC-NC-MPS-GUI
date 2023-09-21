@@ -141,12 +141,7 @@ class SelectionDetailsHelper:
         for i in range(row_count):
             for j in range(col_count):
                 table.setItem(i, j, CellItem("--"))
-        if row_count == 1:
-            # Height for one row + header
-            table.setMaximumHeight(49)
-        else:
-            # Maximum height value
-            table.setMaximumHeight(16777215)
+        table.setMaximumHeight((31 * row_count) + 19)
 
     def pop_truth_table(self, macro):
         """
